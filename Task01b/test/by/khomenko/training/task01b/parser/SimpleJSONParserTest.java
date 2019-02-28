@@ -7,8 +7,17 @@ import java.util.Map;
 
 import static org.testng.Assert.*;
 
+/**
+ * Tests SimpleJSONParser method.
+ */
 public class SimpleJSONParserTest {
 
+    /**
+     * SimpleJSONParser's parseLine method test.
+     *
+     * @throws LineSyntaxException if start and end symbols are not those that
+     * passed in parameters.
+     */
     @Test
     public void testParseLine() throws LineSyntaxException {
         SimpleJSONParser parser = new SimpleJSONParser();

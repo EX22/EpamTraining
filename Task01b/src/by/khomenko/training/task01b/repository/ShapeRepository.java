@@ -6,11 +6,17 @@ import by.khomenko.training.task01b.logic.GeometryUtil;
 import by.khomenko.training.task01b.logic.ShapeSurfaceArea;
 import by.khomenko.training.task01b.logic.ShapeVolume;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
- * Implements Repository pattern. Contains shape's instances collection, with methods to manage it.
- * Contains various search methods as well, to search shape or shapes according to different parameters.
+ * Implements Repository pattern. Contains shape's instances collection,
+ * with methods to manage it.
+ * Contains various search methods as well, to search shape or shapes
+ * according to different parameters.
  * We follow the agreement that this class is singleton.
  */
 
@@ -26,9 +32,10 @@ public class ShapeRepository {
 
     /**
      * Adds instance of shape to repository.
+     *
      * @param shape instance of DefaultShape descendants.
      */
-    public void addShape(DefaultShape shape) {
+    public void addShape(final DefaultShape shape) {
         shape.setId(idCounter);
         shapeMap.put(idCounter, shape);
         idCounter++;
@@ -37,9 +44,10 @@ public class ShapeRepository {
 
     /**
      * Remove instance of shape from repository.
+     *
      * @param shape instance of DefaultShape descendants.
      */
-    public void removeShape(DefaultShape shape) {
+    public void removeShape(final DefaultShape shape) {
         shapeMap.remove(shape.getId());
         shape.deleteObservers();
 
@@ -47,9 +55,10 @@ public class ShapeRepository {
 
     /**
      * Update instance of shape in repository.
+     *
      * @param shape instance of DefaultShape descendants.
      */
-    public void updateShape(DefaultShape shape) {
+    public void updateShape(final DefaultShape shape) {
         DefaultShape tempShape = shapeMap.get(shape.getId());
         if (tempShape != null) {
             tempShape.deleteObservers();
@@ -60,12 +69,20 @@ public class ShapeRepository {
 
     }
 
-    public DefaultShape searchShapeByID(Integer id) {
+    /**
+     * @param id of shape's instance that we want to find.
+     * @return shape's instance with appropriate id.
+     */
+    public DefaultShape searchShapeByID(final Integer id) {
 
         return shapeMap.get(id);
     }
 
-    public List<DefaultShape> searchShapeByName(String name) {
+    /**
+     * @param name of shape's instance that we want to find.
+     * @return list of shape's instances with appropriate name.
+     */
+    public List<DefaultShape> searchShapeByName(final String name) {
         List<DefaultShape> resultShapeByNameList = new ArrayList<>();
         for (DefaultShape entryShape : shapeMap.values()) {
             Cone tempCone = (Cone) entryShape;
@@ -76,8 +93,12 @@ public class ShapeRepository {
         return resultShapeByNameList;
     }
 
+    /**
+     * @return list of shape's instances located in octant.
+     */
     public List<DefaultShape> searchShapeByCoordinateInOctant() {
-        List<DefaultShape> resultShapeByCoordinateInOctantList = new ArrayList<>();
+        List<DefaultShape> resultShapeByCoordinateInOctantList
+                = new ArrayList<>();
         for (DefaultShape entryShape : shapeMap.values()) {
             Cone tempCone = (Cone) entryShape;
             if (tempCone.getBaseCenter().getX() > 0
@@ -90,8 +111,18 @@ public class ShapeRepository {
         return resultShapeByCoordinateInOctantList;
     }
 
-    public List<DefaultShape> searchShapeBySurfaceAreaInRange(double start, double end) {
-        List<DefaultShape> resultShapeBySurfaceAreaInRangeList = new ArrayList<>();
+    /**
+     * Search shape's instances that got surface area value in demanded range.
+     *
+     * @param start upper edge for shape's surface area value.
+     * @param end   bottom edge for shape's surface area value.
+     * @return list of shape's instances that surface area value
+     * fits to demanded range.
+     */
+    public List<DefaultShape> searchShapeBySurfaceAreaInRange(double start,
+                                                              double end) {
+        List<DefaultShape> resultShapeBySurfaceAreaInRangeList
+                = new ArrayList<>();
         ShapeSurfaceArea shapeSurfaceArea = new ShapeSurfaceArea();
         for (DefaultShape entryShape : shapeMap.values()) {
             Cone tempCone = (Cone) entryShape;
@@ -103,7 +134,16 @@ public class ShapeRepository {
         return resultShapeBySurfaceAreaInRangeList;
     }
 
-    public List<DefaultShape> searchShapeByVolumeInRange(double start, double end) {
+    /**
+     * Search shape's instances that got volume value in demanded range.
+     *
+     * @param start upper edge for shape's volume value.
+     * @param end   bottom edge for shape's surface area value.
+     * @return list of shape's instances that volume value fits
+     * to demanded range.
+     */
+    public List<DefaultShape> searchShapeByVolumeInRange(double start,
+                                                         double end) {
         List<DefaultShape> resultShapeByVolumeInRangeList = new ArrayList<>();
         ShapeVolume shapeVolume = new ShapeVolume();
         for (DefaultShape entryShape : shapeMap.values()) {
@@ -116,8 +156,21 @@ public class ShapeRepository {
         return resultShapeByVolumeInRangeList;
     }
 
-    public List<DefaultShape> searchShapeByDistanceFromOriginInRange(double start, double end) {
-        List<DefaultShape> resultShapeByDistanceFromOriginInRangeList = new ArrayList<>();
+    /**
+     * Search shape's instances that located in demanded range from
+     * coordinate's origin.
+     *
+     * @param start upper edge for distance from coordinate's origin
+     *              to shape's base center.
+     * @param end   bottom edge for distance from coordinate's origin
+     *              to shape's base center.
+     * @return list of shape's instances that's base centers located
+     * in demanded range.
+     */
+    public List<DefaultShape> searchShapeByDistanceFromOriginInRange(double start,
+                                                                     double end) {
+        List<DefaultShape> resultShapeByDistanceFromOriginInRangeList
+                = new ArrayList<>();
         for (Map.Entry<Integer, DefaultShape> entryShape : shapeMap.entrySet()) {
             Cone tempCone = (Cone) entryShape.getValue();
             if (start < GeometryUtil.vectorLength(tempCone.getBaseCenter())
@@ -128,7 +181,14 @@ public class ShapeRepository {
         return resultShapeByDistanceFromOriginInRangeList;
     }
 
-    public List<DefaultShape> sortShape(Comparator<DefaultShape> comparator){
+    /**
+     * Sorts shape instances according to passed comparator.
+     *
+     * @param comparator comparator with parameters according to which shape's
+     *                  instances should be sorted.
+     * @return list of sorted shape's instances.
+     */
+    public List<DefaultShape> sortShape(Comparator<DefaultShape> comparator) {
         List<DefaultShape> list = new ArrayList<>(shapeMap.values());
         list.sort(comparator);
         return list;

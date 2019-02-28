@@ -15,14 +15,14 @@ public class ShapeException extends Exception {
     /**
      * @param message passed to parent constructor.
      */
-    public ShapeException(String message) {
+    public ShapeException(final String message) {
         super(message);
     }
 
     /**
      * @param cause passed to parent constructor.
      */
-    public ShapeException(Throwable cause) {
+    public ShapeException(final Throwable cause) {
         super(cause);
     }
 
@@ -30,7 +30,7 @@ public class ShapeException extends Exception {
      * @param message passed to parent constructor.
      * @param cause   passed to parent constructor.
      */
-    public ShapeException(String message, Throwable cause) {
+    public ShapeException(final String message, final Throwable cause) {
         super(message, cause);
     }
 }

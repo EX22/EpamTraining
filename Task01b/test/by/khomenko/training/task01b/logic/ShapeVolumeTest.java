@@ -13,26 +13,8 @@ public class ShapeVolumeTest {
     private ShapeVolume shapeVolume = new ShapeVolume();
     private Vector vector = new Vector(1.0, 2.0, 3.0);
     private Vector direction = new Vector(0.0, 0.0, 1.0);
-    private Cone cone = new Cone(vector,9.0, 3.0, direction, "TestName" );
-
-    //TODO Remove Data Provider example.
-    @DataProvider(name = "input_a_b")
-    public Object [][] createCorrectData(){
-        return
-                new Object[][]{
-                        {new int[]{2, 3}, 5},
-                        {new int[]{1, 1}, 2},
-                        {new int[]{0, 0}, 0},
-
-                };
-    }
-
-    @Test(description = "Positive case scenario for the sum calculation", dataProvider = "input_a_b")
-    public void testSum(int [] ab, int c) throws Exception{
-        int actual = shapeVolume.sum(ab[0], ab[1]);
-        int expected = c;
-        assertEquals(actual, expected);
-    }
+    private Cone cone = new Cone(vector,9.0, 3.0, direction,
+            "TestVolumeName" );
 
     @Test
     public void testCalcConeVolume() {

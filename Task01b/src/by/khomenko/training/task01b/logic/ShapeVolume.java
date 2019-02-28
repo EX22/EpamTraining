@@ -9,41 +9,42 @@ public class ShapeVolume {
 
     /**
      * Having received the Cone object calculates it's volume.
+     *
      * @param cone shape's object instance of Cone.
      * @return double, cone's volume.
      */
-    public double calcConeVolume(Cone cone) {
+    public double calcConeVolume(final Cone cone) {
 
         return calcConeVolume(cone.getRadius(), cone.getHeight());
     }
 
     /**
      * Having received Cone's object parameters calculates it's volume.
+     *
      * @param radius double, cone's radius.
      * @param height double, cone's height.
      * @return double, cone's volume.
      */
-    public double calcConeVolume(double radius, double height){
+    public double calcConeVolume(final double radius, final double height) {
 
         return ((1.0 / 3.0) * Math.PI * Math.pow(radius, 2) * height);
     }
 
     /**
-     * Calculates frustum's, which resulted initial cone split up by cutting plane, volume.
+     * Calculates frustum's, which resulted initial cone split up
+     * by cutting plane, volume.
+     *
      * @param downBaseRadius double, initial cone's base radius.
-     * @param upBaseRadius double, frustum's up base radius.
-     * @param frustumHeight double, frustum's height.
+     * @param upBaseRadius   double, frustum's up base radius.
+     * @param frustumHeight  double, frustum's height.
      * @return double, frustum's volume.
      */
-    public double calcFrustumVolume(double downBaseRadius, double upBaseRadius, double frustumHeight) {
+    public double calcFrustumVolume(final double downBaseRadius,
+                                    final double upBaseRadius,
+                                    final double frustumHeight) {
 
         return ((1.0 / 3.0) * Math.PI * frustumHeight * (Math.pow(downBaseRadius, 2)
                 + downBaseRadius * upBaseRadius + Math.pow(upBaseRadius, 2)));
-    }
-
-    //TODO The method below is needed to be deleted
-    public int sum(int a, int b) {
-        return (a + b);
     }
 
 }

@@ -9,6 +9,9 @@ import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
 
+/**
+ * Stores and manages shape's data, such as surface area and volume
+ */
 public class ShapeRegistry implements Observer {
 
     private Map<Integer, Double> shapeSurfaceAreaInfoStorage = new HashMap<>();
@@ -17,21 +20,30 @@ public class ShapeRegistry implements Observer {
     private ShapeSurfaceArea shapeSurfaceArea = new ShapeSurfaceArea();
     private ShapeVolume shapeVolume = new ShapeVolume();
 
+    /**
+     * This method is called whenever the observed shape's object is changed.
+     *
+     * @param o   the observable shape's instance information of that needed
+     *            to be updated.
+     * @param arg an argument passed to the notifyObservers method.
+     */
     @Override
-    public void update(Observable o, Object arg) {
+    public void update(final Observable o, final Object arg) {
 
         Cone tempCone = (Cone) o;
 
-        shapeSurfaceAreaInfoStorage.put(tempCone.getId(), shapeSurfaceArea.calcConeSurfaceArea(tempCone));
-        shapeVolumeInfoStorage.put(tempCone.getId(), shapeVolume.calcConeVolume(tempCone));
+        shapeSurfaceAreaInfoStorage.put(tempCone.getId(),
+                shapeSurfaceArea.calcConeSurfaceArea(tempCone));
+        shapeVolumeInfoStorage.put(tempCone.getId(),
+                shapeVolume.calcConeVolume(tempCone));
 
     }
 
-    public Double getShapeSurfaceArea(Integer key) {
+    public Double getShapeSurfaceArea(final Integer key) {
         return shapeSurfaceAreaInfoStorage.get(key);
     }
 
-    public Double getShapeVolume(Integer key) {
+    public Double getShapeVolume(final Integer key) {
         return shapeVolumeInfoStorage.get(key);
     }
 

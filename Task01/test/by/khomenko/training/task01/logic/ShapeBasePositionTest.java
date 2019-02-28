@@ -1,8 +1,8 @@
-package by.khomenko.training.task01b.logic;
+package by.khomenko.training.task01.logic;
 
-import by.khomenko.training.task01b.entity.Cone;
-import by.khomenko.training.task01b.entity.Vector;
-import by.khomenko.training.task01b.exception.ShapeException;
+import by.khomenko.training.task01.entity.Cone;
+import by.khomenko.training.task01.entity.Vector;
+import by.khomenko.training.task01.exception.ShapeException;
 import org.testng.annotations.Test;
 
 import static org.testng.Assert.*;
@@ -15,8 +15,7 @@ public class ShapeBasePositionTest {
 
     private Vector vector = new Vector(1.0, 2.0, 3.0);
     private Vector direction = new Vector(0.0, 0.0, 1.0);
-    private Cone cone = new Cone(vector,9.0, 3.0, direction,
-            "TestBasePositionName" );
+    private Cone cone = new Cone(vector,9.0, 3.0, direction);
     private ShapeBasePosition shapeBasePosition = new ShapeBasePosition();
 
     /**

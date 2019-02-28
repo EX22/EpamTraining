@@ -8,7 +8,7 @@ public class Vector {
     private double y;
     private double z;
 
-    public Vector(double x, double y, double z) {
+    public Vector(final double x, final double y, final double z) {
         this.x = x;
         this.y = y;
         this.z = z;
@@ -40,12 +40,16 @@ public class Vector {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Vector)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Vector)) {
+            return false;
+        }
         Vector vector = (Vector) o;
-        return Double.compare(vector.getX(), getX()) == 0 &&
-                Double.compare(vector.getY(), getY()) == 0 &&
-                Double.compare(vector.getZ(), getZ()) == 0;
+        return Double.compare(vector.getX(), getX()) == 0
+                && Double.compare(vector.getY(), getY()) == 0
+                && Double.compare(vector.getZ(), getZ()) == 0;
     }
 
     @Override
@@ -55,11 +59,11 @@ public class Vector {
 
     @Override
     public String toString() {
-        return "Vector{" +
-                "x=" + x +
-                ", y=" + y +
-                ", z=" + z +
-                '}';
+        return "Vector{"
+                + "x=" + x
+                + ", y=" + y
+                + ", z=" + z
+                + '}';
     }
 
 }

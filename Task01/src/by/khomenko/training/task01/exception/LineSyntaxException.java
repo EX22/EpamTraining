@@ -1,7 +1,8 @@
 package by.khomenko.training.task01.exception;
 
 /**
- * Exception thrown during line parsing, usually means that line has inappropriate syntax format.
+ * Exception thrown during line parsing, usually means that line has
+ * inappropriate syntax format.
  */
 public class LineSyntaxException extends Exception {
 

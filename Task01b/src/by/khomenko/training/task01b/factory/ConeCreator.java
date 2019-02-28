@@ -7,10 +7,17 @@ import by.khomenko.training.task01b.validator.ShapeDataValidator;
 
 import java.util.Map;
 
+/**
+ * Cone's creation, implements one of Factory Method's pattern options.
+ */
 public class ConeCreator extends ShapeCreator {
 
+    /**
+     * @param parameters contains valid parameters for shape creation.
+     * @return instance of shape.
+     */
     @Override
-    public DefaultShape createShape(Map<String, Object> parameters) {
+    public DefaultShape createShape(final Map<String, Object> parameters) {
 
         ShapeDataValidator shapeDataValidator = new ShapeDataValidator();
 
@@ -26,8 +33,13 @@ public class ConeCreator extends ShapeCreator {
 
     }
 
-    private Vector createVector(Map<String, Object> vectorData) {
+    /**
+     * @param vectorData contains valid data for vector creation.
+     * @return instance of Vector.
+     */
+    private Vector createVector(final Map<String, Object> vectorData) {
 
-        return new Vector((Double) vectorData.get("x"), (Double) vectorData.get("y"), (Double) vectorData.get("z"));
+        return new Vector((Double) vectorData.get("x"),
+                (Double) vectorData.get("y"), (Double) vectorData.get("z"));
     }
 }

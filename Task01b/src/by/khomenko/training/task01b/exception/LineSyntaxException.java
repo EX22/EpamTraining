@@ -1,7 +1,8 @@
 package by.khomenko.training.task01b.exception;
 
 /**
- * Exception thrown during line parsing, usually means that line has inappropriate syntax format.
+ * Exception thrown during line parsing, usually means that line
+ * has inappropriate syntax format.
  */
 public class LineSyntaxException extends Exception {
 
@@ -15,14 +16,14 @@ public class LineSyntaxException extends Exception {
     /**
      * @param message passed to parent constructor.
      */
-    public LineSyntaxException(String message) {
+    public LineSyntaxException(final String message) {
         super(message);
     }
 
     /**
      * @param cause passed to parent constructor.
      */
-    public LineSyntaxException(Throwable cause) {
+    public LineSyntaxException(final Throwable cause) {
         super(cause);
     }
 
@@ -30,7 +31,7 @@ public class LineSyntaxException extends Exception {
      * @param message passed to parent constructor.
      * @param cause   passed to parent constructor.
      */
-    public LineSyntaxException(String message, Throwable cause) {
+    public LineSyntaxException(final String message, final Throwable cause) {
         super(message, cause);
     }
 

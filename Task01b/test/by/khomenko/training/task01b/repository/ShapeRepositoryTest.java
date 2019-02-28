@@ -1,6 +1,6 @@
 package by.khomenko.training.task01b.repository;
 
-import by.khomenko.training.task01b.comporator.ShapeByFirstXCoordinate;
+import by.khomenko.training.task01b.comparator.ShapeByFirstXCoordinate;
 import by.khomenko.training.task01b.entity.Cone;
 import by.khomenko.training.task01b.entity.DefaultShape;
 import by.khomenko.training.task01b.entity.Vector;
@@ -10,7 +10,6 @@ import by.khomenko.training.task01b.logic.ShapeVolume;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.testng.Assert.*;
@@ -44,6 +43,10 @@ public class ShapeRepositoryTest {
     }
 
 
+    /**
+     * Update shape method's test.
+     *
+     */
     @Test
     public void testUpdateShape() {
         shapeRepository.addShape(cone);
@@ -88,7 +91,8 @@ public class ShapeRepositoryTest {
 
     /**
      * Uses data provider coneInOctant.
-     * @param coneInOctant instance of cone from the first octant.
+     *
+     * @param coneInOctant    instance of cone from the first octant.
      * @param coneNotInOctant instance of cone not from the first octant
      */
     @Test(description = "Positive case scenario for searchShapeByCoordinateInOctant", dataProvider = "coneInOctant")
@@ -97,27 +101,34 @@ public class ShapeRepositoryTest {
         List<DefaultShape> foundShapeList = shapeRepository.searchShapeByCoordinateInOctant();
         assertTrue(foundShapeList.contains(coneInOctant) && !foundShapeList.contains(coneNotInOctant));
     }
-    //TODO To test negative case scenario.
+
+
     @Test
     public void testSearchShapeBySurfaceAreaInRange() {
         shapeRepository.addShape(cone);
         ShapeSurfaceArea shapeSurfaceArea = new ShapeSurfaceArea();
         Double actualConeSurfaceArea = shapeSurfaceArea.calcConeSurfaceArea(cone);
         Double surfaceAreaRange = 55.5;
+        Double negativeCaseRange = 100.1;
         List<DefaultShape> foundShapeList = shapeRepository.searchShapeBySurfaceAreaInRange(actualConeSurfaceArea
                 - surfaceAreaRange, actualConeSurfaceArea + surfaceAreaRange);
-        assertTrue(foundShapeList.contains(cone));
+        List<DefaultShape> negativeCaseList = shapeRepository.searchShapeBySurfaceAreaInRange(actualConeSurfaceArea
+                - surfaceAreaRange, actualConeSurfaceArea - negativeCaseRange);
+        assertTrue(foundShapeList.contains(cone) && !negativeCaseList.contains(cone));
     }
-    //TODO To test negative case scenario.
+
     @Test
     public void testSearchShapeByVolumeInRange() {
         shapeRepository.addShape(cone);
         ShapeVolume shapeVolume = new ShapeVolume();
         Double actualConeVolume = shapeVolume.calcConeVolume(cone);
         Double volumeRange = 22.2;
+        Double negativeCaseRange = 50.1;
         List<DefaultShape> foundShapeList = shapeRepository.searchShapeByVolumeInRange(actualConeVolume
                 - volumeRange, actualConeVolume + volumeRange);
-        assertTrue(foundShapeList.contains(cone));
+        List<DefaultShape> negativeCaseList = shapeRepository.searchShapeBySurfaceAreaInRange(actualConeVolume
+                - volumeRange, actualConeVolume - negativeCaseRange);
+        assertTrue(foundShapeList.contains(cone) && !negativeCaseList.contains(cone));
     }
 
     @Test
@@ -130,7 +141,6 @@ public class ShapeRepositoryTest {
         assertTrue(foundShapeList.contains(cone));
     }
 
-    //TODO Create data provider for this test method.
     @Test
     public void testSortShape() {
         Vector vectorFirst = new Vector(3.3, 2.2, 1.1);

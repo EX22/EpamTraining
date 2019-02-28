@@ -13,7 +13,8 @@ public class ShapeSurfaceAreaTest {
     private ShapeSurfaceArea shapeSurfaceArea = new ShapeSurfaceArea();
     private Vector vector = new Vector(1.0, 2.0, 3.0);
     private Vector direction = new Vector(0.0, 0.0, 1.0);
-    private Cone cone = new Cone(vector,9.0, 3.0, direction, "TestSurfaceAreaName" );
+    private Cone cone = new Cone(vector,9.0, 3.0, direction,
+            "TestSurfaceAreaName" );
 
 
     @Test

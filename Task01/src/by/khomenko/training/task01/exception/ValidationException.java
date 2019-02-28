@@ -1,7 +1,8 @@
 package by.khomenko.training.task01.exception;
 
 /**
- * Exception thrown during array validation, usually means that data are not usable.
+ * Exception thrown during array validation, usually means that data
+ * are not usable.
  */
 public class ValidationException extends Exception {
 
@@ -15,14 +16,14 @@ public class ValidationException extends Exception {
     /**
      * @param message passed to parent constructor.
      */
-    public ValidationException(String message) {
+    public ValidationException(final String message) {
         super(message);
     }
 
     /**
      * @param cause passed to parent constructor.
      */
-    public ValidationException(Throwable cause) {
+    public ValidationException(final Throwable cause) {
         super(cause);
     }
 
@@ -30,7 +31,7 @@ public class ValidationException extends Exception {
      * @param message passed to parent constructor.
      * @param cause   passed to parent constructor.
      */
-    public ValidationException(String message, Throwable cause) {
+    public ValidationException(final String message, final Throwable cause) {
         super(message, cause);
     }
 }

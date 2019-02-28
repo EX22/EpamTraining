@@ -4,7 +4,8 @@ import by.khomenko.training.task01.exception.DataReaderException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.*;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
@@ -20,7 +21,6 @@ public class DataReader {
 
         List<String> listOfLines;
 
-        //TODO Is it necessary to check here if the input stream is null.
         try (Stream<String> lineStream = Files.lines(path)) {
 
             listOfLines = lineStream.collect(Collectors.toList());
@@ -30,7 +30,8 @@ public class DataReader {
             LOGGER.error(message, e);
             throw new DataReaderException(message, e);
         } catch (IOException e) {
-            String message = "During the source for list reading an exception occurred";
+            String message = "During the source for list reading "
+                    + "an exception occurred";
             LOGGER.error(message, e);
             throw new DataReaderException(message, e);
         }

@@ -9,13 +9,22 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Parsing data in appropriate format.
+ */
 public class ShapeDataParser {
 
-    private static final Logger LOGGER = LogManager.getLogger(ShapeDataParser.class);
+    private static final Logger LOGGER
+            = LogManager.getLogger(ShapeDataParser.class);
 
-
-
-    public List<Map<String, Object>> parseData(List<String> readList) throws ValidationException {
+    /**
+     * @param readList list of strings.
+     * @return list of maps each of those suppose to contain parameters
+     * for cone creation.
+     * @throws ValidationException if passed list is null or empty.
+     */
+    public List<Map<String, Object>> parseData(final List<String> readList)
+            throws ValidationException {
 
         if (readList == null) {
             String message = "List is null";

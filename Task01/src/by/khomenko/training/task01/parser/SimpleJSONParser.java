@@ -11,16 +11,19 @@ import java.util.Map;
 
 public class SimpleJSONParser {
 
-    private static final Logger LOGGER = LogManager.getLogger(SimpleJSONParser.class);
+    private static final Logger LOGGER
+            = LogManager.getLogger(SimpleJSONParser.class);
 
     /**
      * Parse JSON
      *
      * @param line - JSON string
      * @return map with parameters (could be nested maps)
+     * @throws LineSyntaxException if passed symbols are not satisfied demanded.
      */
-    //TODO Manage a cognitive complexity problem, SonarLint's reference.
-    public Map<String, Object> parseLine(String line) throws LineSyntaxException {
+
+    public Map<String, Object> parseLine(String line)
+            throws LineSyntaxException {
 
         Map<String, Object> result = new HashMap<>();
         List<Object> paramValues = null;
@@ -108,16 +111,19 @@ public class SimpleJSONParser {
     }
 
     /**
-     * Trim whitespace and remove start and end symbols of the string, throw exception if they are not equal to
+     * Trim whitespace and remove start and end symbols of the string,
+     * throw exception if they are not equal to
      * start and end parameters
      *
      * @param s     - string
      * @param start - start character
      * @param end   - end character
      * @return string without start and end symbols
-     * @throws LineSyntaxException if start and end symbols are not those that passed in parameters
+     * @throws LineSyntaxException if start and end symbols are not those
+     * that passed in parameters
      */
-    private String unwrap(String s, char start, char end) throws LineSyntaxException {
+    private String unwrap(String s, char start, char end)
+            throws LineSyntaxException {
 
         s = s.trim();
 
@@ -157,9 +163,11 @@ public class SimpleJSONParser {
      * @param openBrace    open brace symbol
      * @param closingBrace corresponding closing brace symbol
      * @return index of the closing brace
-     * @throws LineSyntaxException in case if corresponding closing brace is not found
+     * @throws LineSyntaxException in case if corresponding closing brace
+     * is not found
      */
-    private int findParamClosingBrace(String s, char openBrace, char closingBrace) throws LineSyntaxException {
+    private int findParamClosingBrace(String s, char openBrace, char closingBrace)
+            throws LineSyntaxException {
 
         int openBraceCounter = 0;
 
@@ -191,22 +199,25 @@ public class SimpleJSONParser {
      *
      * @param paramValue string
      * @return Integer if there is no decimal point or Double
-     * @throws LineSyntaxException if NumberFormatException occurred when parsing
+     * @throws LineSyntaxException if NumberFormatException occurred
+     * when parsing
      */
     private Object parseValue(String paramValue) throws LineSyntaxException {
 
         try {
             if ("null".equals(paramValue)) {
                 return null;
-            } else if ("true".equals(paramValue) || "false".equals(paramValue)) {
+            } else if ("true".equals(paramValue)
+                    || "false".equals(paramValue)) {
                 return Boolean.valueOf(paramValue);
-            } else if (paramValue.indexOf('.') < 0 && paramValue.indexOf('e') < 0 && paramValue.indexOf('E') < 0) {
+            } else if (paramValue.indexOf('.') < 0
+                    && paramValue.indexOf('e') < 0
+                    && paramValue.indexOf('E') < 0) {
                 return Integer.valueOf(paramValue);
             } else {
                 return Double.valueOf(paramValue);
             }
         } catch (NumberFormatException e) {
-            //TODO Don't throw standard exceptions.
             String message = "Number format exception parsing: ";
             LOGGER.warn(message);
             throw new LineSyntaxException(message + paramValue, e);

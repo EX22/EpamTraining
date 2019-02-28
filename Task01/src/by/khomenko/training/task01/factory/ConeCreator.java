@@ -9,8 +9,8 @@ import java.util.Map;
 
 public class ConeCreator extends ShapeCreator {
     @Override
-    public DefaultShape createShape(Map<String, Object> parameters) {
-        //TODO Find out what to do with unchecked cast SonarLint's hint.
+    public DefaultShape createShape(final Map<String, Object> parameters) {
+
         ShapeDataValidator shapeDataValidator = new ShapeDataValidator();
         if (shapeDataValidator.validateCone(parameters)) {
             return new Cone(createVector((Map<String, Object>) parameters.get("baseCenter")),
@@ -22,7 +22,8 @@ public class ConeCreator extends ShapeCreator {
         return null;
     }
 
-    private Vector createVector(Map<String, Object> vectorData) {
-        return new Vector((Double) vectorData.get("x"), (Double) vectorData.get("y"), (Double) vectorData.get("z"));
+    private Vector createVector(final Map<String, Object> vectorData) {
+        return new Vector((Double) vectorData.get("x"),
+                (Double) vectorData.get("y"), (Double) vectorData.get("z"));
     }
 }

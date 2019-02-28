@@ -3,7 +3,7 @@ package by.khomenko.training.task01.entity;
 import java.util.Objects;
 
 public class Plane {
-    //TODO Find out is it the best practice.
+
     public static final Plane XZ_PLANE = new Plane(new Vector(0.0, 0.0, 0.0),
             new Vector(0.0, 1.0, 0.0));
     public static final Plane ZY_PLANE = new Plane(new Vector(0.0, 0.0, 0.0),
@@ -37,11 +37,15 @@ public class Plane {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Plane)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Plane)) {
+            return false;
+        }
         Plane that = (Plane) o;
-        return getPoint().equals(that.getPoint()) &&
-                getNormal().equals(that.getNormal());
+        return getPoint().equals(that.getPoint())
+                && getNormal().equals(that.getNormal());
     }
 
     @Override
@@ -51,9 +55,9 @@ public class Plane {
 
     @Override
     public String toString() {
-        return "Plane{" +
-                "point=" + point +
-                ", normal=" + normal +
-                '}';
+        return "Plane{"
+                + "point=" + point
+                + ", normal=" + normal
+                + '}';
     }
 }

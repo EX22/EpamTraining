@@ -1,6 +1,7 @@
 package by.khomenko.training.task01b.reader;
 
 import by.khomenko.training.task01b.exception.DataReaderException;
+import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
 import java.nio.file.Path;
@@ -11,16 +12,25 @@ import static org.testng.Assert.*;
 
 public class DataReaderTest {
 
-    //Relative path should be different if test runs standalone.
-    //In this case the path should be "..\\out\\production\\Task01b\\data\\DataReaderTestFile.txt";
-
-    private static final String FILE_PATH = ".\\out\\production\\Task01b\\data\\DataReaderTestFile.txt";
     private DataReader dataReader = new DataReader();
 
+    /**
+     * @param filePath file path, locates a file in a file system.
+     * @throws DataReaderException if there is no such file in this path.
+     */
+    @Parameters("readerTestFilePath")
     @Test
-    public void testReadData() throws DataReaderException {
-        Path path = Paths.get(FILE_PATH);
+    public void testReadData(String filePath) throws DataReaderException {
+        Path path = Paths.get(filePath);
         List<String> readLines = dataReader.readData(path);
         assertFalse(readLines.isEmpty());
     }
+    @Test(expectedExceptions = DataReaderException.class)
+    public void testReadDataException() throws DataReaderException {
+        Path path = Paths.get("");
+        dataReader.readData(path);
+
+    }
+
+
 }

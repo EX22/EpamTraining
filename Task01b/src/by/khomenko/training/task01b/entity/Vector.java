@@ -2,6 +2,9 @@ package by.khomenko.training.task01b.entity;
 
 import java.util.Objects;
 
+/**
+ * Entity for storing vectors with parameters.
+ */
 public class Vector {
 
     private double x;
@@ -40,12 +43,16 @@ public class Vector {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Vector)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Vector)) {
+            return false;
+        }
         Vector vector = (Vector) o;
-        return Double.compare(vector.getX(), getX()) == 0 &&
-                Double.compare(vector.getY(), getY()) == 0 &&
-                Double.compare(vector.getZ(), getZ()) == 0;
+        return Double.compare(vector.getX(), getX()) == 0
+                && Double.compare(vector.getY(), getY()) == 0
+                && Double.compare(vector.getZ(), getZ()) == 0;
     }
 
     @Override
@@ -55,11 +62,11 @@ public class Vector {
 
     @Override
     public String toString() {
-        return "Vector{" +
-                "x=" + x +
-                ", y=" + y +
-                ", z=" + z +
-                '}';
+        return "Vector{"
+                + "x=" + x
+                + ", y=" + y
+                + ", z=" + z
+                + '}';
     }
 
 }

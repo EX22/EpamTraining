@@ -21,14 +21,14 @@ public class ShapeDataValidator {
         return (coneParams.get("radius") instanceof Double);
     }
 
-    //TODO Inversion gets worse code's understanding here.
+    //] Inversion gets better code's understanding here.
     //@SuppressWarnings("squid:S1126")
     private boolean validateVector(Object vectorParams) {
 
         if (!(vectorParams instanceof Map)) {
             return false;
         }
-        //TODO In order not to check exceptions in calling method.
+        // In order not to check exceptions in calling method.
         Map<String, Object> vectorData = (Map<String, Object>) vectorParams;
 
         if (!(vectorData.get("x") instanceof Double)) {

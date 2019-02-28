@@ -15,14 +15,14 @@ public class DataReaderException extends Exception {
     /**
      * @param message passed to parent constructor.
      */
-    public DataReaderException(String message) {
+    public DataReaderException(final String message) {
         super(message);
     }
 
     /**
      * @param cause passed to parent constructor.
      */
-    public DataReaderException(Throwable cause) {
+    public DataReaderException(final Throwable cause) {
         super(cause);
     }
 
@@ -30,7 +30,7 @@ public class DataReaderException extends Exception {
      * @param message passed to parent constructor.
      * @param cause   passed to parent constructor.
      */
-    public DataReaderException(String message, Throwable cause) {
+    public DataReaderException(final String message, final Throwable cause) {
         super(message, cause);
     }
 }

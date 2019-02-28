@@ -11,11 +11,11 @@ import java.util.Map;
 
 public class ShapeDataParser {
 
-    private static final Logger LOGGER = LogManager.getLogger(ShapeDataParser.class);
+    private static final Logger LOGGER
+            = LogManager.getLogger(ShapeDataParser.class);
 
-    //TODO Check throwing proper exceptions here.
-
-    public List<Map<String, Object>> parseData(List<String> readList) throws ValidationException {
+    public List<Map<String, Object>> parseData(List<String> readList)
+            throws ValidationException {
 
         if (readList == null) {
             String message = "List is null";

@@ -2,11 +2,22 @@ package by.khomenko.training.task01b.validator;
 
 import java.util.Map;
 
+/**
+ * Validates data for shapes creation.
+ */
 public class ShapeDataValidator {
 
-    public boolean validateCone(Map<String, Object> coneParams) {
+    /**
+     * Validates data for cone creation.
+     *
+     * @param coneParams parameters for cone creation.
+     * @return boolean true if there are appropriate amount of parameters and
+     * they have proper format for shape's instance creation,
+     * otherwise return false.
+     */
+    public boolean validateCone(final Map<String, Object> coneParams) {
 
-        if (!(coneParams.get("name") instanceof String)){
+        if (!(coneParams.get("name") instanceof String)) {
             return false;
         }
 
@@ -25,9 +36,15 @@ public class ShapeDataValidator {
         return (coneParams.get("radius") instanceof Double);
     }
 
-    // Inversion gets worse code's understanding here.
+    /**
+     * @param vectorParams parameters for vector creation.
+     * @return boolean true if there are appropriate amount of parameters
+     * and they have proper format for vector's instance creation,
+     * otherwise return false.
+     */
+    // Inversion gets better code's understanding here.
     //@SuppressWarnings("squid:S1126")
-    private boolean validateVector(Object vectorParams) {
+    private boolean validateVector(final Object vectorParams) {
 
         if (!(vectorParams instanceof Map)) {
             return false;

@@ -12,14 +12,14 @@ import java.util.Map;
 /**
  * Parsing data in appropriate format.
  */
-public class PortDataParser {
+public class ExperimentDataParser {
 
     /**
      * Instance of logger that provides logging capability for this class'
      * performance.
      */
     private static final Logger LOGGER
-            = LogManager.getLogger(PortDataParser.class);
+            = LogManager.getLogger(ExperimentDataParser.class);
 
     /**
      * @param readList list of strings.

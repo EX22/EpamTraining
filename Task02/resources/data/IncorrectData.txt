@@ -1,0 +1,1 @@
+{ "PortStorageSize" : 11000 , "AmountOfDocks" : 7 , "Fleet" : 10 , "MinShipStorageSize" : 100 , "MaxShipStorageSize" : 1000 }

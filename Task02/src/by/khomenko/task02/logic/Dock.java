@@ -6,6 +6,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.concurrent.Callable;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Represents cargo service spot for one ship.
@@ -48,14 +49,21 @@ public class Dock implements Callable<String> {
     public String call() throws Exception {
 
         while (!ship.getStorage().isEmpty()) {
-            port.getStorage().put(ship.getStorage().take());
 
+            port.getStorage().put(ship.getStorage().take());
+            TimeUnit.MILLISECONDS.sleep(1);
         }
+
+        //TODO Add TimUnit functionality. Better add time for loading one container.
 
         while (!ship.getStorage().isFull()) {
+
             ship.getStorage().put(port.getStorage().take());
+            TimeUnit.MILLISECONDS.sleep(2);
 
         }
+
+        LOGGER.info(ship.getName() + " was served. ");
 
         return ship.getName();
     }

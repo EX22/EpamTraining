@@ -8,8 +8,9 @@ import by.khomenko.task02.factory.PortCreator;
 import by.khomenko.task02.logic.Dock;
 import by.khomenko.task02.entity.Port;
 import by.khomenko.task02.entity.Ship;
-import by.khomenko.task02.parser.PortDataParser;
+import by.khomenko.task02.parser.ExperimentDataParser;
 import by.khomenko.task02.reader.DataReader;
+import by.khomenko.task02.validator.ExperimentDataValidator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -29,6 +30,12 @@ import java.util.concurrent.Future;
  */
 public class Main {
 
+    //TODO Find out from teacher about singleton.
+
+    //TODO Add into README.md file project's technical description
+    // ( what is the thread in this app, is there any restriction etc.)
+    // Add UML diagram to the project.
+
     /**
      * File path for reading data for apps functioning.
      */
@@ -42,20 +49,22 @@ public class Main {
     private static final Logger LOGGER = LogManager.getLogger(Main.class);
 
     /**
-     * @param args parameters passing inti the method.
+     * @param args parameters passing into the method.
      * @throws InterruptedException if the current thread is interrupted.
      */
     public static void main(final String[] args) throws InterruptedException {
 
         Path path = Paths.get(FILE_PATH);
         DataReader dataReader = new DataReader();
-        PortDataParser portDataParser = new PortDataParser();
+        ExperimentDataParser experimentDataParser = new ExperimentDataParser();
         List<Map<String, Object>> parametersList = new ArrayList<>();
+        ExperimentDataValidator experimentDataValidator
+                = new ExperimentDataValidator();
 
         try {
 
             parametersList
-                    = portDataParser.parseData(dataReader.readData(path));
+                    = experimentDataParser.parseData(dataReader.readData(path));
 
         } catch (ValidationException e) {
             String message = "Data read from file is not valid.";
@@ -65,12 +74,24 @@ public class Main {
             LOGGER.warn(message, e);
         }
 
+        for (Map<String, Object> parameters : parametersList) {
+
+            if (experimentDataValidator.validateExperiment(parameters)) {
+                runExperiment((Map<String, Object>) parameters.get("PortData"),
+                        (Map<String, Object>) parameters.get("FleetData"));
+            }
+        }
+    }
+
+    public static void runExperiment(Map<String, Object> portData,
+                                     Map<String, Object> fleetData)
+            throws InterruptedException {
+
         PortCreator portCreator = new PortCreator();
         FleetCreator fleetCreator = new FleetCreator();
 
-        //TODO Manage if parameters list has more than one element.
-        Port port = portCreator.createPort(parametersList.get(0));
-        Ship[] fleet = fleetCreator.createFleet(parametersList.get(0));
+        Port port = portCreator.createPort(portData);
+        Ship[] fleet = fleetCreator.createFleet(fleetData);
 
 
         for (Ship ship1 : fleet) {
@@ -94,6 +115,8 @@ public class Main {
             try {
 
                 LOGGER.info(fut.get());
+
+                //TODO Find out from teacher about releasing resources here.
 
             } catch (InterruptedException | ExecutionException e) {
                 String message = "Some exception's message here is"

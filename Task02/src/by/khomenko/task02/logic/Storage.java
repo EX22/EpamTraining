@@ -1,8 +1,6 @@
 package by.khomenko.task02.logic;
 
 import by.khomenko.task02.entity.Container;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
@@ -14,12 +12,6 @@ import java.util.concurrent.locks.ReentrantLock;
 public class Storage {
 
     /**
-     * Instance of logger that provides logging capability for this class'
-     * performance.
-     */
-    private static final Logger LOGGER = LogManager.getLogger(Storage.class);
-
-    /**
      * Amount of cargo the storage currently has got.
      */
     private int currentLoad;
@@ -27,8 +19,21 @@ public class Storage {
      * Array for storing container's item.
      */
     private final Container[] items;
+    /**
+     * Tool for controlling access to a shared resource by multiple threads.
+     */
     private final Lock lock = new ReentrantLock();
+    /**
+     * Provide a means for one thread to suspend execution (to "wait")
+     * until notified by another thread that loading state condition
+     * may now be true.
+     */
     private final Condition notFull = lock.newCondition();
+    /**
+     * Provide a means for one thread to suspend execution (to "wait")
+     * until notified by another thread that loading state condition
+     * may now be true.
+     */
     private final Condition notEmpty = lock.newCondition();
 
     /**
@@ -90,6 +95,7 @@ public class Storage {
         } finally {
             lock.unlock();
         }
+
     }
 
     /**
@@ -115,5 +121,6 @@ public class Storage {
         } finally {
             lock.unlock();
         }
+
     }
 }

@@ -54,7 +54,6 @@ public class Dock implements Callable<String> {
             TimeUnit.MILLISECONDS.sleep(1);
         }
 
-        //TODO Add TimUnit functionality. Better add time for loading one container.
 
         while (!ship.getStorage().isFull()) {
 

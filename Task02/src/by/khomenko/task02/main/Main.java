@@ -28,13 +28,9 @@ import java.util.concurrent.Future;
 /**
  * Runs the application.
  */
-public class Main {
+public final class Main {
 
     //TODO Find out from teacher about singleton.
-
-    //TODO Add into README.md file project's technical description
-    // ( what is the thread in this app, is there any restriction etc.)
-    // Add UML diagram to the project.
 
     /**
      * File path for reading data for apps functioning.
@@ -49,8 +45,16 @@ public class Main {
     private static final Logger LOGGER = LogManager.getLogger(Main.class);
 
     /**
+     * Private constructor without parameters.
+     * As far as utility classes should not have a public or default
+     * constructor.
+     */
+    private Main() {
+    }
+
+    /**
      * @param args parameters passing into the method.
-     * @throws InterruptedException if the current thread is interrupted.
+     * @throws InterruptedException if the thread is interrupted.
      */
     public static void main(final String[] args) throws InterruptedException {
 
@@ -83,8 +87,15 @@ public class Main {
         }
     }
 
-    public static void runExperiment(Map<String, Object> portData,
-                                     Map<String, Object> fleetData)
+    /**
+     * Runs single port's system.
+     *
+     * @param portData  data for port's creation.
+     * @param fleetData data for fleet's creation.
+     * @throws InterruptedException if the thread is interrupted.
+     */
+    public static void runExperiment(final Map<String, Object> portData,
+                                     final Map<String, Object> fleetData)
             throws InterruptedException {
 
         PortCreator portCreator = new PortCreator();
@@ -94,9 +105,9 @@ public class Main {
         Ship[] fleet = fleetCreator.createFleet(fleetData);
 
 
-        for (Ship ship1 : fleet) {
-            for (int j = 0; j < ship1.getStorage().getCapacity(); j++) {
-                ship1.getStorage().put(new Container("container No " + j));
+        for (Ship shipUnit : fleet) {
+            for (int j = 0; j < shipUnit.getStorage().getCapacity(); j++) {
+                shipUnit.getStorage().put(new Container("container No " + j));
             }
         }
 

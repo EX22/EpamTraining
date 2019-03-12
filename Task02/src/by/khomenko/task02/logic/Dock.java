@@ -20,21 +20,15 @@ public class Dock implements Callable<String> {
     private static final Logger LOGGER = LogManager.getLogger(Dock.class);
 
     /**
-     * Instance of port that this particular dock is belonged to.
-     */
-    private final Port port;
-    /**
      * Instance of ship that the dock to perform operations of load or unload.
      */
     private final Ship ship;
 
     /**
-     * @param portVal Instance of port that's got this dock.
      * @param shipVal Instance of ship that comes to the port's dock for cargo
      *                service.
      */
-    public Dock(final Port portVal, final Ship shipVal) {
-        this.port = portVal;
+    public Dock(final Ship shipVal) {
         this.ship = shipVal;
     }
 
@@ -47,7 +41,7 @@ public class Dock implements Callable<String> {
      */
     @Override
     public String call() throws Exception {
-
+        Port port = Port.getInstance();
         while (!ship.getStorage().isEmpty()) {
 
             port.getStorage().put(ship.getStorage().take());

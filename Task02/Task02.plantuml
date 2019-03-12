@@ -60,13 +60,7 @@ title __TASK02's Class Diagram__\n
     class Port {
     }
   }
-  
 
-  package by.khomenko.task02.factory {
-    class PortCreator {
-    }
-  }
-  
 
   package by.khomenko.task02.entity {
     class Ship {

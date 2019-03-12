@@ -7,15 +7,6 @@ title __FACTORY's Class Diagram__\n
         + createFleet()
     }
   }
-  
-
-  package by.khomenko.task02.factory {
-    class PortCreator {
-        + createPort()
-    }
-  }
-  
-
 
 
 right footer

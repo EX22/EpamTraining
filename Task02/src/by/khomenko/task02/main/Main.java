@@ -4,7 +4,6 @@ import by.khomenko.task02.entity.Container;
 import by.khomenko.task02.exception.DataReaderException;
 import by.khomenko.task02.exception.ValidationException;
 import by.khomenko.task02.factory.FleetCreator;
-import by.khomenko.task02.factory.PortCreator;
 import by.khomenko.task02.logic.Dock;
 import by.khomenko.task02.entity.Port;
 import by.khomenko.task02.entity.Ship;
@@ -29,8 +28,6 @@ import java.util.concurrent.Future;
  * Runs the application.
  */
 public final class Main {
-
-    //TODO Find out from teacher about singleton.
 
     /**
      * File path for reading data for apps functioning.
@@ -98,10 +95,9 @@ public final class Main {
                                      final Map<String, Object> fleetData)
             throws InterruptedException {
 
-        PortCreator portCreator = new PortCreator();
         FleetCreator fleetCreator = new FleetCreator();
 
-        Port port = portCreator.createPort(portData);
+        Port.setParameters(portData);
         Ship[] fleet = fleetCreator.createFleet(fleetData);
 
 
@@ -112,12 +108,12 @@ public final class Main {
         }
 
         ExecutorService executor
-                = Executors.newFixedThreadPool(port.getAmountOfDocks());
+                = Executors.newFixedThreadPool(Port.getAmountOfDocks());
 
         List<Future<String>> list = new ArrayList<>();
 
         for (Ship ship : fleet) {
-            Callable<String> callable = new Dock(port, ship);
+            Callable<String> callable = new Dock(ship);
             Future<String> future = executor.submit(callable);
             list.add(future);
         }
@@ -126,8 +122,6 @@ public final class Main {
             try {
 
                 LOGGER.info(fut.get());
-
-                //TODO Find out from teacher about releasing resources here.
 
             } catch (InterruptedException | ExecutionException e) {
                 String message = "Some exception's message here is"

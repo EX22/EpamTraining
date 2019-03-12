@@ -35,10 +35,11 @@ operations for every ship, one ship per dock at the time.
             }
 
 based on passed to it parameters that were read from the text file.
-In the text file single line represents data for one port system.
-If there are enough data sets in the text file we can launch several port's
-system consequently with different sets of data by runExperiment's method
-invocation.
+In the text file single line represents data for one port's system.
+The Port class is a thread safe singleton here, it can't be created more than
+once in case of running single port system but if there are enough data sets
+in the text file we can launch several port's system consequently with
+different sets of data using runExperiment's method invocation.
     There should be text file with data in appropriate format
 
     { "PortData": {"PortStorageSize" : 11000 , "AmountOfDocks" : 7 },

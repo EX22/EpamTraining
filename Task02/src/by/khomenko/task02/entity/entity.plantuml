@@ -10,16 +10,17 @@ title __ENTITY's Class Diagram__\n
     }
   }
   
-
   package by.khomenko.task02.entity {
     class Port {
+        - size : int
         - amountOfDocks : int
         + Port()
         + getStorage()
         + getAmountOfDocks()
     }
   }
-  
+
+
 
   package by.khomenko.task02.entity {
     class Ship {

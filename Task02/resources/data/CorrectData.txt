@@ -1,0 +1,1 @@
+{ "PortData": {"PortStorageSize" : 11000 , "AmountOfDocks" : 7 }, "FleetData": {"Fleet" : 10 , "MinShipStorageSize" : 100 , "MaxShipStorageSize" : 1000 }}

@@ -1,37 +1,23 @@
 package by.khomenko.training.task03.entity;
 
 import java.util.List;
-import java.util.Objects;
+import java.util.StringJoiner;
 
-public class Word implements TextComponent {
-    //TODO Do not use String here, change to char collection.
-    private String wordLeaf;
+public class Word extends TextComposite {
 
-    public Word(final String wordLeafVal) {
-        this.wordLeaf = wordLeafVal;
+    public Word(final List<TextComponent> listVal) {
+        super(listVal);
     }
 
     @Override
     public String getValue() {
-        return wordLeaf;
+
+        StringJoiner result = new StringJoiner("");
+        for (TextComponent textComponent : list) {
+            result.add(textComponent.getValue());
+        }
+
+        return result.toString();
     }
 
-    @Override
-    public List<TextComponent> getComponentsList() {
-        //TODO Probably some exception thrown here.
-        return null;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Word)) return false;
-        Word word = (Word) o;
-        return wordLeaf.equals(word.wordLeaf);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(wordLeaf);
-    }
 }

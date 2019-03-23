@@ -8,9 +8,9 @@ public abstract class CommonParser {
 
     CommonParser nextCommonParser;
 
-    public void setNextCommonParser(final CommonParser nextCommonParserVal){
+    protected void setNextCommonParser(final CommonParser nextCommonParserVal){
         this.nextCommonParser = nextCommonParserVal;
     }
 
-    public abstract List<TextComponent> parseIt(String lines);
+    public abstract List<TextComponent> parseIt(String line);
 }

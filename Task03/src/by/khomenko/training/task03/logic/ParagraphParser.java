@@ -10,19 +10,25 @@ public class ParagraphParser extends CommonParser {
 
     private static final String REG_EXP_PARAGRAPH = "\\n\\t";
 
+    public ParagraphParser() {
+        nextCommonParser = new SentenceParser();
+    }
+
     @Override
     public List<TextComponent> parseIt(String line) {
-        if (nextCommonParser instanceof SentenceParser) {
-            String[] paragraphStrings = splitter(line);
+
+
+
+            String[] paragraphStringsArray = splitter(line);
             List<TextComponent> paragraphList = new ArrayList<>();
-            for (String paragraphString : paragraphStrings) {
+
+            for (String paragraphString : paragraphStringsArray) {
                 List<TextComponent> sentencesList = nextCommonParser.parseIt(paragraphString);
                 Paragraph paragraph = new Paragraph(sentencesList);
                 paragraphList.add(paragraph);
             }
             return paragraphList;
-        }
-        return new ArrayList<>();
+
     }
 
     private String[] splitter(String string){

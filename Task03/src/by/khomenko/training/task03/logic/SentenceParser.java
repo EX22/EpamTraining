@@ -5,28 +5,32 @@ import by.khomenko.training.task03.entity.TextComponent;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class SentenceParser extends CommonParser {
 
-    //TODO Find out proper regexp.
-    private static final String REG_EXP_SENTENCE = "[.?!] ";
+    private static final String REG_EXP_SENTENCE = "[A-Z][^.?!]+([?!]|\\.{1,3})";
+
+    public SentenceParser() {
+        nextCommonParser = new LexemeParser();
+    }
 
     @Override
     public List<TextComponent> parseIt(String line) {
-        if (nextCommonParser instanceof LexemeParser) {
-            String[] sentencesStringsArr = splitter(line);
-            List<TextComponent> sentenceList = new ArrayList<>();
-            for (String sentenceString : sentencesStringsArr) {
-                List<TextComponent> lexemeList = nextCommonParser.parseIt(sentenceString);
-                Sentence sentence = new Sentence(lexemeList);
-                sentenceList.add(sentence);
-            }
-            return sentenceList;
+
+        Pattern pattern = Pattern.compile(REG_EXP_SENTENCE, Pattern.DOTALL);
+        Matcher matcher = pattern.matcher(line);
+        List<TextComponent> sentenceList = new ArrayList<>();
+        while (matcher.find()){
+            List<TextComponent> lexemeList = nextCommonParser.parseIt(matcher.group());
+            Sentence sentence = new Sentence(lexemeList);
+            sentenceList.add(sentence);
+
         }
-        return new ArrayList<>();
+
+            return sentenceList;
+
     }
 
-    private String[] splitter(String string){
-        return string.split(REG_EXP_SENTENCE);
-    }
 }

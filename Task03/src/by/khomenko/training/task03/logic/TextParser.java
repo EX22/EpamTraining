@@ -8,16 +8,21 @@ import java.util.List;
 
 public class TextParser extends CommonParser {
 
+    public TextParser() {
+        nextCommonParser = new ParagraphParser();
+    }
+
     @Override
     public List<TextComponent> parseIt(String line) {
-        if (nextCommonParser instanceof ParagraphParser) {
-            List<TextComponent> textComponentList = nextCommonParser.parseIt(line);
-            Text text = new Text(textComponentList);
+
+
+
+            List<TextComponent> paragraphsList = nextCommonParser.parseIt(line);
+            Text text = new Text(paragraphsList);
             List<TextComponent> textList = new ArrayList<>();
             textList.add(text);
-            return textList;
-        }
 
-        return new ArrayList<>();
+            return textList;
+
     }
 }

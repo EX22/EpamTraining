@@ -1,36 +1,27 @@
 package by.khomenko.training.task03.entity;
 
+import by.khomenko.training.task03.expparsmain.BinExpCalc;
+import by.khomenko.training.task03.expparsmain.ExpressionParser;
+
 import java.util.List;
-import java.util.Objects;
+import java.util.StringJoiner;
 
-public class BinaryExpression implements TextComponent {
+public class BinaryExpression extends TextComposite {
 
-    private String expression;
-
-    public BinaryExpression(final String expressionVal) {
-        this.expression = expressionVal;
+    public BinaryExpression(final List<TextComponent> listVal) {
+        super(listVal);
     }
 
     @Override
     public String getValue() {
-        return expression;
+        StringJoiner result = new StringJoiner("");
+        for (TextComponent textComponent : list) {
+            result.add(textComponent.getValue());
+        }
+        ExpressionParser expressionParser = new ExpressionParser();
+        List<String> expression = expressionParser.parseBinExp(result.toString());
+
+        return BinExpCalc.calc(expression).toString();
     }
 
-    @Override
-    public List<TextComponent> getComponentsList() {
-        return null;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof BinaryExpression)) return false;
-        BinaryExpression that = (BinaryExpression) o;
-        return expression.equals(that.expression);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(expression);
-    }
 }

@@ -22,14 +22,14 @@ public class SentenceParser extends CommonParser {
         Pattern pattern = Pattern.compile(REG_EXP_SENTENCE, Pattern.DOTALL);
         Matcher matcher = pattern.matcher(line);
         List<TextComponent> sentenceList = new ArrayList<>();
-        while (matcher.find()){
+        while (matcher.find()) {
             List<TextComponent> lexemeList = nextCommonParser.parseIt(matcher.group());
             Sentence sentence = new Sentence(lexemeList);
             sentenceList.add(sentence);
 
         }
 
-            return sentenceList;
+        return sentenceList;
 
     }
 

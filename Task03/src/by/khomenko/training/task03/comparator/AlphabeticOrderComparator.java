@@ -10,7 +10,7 @@ public class AlphabeticOrderComparator implements Comparator<TextComponent> {
     public int compare(TextComponent o1, TextComponent o2) {
         if (o1 != null && o2 != null) {
 
-            return o1.getValue().compareTo(o2.getValue());
+            return o1.getTextValue().compareTo(o2.getTextValue());
 
         }
         if (o1 == null && o2 == null) {

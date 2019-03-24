@@ -1,4 +1,4 @@
-package by.khomenko.training.task03.expparsmain;
+package by.khomenko.training.task03.logic;
 
 import java.util.*;
 import java.util.regex.Matcher;
@@ -102,6 +102,7 @@ public class ExpressionParser {
             current = iterator.next();
 
             if (!iterator.hasNext() && isOperator(current)) {
+                //TODO Add logs output here.
                 System.out.println("Wrong expression.");
                 flag = false;
                 return postfix;
@@ -117,6 +118,7 @@ public class ExpressionParser {
                     while (!("(").equals(stack.peek())) {
                         postfix.add(stack.pop());
                         if (stack.isEmpty()) {
+                            //TODO Add logs output here.
                             System.out.println("There are wrong amount of parentheses.");
                             flag = false;
                             return postfix;
@@ -148,6 +150,7 @@ public class ExpressionParser {
             if (isOperator(stack.peek())) {
                 postfix.add(stack.pop());
             } else {
+                //TODO Add logs output here.
                 System.out.println("There are wrong amount of parentheses.");
                 flag = false;
                 return postfix;

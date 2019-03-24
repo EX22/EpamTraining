@@ -1,44 +1,80 @@
 package by.khomenko.training.task03.entity;
 
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public abstract class TextComposite implements TextComponent {
 
     protected List<TextComponent> list;
+    protected String delimiter = "";
+    protected String prefix = "";
+    protected String suffix = "";
+
+    public TextComposite() {
+        this.list = Collections.emptyList();
+    }
 
     public TextComposite(final List<TextComponent> listVal) {
         this.list = listVal;
     }
 
-    public void addComponent(final TextComponent textComponent){
-        list.add(textComponent);
+    public TextComposite(final List<TextComponent> listVal,
+                         final String delimiterVal,
+                         final String prefixVal, final String suffixVal) {
+
+        this.list = listVal;
+        this.delimiter = delimiterVal;
+        this.prefix = prefixVal;
+        this.suffix = suffixVal;
+
     }
 
-    public TextComponent getComponent(final int index){
-        return list.get(index);
+    @Override
+    public String getValue() {
+        StringJoiner result = new StringJoiner(delimiter, prefix, suffix);
+        for (TextComponent textComponent : list) {
+            result.add(textComponent.getValue());
+        }
+        return result.toString();
     }
 
-    public void removeComponent(final TextComponent textComponent){
-        list.remove(textComponent);
+    @Override
+    public String getTextValue() {
+        StringJoiner result = new StringJoiner(delimiter, prefix, suffix);
+        for (TextComponent textComponent : list) {
+            result.add(textComponent.getTextValue());
+        }
+        return result.toString();
     }
 
-    public int getSymbolAppearanceCount(char c){
+    @Override
+    public int getSymbolAppearanceCount(char c) {
 
         return list.stream().map(x -> x.getSymbolAppearanceCount(c))
-                .reduce(0,(left, right) -> left + right);
+                .reduce(0, (left, right) -> left + right);
     }
 
-    public int getComponentsCount(){
+    @Override
+    public int getComponentsCount() {
         return list.size();
     }
 
-    public int getLengthExceptPunctuation(){
-        list.stream().filter(x -> !(x instanceof Symbol)).map(x -> x.getValue().length());
-
-        return 0;
+    @Override
+    public List<TextComponent> getAllTextComponentsOfType(Class typeKey) {
+        List<TextComponent> resultedList = new ArrayList<>();
+        for (TextComponent textComponent : list) {
+            if (typeKey.isInstance(textComponent)) {
+                resultedList.add(textComponent);
+            } else {
+                resultedList.addAll(textComponent.getAllTextComponentsOfType(typeKey));
+            }
+        }
+        return resultedList;
     }
 
+    @Override
+    public void sortTextComponents(Comparator<TextComponent> comparator) {
+        list.sort(comparator);
+    }
 
     @Override
     public boolean equals(Object o) {

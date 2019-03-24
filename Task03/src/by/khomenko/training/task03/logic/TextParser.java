@@ -15,14 +15,12 @@ public class TextParser extends CommonParser {
     @Override
     public List<TextComponent> parseIt(String line) {
 
+        List<TextComponent> paragraphsList = nextCommonParser.parseIt(line);
+        Text text = new Text(paragraphsList);
+        List<TextComponent> textList = new ArrayList<>();
+        textList.add(text);
 
-
-            List<TextComponent> paragraphsList = nextCommonParser.parseIt(line);
-            Text text = new Text(paragraphsList);
-            List<TextComponent> textList = new ArrayList<>();
-            textList.add(text);
-
-            return textList;
+        return textList;
 
     }
 }

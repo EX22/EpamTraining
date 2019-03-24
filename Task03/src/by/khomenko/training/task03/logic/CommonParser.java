@@ -8,7 +8,7 @@ public abstract class CommonParser {
 
     CommonParser nextCommonParser;
 
-    protected void setNextCommonParser(final CommonParser nextCommonParserVal){
+    protected void setNextCommonParser(final CommonParser nextCommonParserVal) {
         this.nextCommonParser = nextCommonParserVal;
     }
 

@@ -15,7 +15,6 @@ public class WordExpressionSymbolParser extends CommonParser {
     private static final String REG_EXP_BIN_EXPRESSION = "[0-9()~&|^<>]{2,}";
     private static final String REG_EXP_WORD = "\\w+";
     private static final String REG_EXP_PUNCTUATION = "[,.?!()'\"\\-]|\\n|\\.{3}";
-    private static final String REG_EXP_SYMBOLS = ".+";
     private static final String REG_EXP = "(" + REG_EXP_BIN_EXPRESSION + ")|("
             + REG_EXP_WORD + ")|(" + REG_EXP_PUNCTUATION + ")";
 

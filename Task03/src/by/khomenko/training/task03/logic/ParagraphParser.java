@@ -17,21 +17,19 @@ public class ParagraphParser extends CommonParser {
     @Override
     public List<TextComponent> parseIt(String line) {
 
+        String[] paragraphStringsArray = splitter(line);
+        List<TextComponent> paragraphList = new ArrayList<>();
 
-
-            String[] paragraphStringsArray = splitter(line);
-            List<TextComponent> paragraphList = new ArrayList<>();
-
-            for (String paragraphString : paragraphStringsArray) {
-                List<TextComponent> sentencesList = nextCommonParser.parseIt(paragraphString);
-                Paragraph paragraph = new Paragraph(sentencesList);
-                paragraphList.add(paragraph);
-            }
-            return paragraphList;
+        for (String paragraphString : paragraphStringsArray) {
+            List<TextComponent> sentencesList = nextCommonParser.parseIt(paragraphString);
+            Paragraph paragraph = new Paragraph(sentencesList);
+            paragraphList.add(paragraph);
+        }
+        return paragraphList;
 
     }
 
-    private String[] splitter(String string){
+    private String[] splitter(String string) {
         return string.split(REG_EXP_PARAGRAPH);
     }
 }

@@ -22,7 +22,7 @@ public class LexemeParser extends CommonParser {
         Pattern pattern = Pattern.compile(REG_EXP_LEXEME, Pattern.DOTALL);
         Matcher matcher = pattern.matcher(line);
         List<TextComponent> lexemeList = new ArrayList<>();
-        while (matcher.find()){
+        while (matcher.find()) {
             List<TextComponent> wordExpressionSymbolList = nextCommonParser.parseIt(matcher.group());
             Lexeme lexeme = new Lexeme(wordExpressionSymbolList);
             lexemeList.add(lexeme);

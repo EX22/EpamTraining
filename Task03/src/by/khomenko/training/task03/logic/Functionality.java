@@ -4,40 +4,47 @@ import by.khomenko.training.task03.comparator.AlphabeticOrderComparator;
 import by.khomenko.training.task03.comparator.ParagraphComparator;
 import by.khomenko.training.task03.comparator.SymbolAppearanceComparator;
 import by.khomenko.training.task03.comparator.WordComparator;
+import by.khomenko.training.task03.entity.Lexeme;
+import by.khomenko.training.task03.entity.Sentence;
+import by.khomenko.training.task03.entity.Text;
 import by.khomenko.training.task03.entity.TextComponent;
 
 import java.util.*;
 
 public class Functionality {
 
-    //TODO Two methods below probably should be united.
-    public List<TextComponent>
-    sortParagraphBySentencesAmount(final List<TextComponent> paragraphList) {
-        Comparator<TextComponent> comparator = new ParagraphComparator();
-        paragraphList.sort(comparator);
+    public TextComponent
+    sortParagraphBySentencesAmount(TextComponent textComponent) {
 
-        return paragraphList;
+        textComponent.sortTextComponents(new ParagraphComparator());
+
+        return textComponent;
     }
 
-    public List<TextComponent>
-    sortWordsByLength(final List<TextComponent> sentencesList) {
+    public TextComponent sortWordsByLength(TextComponent textComponent) {
+
         Comparator<TextComponent> comparator = new WordComparator();
-        sentencesList.sort(comparator);
+        for (TextComponent t : textComponent.getAllTextComponentsOfType(Sentence.class)) {
+            t.sortTextComponents(comparator);
+        }
 
-        return sentencesList;
+        return textComponent;
     }
 
-    public void sortLexemeBySymbol(final List<TextComponent> textComponents,
-                                   final char toFind) {
+    public List<TextComponent> sortLexemeBySymbol(final TextComponent textComponent,
+                                                  final char toFind) {
+
         Comparator<TextComponent> alphabeticOrderComparator = new AlphabeticOrderComparator();
         Comparator<TextComponent> lexemeComparator = new SymbolAppearanceComparator(toFind);
-        textComponents.sort(lexemeComparator.reversed().thenComparing(alphabeticOrderComparator));
+        List<TextComponent> listToSort = textComponent.getAllTextComponentsOfType(Lexeme.class);
+        listToSort.sort(lexemeComparator.reversed().thenComparing(alphabeticOrderComparator));
 
+        return listToSort;
     }
 
+    public String restoreText(TextComponent textComponent) {
 
-    public void restoreInitialText() {
-
+        return textComponent.getValue();
     }
 
 }

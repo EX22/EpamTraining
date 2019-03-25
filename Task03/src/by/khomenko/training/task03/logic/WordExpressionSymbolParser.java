@@ -1,7 +1,6 @@
 package by.khomenko.training.task03.logic;
 
 import by.khomenko.training.task03.entity.BinaryExpression;
-import by.khomenko.training.task03.entity.Symbol;
 import by.khomenko.training.task03.entity.TextComponent;
 import by.khomenko.training.task03.entity.Word;
 

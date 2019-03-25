@@ -29,8 +29,8 @@ public class SentenceParserTest {
         String sentenceExample = textComponentList.get(0).getValue();
 
         List<TextComponent> list = lexemeParser.parseIt(sentenceExample);
-        String expected = " centuries, ";
-        String actual = list.get(8).getValue();
+        String expected = "centuries,";
+        String actual = list.get(7).getValue();
         assertEquals(actual, expected);
     }
 }

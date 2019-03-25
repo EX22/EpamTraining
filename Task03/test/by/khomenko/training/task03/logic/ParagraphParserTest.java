@@ -31,9 +31,8 @@ public class ParagraphParserTest {
         CommonParser lexemeParser = new LexemeParser();
         paragraphParser.setNextCommonParser(sentenceParser);
         sentenceParser.setNextCommonParser(lexemeParser);
-        //TODO It doesn't work!
         List<TextComponent> paragraphList = paragraphParser.parseIt(text);
-        String expected = "\tBye \n";
+        String expected = "    Bye.\n";
         String actual = paragraphList.get(3).getValue();
         assertEquals(actual, expected);
     }

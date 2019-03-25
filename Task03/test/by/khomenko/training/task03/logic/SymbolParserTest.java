@@ -7,17 +7,18 @@ import java.util.List;
 
 import static org.testng.Assert.*;
 
-public class LexemeParserTest {
+public class SymbolParserTest {
 
     @Test
     public void testParseIt() {
 
-        String sentenceExample = "Lexeme lexemeOne, lexemeTwo extraLexeme.";
+        String testLine = "test line";
 
-        CommonParser lexemeParser = new LexemeParser();
-        List<TextComponent> list = lexemeParser.parseIt(sentenceExample);
-        String expected = "lexemeTwo";
+        SymbolParser symbolParser = new SymbolParser();
+        List<TextComponent> list = symbolParser.parseIt(testLine);
+        String expected = "s";
         String actual = list.get(2).getValue();
         assertEquals(actual, expected);
+
     }
 }

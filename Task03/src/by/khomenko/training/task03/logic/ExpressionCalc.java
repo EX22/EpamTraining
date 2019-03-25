@@ -19,7 +19,7 @@ public class ExpressionCalc {
         return 0;
     }
 
-    public Integer calc(List<String> postfix) {
+    private Integer calc(List<String> postfix) {
 
         Deque<Expression> stack = new ArrayDeque<>();
 

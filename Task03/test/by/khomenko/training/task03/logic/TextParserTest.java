@@ -12,7 +12,7 @@ public class TextParserTest {
     @Test
     public void testParseIt() {
 
-        String text = "\tIt has survived - not only (five) centuries, but also the leap into 13<<2\n" +
+        String expectedText = "\tIt has survived - not only (five) centuries, but also the leap into 13<<2\n" +
                 "electronic typesetting, remaining 30>>>3 essentially ~6&9|(3&4) unchanged. It was\n" +
                 "popularised in the 5|(1&2&(3|(4&(25^5|6&47)|3)|2)|1) with the release of Letraset\n" +
                 "sheets containing Lorem Ipsum passages, and more recently with desktop publishing\n" +
@@ -33,8 +33,9 @@ public class TextParserTest {
         textParser.setNextCommonParser(paragraphParser);
         paragraphParser.setNextCommonParser(sentenceParser);
         sentenceParser.setNextCommonParser(lexemeParser);
-
-        List<TextComponent> textList = textParser.parseIt(text);
-        //TODO Add assertion here!
+        //TODO It fails because \t changed to 4 whitespaces in resulted text.
+        List<TextComponent> textList = textParser.parseIt(expectedText);
+        String actual = textList.get(0).getTextValue();
+        assertEquals(actual, expectedText);
     }
 }

@@ -16,7 +16,7 @@ title __LOGIC's Class Diagram__\n
     package by.khomenko.training.task03.logic {
       class ExpressionCalc {
           + calculateBinaryExpression()
-          + calc()
+          - calc()
       }
     }
   }
@@ -25,6 +25,7 @@ title __LOGIC's Class Diagram__\n
   package by.khomenko.training.task03 {
     package by.khomenko.training.task03.logic {
       class ExpressionParser {
+          {static} - LOGGER : Logger
           {static} - REG_EXP_BINARY_EXPRESSION : String
           - operators : Set<String>
           - delimiters : Set<String>
@@ -46,7 +47,7 @@ title __LOGIC's Class Diagram__\n
           + sortParagraphBySentencesAmount()
           + sortWordsByLength()
           + sortLexemeBySymbol()
-          + restoreInitialText()
+          + restoreText()
       }
     }
   }
@@ -111,7 +112,6 @@ title __LOGIC's Class Diagram__\n
           {static} - REG_EXP_BIN_EXPRESSION : String
           {static} - REG_EXP_WORD : String
           {static} - REG_EXP_PUNCTUATION : String
-          {static} - REG_EXP_SYMBOLS : String
           {static} - REG_EXP : String
           + WordExpressionSymbolParser()
           + parseIt()

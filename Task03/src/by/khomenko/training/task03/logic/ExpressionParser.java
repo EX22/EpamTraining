@@ -1,19 +1,27 @@
 package by.khomenko.training.task03.logic;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * ~	побитовый унарный оператор NOT.
- * * &	побитовый AND.
- * * |	побитовый OR.
- * * ^	побитовый исключающее OR.
- * * >>		сдвиг вправо.
- * * >>>	    сдвиг вправо с заполнением нулями.
- * * <<		сдвиг влево.
+ * The symbols below represents bitwise binary and unary operation used
+ * in this class.
+ *
+ *  ~	bitwise unary operation NOT.
+ *  &	bitwise AND.
+ *  |	bitwise OR.
+ *  ^	bitwise XOR operation(exclusive OR).
+ * >>	right shift.
+ * >>>	right shift with filling nils.
+ * <<	left shift.
  */
 public class ExpressionParser {
+
+    private static final Logger LOGGER = LogManager.getLogger(ExpressionParser.class);
 
     private static final String REG_EXP_BINARY_EXPRESSION = "[() ~&|^]|<{2}|>{2,3}|\\z";
 
@@ -102,8 +110,10 @@ public class ExpressionParser {
             current = iterator.next();
 
             if (!iterator.hasNext() && isOperator(current)) {
-                //TODO Add logs output here.
-                System.out.println("Wrong expression.");
+
+                String message = "Wrong expression.";
+                LOGGER.info(message);
+
                 flag = false;
                 return postfix;
             }
@@ -118,8 +128,11 @@ public class ExpressionParser {
                     while (!("(").equals(stack.peek())) {
                         postfix.add(stack.pop());
                         if (stack.isEmpty()) {
-                            //TODO Add logs output here.
-                            System.out.println("There are wrong amount of parentheses.");
+
+                            String message
+                                    = "There are wrong amount of parentheses.";
+                            LOGGER.info(message);
+
                             flag = false;
                             return postfix;
                         }
@@ -129,10 +142,13 @@ public class ExpressionParser {
                         postfix.add(stack.pop());
                     }
                 } else {
-                    if (("~").equals(current) && (("").equals(previous) || (isDelimiter(previous) && !(")").equals(previous)))) {
+                    if (("~").equals(current) && (("").equals(previous)
+                            || (isDelimiter(previous)
+                            && !(")").equals(previous)))) {
                         current = "~";
                     } else {
-                        while (!stack.isEmpty() && (priority(current) <= priority(stack.peek()))) {
+                        while (!stack.isEmpty() && (priority(current)
+                                <= priority(stack.peek()))) {
                             postfix.add(stack.pop());
                         }
 
@@ -150,8 +166,10 @@ public class ExpressionParser {
             if (isOperator(stack.peek())) {
                 postfix.add(stack.pop());
             } else {
-                //TODO Add logs output here.
-                System.out.println("There are wrong amount of parentheses.");
+
+                String message = "There are wrong amount of parentheses.";
+                LOGGER.info(message);
+
                 flag = false;
                 return postfix;
             }

@@ -46,7 +46,6 @@ title __ENTITY's Class Diagram__\n
           + Symbol()
           + getValue()
           + getTextValue()
-          + setSymbolLeaf()
           + getSymbolAppearanceCount()
       }
     }
@@ -69,6 +68,8 @@ title __ENTITY's Class Diagram__\n
           {abstract} + getTextValue()
           {abstract} + getSymbolAppearanceCount()
           {abstract} + getComponentsCount()
+          {abstract} + getAllTextComponentsOfType()
+          {abstract} + sortTextComponents()
       }
     }
   }
@@ -88,6 +89,8 @@ title __ENTITY's Class Diagram__\n
           + getTextValue()
           + getSymbolAppearanceCount()
           + getComponentsCount()
+          + getAllTextComponentsOfType()
+          + sortTextComponents()
           + equals()
           + hashCode()
       }

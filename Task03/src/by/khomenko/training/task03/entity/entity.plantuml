@@ -78,7 +78,7 @@ title __ENTITY's Class Diagram__\n
   package by.khomenko.training.task03 {
     package by.khomenko.training.task03.entity {
       abstract class TextComposite {
-          # list : List<TextComponent>
+          - list : List<TextComponent>
           # delimiter : String
           # prefix : String
           # suffix : String

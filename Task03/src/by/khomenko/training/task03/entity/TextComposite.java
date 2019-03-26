@@ -17,7 +17,7 @@ public abstract class TextComposite implements TextComponent {
     /**
      * List of child components.
      */
-    protected List<TextComponent> list;
+    private List<TextComponent> list;
     /**
      * Default delimiter for child components.
      */

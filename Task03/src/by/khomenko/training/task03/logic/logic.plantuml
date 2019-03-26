@@ -29,7 +29,8 @@ title __LOGIC's Class Diagram__\n
           {static} - REG_EXP_BINARY_EXPRESSION : String
           - operators : Set<String>
           - delimiters : Set<String>
-          + flag : boolean
+          - flag : boolean
+          - isValid
           + ExpressionParser()
           - isDelimiter()
           - isOperator()

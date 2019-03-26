@@ -6,11 +6,17 @@ import by.khomenko.training.task03.entity.TextComponent;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Parsing words into symbols.
+ */
 public class SymbolParser extends CommonParser {
 
-
+    /**
+     * @param line String value of line that should be parsed.
+     * @return list of text components, symbols' instances.
+     */
     @Override
-    public List<TextComponent> parseIt(String line) {
+    public List<TextComponent> parseIt(final String line) {
 
         List<TextComponent> symbolList = new ArrayList<>();
 

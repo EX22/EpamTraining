@@ -7,19 +7,36 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.List;
 
+/**
+ * Performs binary expression calculation.
+ */
 public class ExpressionCalc {
 
-    public Integer calculateBinaryExpression(BinaryExpression binaryExpression) {
+    /**
+     * @param binaryExpression instance of binary expression.
+     * @return Integer value of binary expression calculation.
+     */
+    public Integer
+    calculateBinaryExpression(final BinaryExpression binaryExpression) {
 
         ExpressionParser expressionParser = new ExpressionParser();
-        List<String> expression = expressionParser.parseBinExp(binaryExpression.getTextValue());
+        List<String> expression
+                = expressionParser.parseBinExp(binaryExpression.getTextValue());
         if (expressionParser.flag) {
             return calc(expression);
         }
         return 0;
     }
 
-    private Integer calc(List<String> postfix) {
+    /**
+     * Lambda expressions in switch-case statement here represent functionality
+     * of Expression Functional Interface from binexp package.
+     *
+     * @param postfix reverse Polish notation, result of given binary
+     *                expression.
+     * @return Integer value of binary expression calculation.
+     */
+    private Integer calc(final List<String> postfix) {
 
         Deque<Expression> stack = new ArrayDeque<>();
 

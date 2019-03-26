@@ -88,13 +88,7 @@ title __TASK03's Class Diagram__\n
       }
     }
   }
-  
 
-  package by.khomenko.training.task03 {
-    class Main {
-    }
-  }
-  
 
   package by.khomenko.training.task03 {
     package by.khomenko.training.task03.entity {

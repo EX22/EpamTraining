@@ -9,7 +9,6 @@ import static org.testng.Assert.*;
 
 public class SentenceParserTest {
 
-    //TODO It counts first space/tab as a lexeme and trim full stop from the last lexeme.
     @Test
     public void testParseIt() {
         String paragraphExample = "\tIt has survived - not only (five) "
@@ -25,9 +24,7 @@ public class SentenceParserTest {
         CommonParser lexemeParser = new LexemeParser();
         sentenceParser.setNextCommonParser(lexemeParser);
         List<TextComponent> textComponentList = sentenceParser.parseIt(paragraphExample);
-
         String sentenceExample = textComponentList.get(0).getValue();
-
         List<TextComponent> list = lexemeParser.parseIt(sentenceExample);
         String expected = "centuries,";
         String actual = list.get(7).getValue();

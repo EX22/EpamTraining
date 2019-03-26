@@ -98,7 +98,14 @@ public class ExpressionParser {
     /**
      * Represents whether binary expression passed to method is valid.
      */
-    boolean flag = true;
+    private boolean valid = true;
+
+    /**
+     * @return true if binary expression is valid, otherwise return false.
+     */
+    boolean isValid() {
+        return valid;
+    }
 
     /**
      * @param token one of binary expression tokens.
@@ -196,7 +203,7 @@ public class ExpressionParser {
                 String message = "Wrong expression.";
                 LOGGER.info(message);
 
-                flag = false;
+                valid = false;
                 return postfix;
             }
             if ((" ").equals(current)) {
@@ -215,7 +222,7 @@ public class ExpressionParser {
                                     = "There are wrong amount of parentheses.";
                             LOGGER.info(message);
 
-                            flag = false;
+                            valid = false;
                             return postfix;
                         }
                     }
@@ -252,7 +259,7 @@ public class ExpressionParser {
                 String message = "There are wrong amount of parentheses.";
                 LOGGER.info(message);
 
-                flag = false;
+                valid = false;
                 return postfix;
             }
         }

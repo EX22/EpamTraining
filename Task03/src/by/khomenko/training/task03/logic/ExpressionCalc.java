@@ -22,7 +22,7 @@ public class ExpressionCalc {
         ExpressionParser expressionParser = new ExpressionParser();
         List<String> expression
                 = expressionParser.parseBinExp(binaryExpression.getTextValue());
-        if (expressionParser.flag) {
+        if (expressionParser.isValid()) {
             return calc(expression);
         }
         return 0;

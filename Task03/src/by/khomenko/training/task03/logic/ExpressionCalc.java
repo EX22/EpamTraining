@@ -41,43 +41,45 @@ public class ExpressionCalc {
         Deque<Expression> stack = new ArrayDeque<>();
 
         for (String x : postfix) {
+            Expression a;
+            Expression b;
             switch (x) {
-                case "|": {
-                    Expression b = stack.pop();
-                    Expression a = stack.pop();
+                case "|":
+                    b = stack.pop();
+                    a = stack.pop();
                     stack.push(() -> a.interpret() | b.interpret());
                     break;
-                }
-                case "^": {
-                    Expression b = stack.pop();
-                    Expression a = stack.pop();
+
+                case "^":
+                    b = stack.pop();
+                    a = stack.pop();
                     stack.push(() -> a.interpret() ^ b.interpret());
                     break;
-                }
-                case "&": {
-                    Expression b = stack.pop();
-                    Expression a = stack.pop();
+
+                case "&":
+                    b = stack.pop();
+                    a = stack.pop();
                     stack.push(() -> a.interpret() & b.interpret());
                     break;
-                }
-                case ">>": {
-                    Expression b = stack.pop();
-                    Expression a = stack.pop();
+
+                case ">>":
+                    b = stack.pop();
+                    a = stack.pop();
                     stack.push(() -> a.interpret() >> b.interpret());
                     break;
-                }
-                case "<<": {
-                    Expression b = stack.pop();
-                    Expression a = stack.pop();
+
+                case "<<":
+                    b = stack.pop();
+                    a = stack.pop();
                     stack.push(() -> a.interpret() << b.interpret());
                     break;
-                }
-                case ">>>": {
-                    Expression b = stack.pop();
-                    Expression a = stack.pop();
+
+                case ">>>":
+                    b = stack.pop();
+                    a = stack.pop();
                     stack.push(() -> a.interpret() >>> b.interpret());
                     break;
-                }
+
                 case "~":
                     stack.push(() -> ~stack.pop().interpret());
                     break;

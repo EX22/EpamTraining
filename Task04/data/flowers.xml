@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<flowers xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://training.by/flowers"
+         xsi:schemaLocation="http://training.by/flowers  flowers.xsd">
+    <flower>
+
+
+        <name>African-Violets</name>
+
+        <soil>mixed</soil>
+
+        <origin>Africa</origin>
+
+        <visual-parameters>
+            <size type="cm">20</size>
+            <leaf-color>blue</leaf-color>
+            <stem-color>green</stem-color>
+        </visual-parameters>
+
+        <growing-tips>
+            <temperature type="celsius">18</temperature>
+            <humidity>30</humidity>
+            <light-level>medium</light-level>
+            <water type="ml/week">150</water>
+        </growing-tips>
+
+        <multiplying>stems</multiplying>
+    </flower>
+</flowers>

@@ -15,7 +15,8 @@ public enum FlowerEnum {
     HUMIDITY("humidity"),
     LIGHT_LEVEL("light-level"),
     WATER("water"),
-    MULTIPLYING("multiplying");
+    MULTIPLYING("multiplying"),
+    PLANTING_DATE("planting-date");
 
     private String value;
 

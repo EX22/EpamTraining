@@ -1,6 +1,8 @@
 package by.khomenko.training.task04.entity;
 
 import javax.xml.bind.annotation.*;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -10,35 +12,33 @@ import javax.xml.bind.annotation.*;
         "origin",
         "visual-parameters",
         "growing-tips",
-        "multiplying"
+        "multiplying",
+        "planting-date"
 }) // задание последовательности элементов XML
 
 public class Flower {
-    @XmlElement(required = true)
+
     private String name;
-    @XmlAttribute(required = true)
     private String soil;
-    @XmlElement(required = true)
     private String origin;
-    @XmlElement(required = true)
     private VisualParameters visualParameters = new VisualParameters();
-    @XmlElement(required = true)
     private GrowingTips growingTips = new GrowingTips();
-    @XmlElement(required = true)
     private String multiplying;
+    private Date plantingDate;
 
     public Flower() {
     }
 
     public Flower(String name, String soil, String origin,
                   VisualParameters visualParameters, GrowingTips growingTips,
-                  String multiplying) {
+                  String multiplying, Date plantingDate) {
         this.name = name;
         this.soil = soil;
         this.origin = origin;
         this.visualParameters = visualParameters;
         this.growingTips = growingTips;
         this.multiplying = multiplying;
+        this.plantingDate = plantingDate;
     }
 
 
@@ -91,12 +91,26 @@ public class Flower {
         this.multiplying = multiplying;
     }
 
+    public Date getPlantingDate() {
+        return plantingDate;
+    }
+
+    public String getPlantingDateString(){
+        String pattern = "yyyy-MM-dd";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+        return simpleDateFormat.format(plantingDate);
+    }
+
+    public void setPlantingDate(Date plantingDate) {
+        this.plantingDate = plantingDate;
+    }
+
     @Override
     public String toString() {
-        return "Flower{" + "name='" + name + '\'' + ", soil='" + soil
-                + '\'' + ", origin='" + origin + '\'' + ", visualParameters="
-                + visualParameters + ", growingTips=" + growingTips
-                + ", multiplying='" + multiplying + '\'' + '}';
+        return "Flower:" + "\n\tname: " + name + "\n\tsoil: " + soil
+                + "\n\torigin: " + origin + visualParameters
+                + growingTips + "\nMultiplying: " + multiplying
+                + "\nPlanting date: " + plantingDate + "\n";
     }
 
     @XmlRootElement
@@ -145,8 +159,8 @@ public class Flower {
         }
 
         public String toString() {
-            return "\nVisualParameters:" + "\n\tSize: " + size
-                    + "\n\tLeafColor: " + leafColor + "\n\tStemColor: "
+            return "\nVisualParameters:" + "\n\tsize: " + size
+                    + "\n\tleaf color: " + leafColor + "\n\tstem color: "
                     + stemColor + "\n";
         }
     }
@@ -210,9 +224,10 @@ public class Flower {
 
         @Override
         public String toString() {
-            return " GrowingTips{" + "temperature=" + temperature
-                    + ", humidity=" + humidity + ", lightLevel='"
-                    + lightLevel + '\'' + ", water=" + water + '}';
+            return "GrowingTips: " + "\n\ttemperature: " + temperature
+                    + "\n\thumidity: " + humidity + "\n\tlightLevel: "
+                    + lightLevel + "\n\twater (ml/week): "
+                    + water;
         }
     }
 

@@ -16,14 +16,15 @@
     </element>
 
     <complexType name="Flowers">
-        <sequence>
+        <all>
             <element name="name" type="string"/>
             <element name="soil" type="tns:Soil"/>
             <element name="origin" type="tns:Origin"/>
             <element name="visual-parameters" type="tns:Visual-parameters"/>
             <element name="growing-tips" type="tns:Growing-tips"/>
             <element name="multiplying" type="tns:Multiplying"/>
-        </sequence>
+            <element name="planting-date" type="date"/>
+        </all>
     </complexType>
 
     <simpleType name="Soil">
@@ -37,7 +38,7 @@
 
     <simpleType name="Origin">
         <restriction base="string">
-            <!-- Add all size's enum here-->
+            <!-- Add all country's enum here-->
             <enumeration value="Africa"/>
             <enumeration value="Australia"/>
             <enumeration value="Asia"/>
@@ -92,7 +93,7 @@
     <complexType name="Temperature">
         <simpleContent>
             <extension base="tns:temperatureRestriction">
-                <attribute name="type" type="string"/>
+                <attribute name="type" type="string" use="required"/>
             </extension>
         </simpleContent>
     </complexType>
@@ -108,7 +109,7 @@
     <complexType name="Water">
         <simpleContent>
             <extension base="tns:waterRestriction">
-                <attribute name="type" type="string"/>
+                <attribute name="type" type="string" use="required"/>
             </extension>
         </simpleContent>
     </complexType>
@@ -117,7 +118,7 @@
         <restriction base="string">
             <enumeration value="low"/>
             <enumeration value="medium"/>
-            <enumeration value="height"/>
+            <enumeration value="high"/>
         </restriction>
     </simpleType>
 

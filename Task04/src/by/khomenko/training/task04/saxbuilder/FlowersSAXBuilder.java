@@ -1,6 +1,8 @@
 package by.khomenko.training.task04.saxbuilder;
 
 import by.khomenko.training.task04.entity.Flower;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
@@ -9,6 +11,9 @@ import java.io.IOException;
 import java.util.Set;
 
 public class FlowersSAXBuilder {
+
+    private static final Logger LOGGER = LogManager.getLogger(FlowersSAXBuilder.class);
+
     private Set<Flower> flowers;
     private FlowerHandler flowerHandler;
     private XMLReader reader;
@@ -21,7 +26,8 @@ public class FlowersSAXBuilder {
             reader = XMLReaderFactory.createXMLReader();
             reader.setContentHandler(flowerHandler);
         } catch (SAXException e) {
-            System.err.print("SAX parser's error: " + e);
+            String message = "SAX parser's error: ";
+            LOGGER.error(message, e);
         }
     }
 
@@ -34,9 +40,11 @@ public class FlowersSAXBuilder {
             // разбор XML-документа
             reader.parse(fileName);
         } catch (SAXException e) {
-            System.err.print("SAX parser's error: " + e);
+            String message = "SAX parser's error: ";
+            LOGGER.error(message, e);
         } catch (IOException e) {
-            System.err.print("I/О stream's error: " + e);
+            String message = "I/О stream's error: ";
+            LOGGER.error(message, e);
         }
         flowers = flowerHandler.getFlowers();
     }

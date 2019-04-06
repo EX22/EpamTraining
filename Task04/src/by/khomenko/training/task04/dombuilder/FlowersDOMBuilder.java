@@ -1,6 +1,8 @@
 package by.khomenko.training.task04.dombuilder;
 
 import by.khomenko.training.task04.entity.Flower;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -11,10 +13,15 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
 public class FlowersDOMBuilder {
+
+    private static final Logger LOGGER = LogManager.getLogger(FlowersDOMBuilder.class);
 
     private Set<Flower> flowers;
     private DocumentBuilder docBuilder;
@@ -26,7 +33,8 @@ public class FlowersDOMBuilder {
         try {
             docBuilder = factory.newDocumentBuilder();
         } catch (ParserConfigurationException e) {
-            System.err.println("Parser's configuration error: " + e);
+            String message = "Parser's configuration error: ";
+            LOGGER.error(message, e);
         }
     }
 
@@ -37,10 +45,10 @@ public class FlowersDOMBuilder {
     public void buildSetFlowers(String fileName) {
         Document doc;
         try {
-// parsing XML-документа и создание древовидной структуры
+            // parsing XML-документа и создание древовидной структуры
             doc = docBuilder.parse(fileName);
             Element root = doc.getDocumentElement();
-            // получение списка дочерних элементов <student>
+            // получение списка дочерних элементов <flower>
             NodeList flowersList = root.getElementsByTagName("flower");
             for (int i = 0; i < flowersList.getLength(); i++) {
                 Element studentElement = (Element) flowersList.item(i);
@@ -48,13 +56,18 @@ public class FlowersDOMBuilder {
                 flowers.add(flower);
             }
         } catch (IOException e) {
-            System.err.println("File error or I/O error: " + e);
+            String message = "File or I/O error: ";
+            LOGGER.error(message, e);
         } catch (SAXException e) {
-            System.err.println("Parsing failure: " + e);
+            String message = "Parsing failure: ";
+            LOGGER.error(message, e);
+        } catch (ParseException e) {
+            String message = "Date parsing error! ";
+            LOGGER.error(message, e);
         }
     }
 
-    private Flower buildFlower(Element flowerElement) {
+    private Flower buildFlower(Element flowerElement) throws ParseException {
 
         Flower flower = new Flower();
 
@@ -79,6 +92,8 @@ public class FlowersDOMBuilder {
 
         flower.setMultiplying(getElementTextContent(flowerElement, "multiplying"));
 
+        flower.setPlantingDate(getPlantingDate(getElementTextContent(flowerElement, "planting-date")));
+
         return flower;
     }
 
@@ -87,5 +102,12 @@ public class FlowersDOMBuilder {
         NodeList nodeList = element.getElementsByTagName(elementName);
         Node node = nodeList.item(0);
         return node.getTextContent();
+    }
+
+    private Date getPlantingDate(String stringDate) throws ParseException {
+        String pattern = "yyyy-MM-dd";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+
+        return simpleDateFormat.parse(stringDate);
     }
 }

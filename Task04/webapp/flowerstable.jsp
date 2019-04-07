@@ -5,59 +5,47 @@
 <%@ page import = "java.io.*,java.util.Locale" %>
 <%@ page import = "javax.servlet.*,javax.servlet.http.* "%>
 
-<fmt:setLocale value="ru_RU" />
-<c:out value="ru_RU" />
 <fmt:setBundle basename="flowers-bundle" />
-
-<%
-
-   Locale locale = request.getLocale();
-   String language = locale.getLanguage();
-   String country = locale.getCountry();
-%>
-<%
-            out.println("Language : " + language  + "<br />");
-            out.println("Country  : " + country   + "<br />");
-         %>
 
 <html>
 <head>
-    <title>Core: forEach</title>
+    <title><fmt:message key="greenhouse"/></title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-<h1>Flowers table</h1>
-<p>See the Flowers table below</p>
+<h1><fmt:message key="flowerstable"/></h1>
+<p><fmt:message key="flowersingreenhouse"/>:</p>
+<p><fmt:message key="chosenparser"/>: <strong><c:out value="${parserType}"/></strong></p>
 <table id="flowers">
 <tr>
 <th><fmt:message key="flowers.table.name"/></th>
-<th>Soil</th>
-<th>Origin</th>
-<th>Visual Parameters</th>
-<th>Growing Tips</th>
-<th>Multiplying</th>
-<th>Planting Date</th>
+<th><fmt:message key="flowers.table.soil"/></th>
+<th><fmt:message key="flowers.table.origin"/></th>
+<th><fmt:message key="flowers.table.visualparameters"/></th>
+<th><fmt:message key="flowers.table.growingtips"/></th>
+<th><fmt:message key="flowers.table.multiplying"/></th>
+<th><fmt:message key="flowers.table.plantingdate"/></th>
 </tr>
  <c:forEach var="elem" items="${lst}">
 <tr>
- <td><c:out value="${ elem.name }" /></td>
- <td><c:out value="${ elem.soil }" /></td>
- <td><c:out value="${ elem.origin }" /></td>
+ <td><fmt:message key="${ elem.name }" /></td>
+ <td><fmt:message key="${ elem.soil }" /></td>
+ <td><fmt:message key="${ elem.origin }" /></td>
  <td>
      <ul>
-     <li>Size: <c:out value="${ elem.visualParameters.size }" /></li>
-     <li>Leaf color: <c:out value="${ elem.visualParameters.leafColor }" /></li>
-     <li>Steam color: <c:out value="${ elem.visualParameters.stemColor }" /></li>
+     <li><fmt:message key="flowers.table.size"/>: <c:out value="${ elem.visualParameters.size }" /> cm</li>
+     <li><fmt:message key="flowers.table.leafcolor"/>: <fmt:message key="${ elem.visualParameters.leafColor }"/></li>
+     <li><fmt:message key="flowers.table.stemcolor"/>: <fmt:message key="${ elem.visualParameters.stemColor }" /></li>
      </ul>
  </td>
  <td>
      <ul>
-     <li>Temperature: <c:out value="${ elem.growingTips.temperature }" /></li>
-     <li>Humidity: <c:out value="${ elem.growingTips.humidity }" /></li>
-     <li>Light level: <c:out value="${ elem.growingTips.lightLevel }" /></li>
+     <li><fmt:message key="flowers.table.temperature"/>: <c:out value="${ elem.growingTips.temperature }" /> *C</li>
+     <li><fmt:message key="flowers.table.humidity"/>: <c:out value="${ elem.growingTips.humidity }" /> %</li>
+     <li><fmt:message key="flowers.table.lightlevel"/>: <fmt:message key="${ elem.growingTips.lightLevel }" /></li>
      </ul>
  </td>
- <td><c:out value="${ elem.multiplying }" /></td>
+ <td><fmt:message key="${ elem.multiplying }" /></td>
  <td><c:out value="${ elem.plantingDateString }" /></td>
 </tr>
  </c:forEach>

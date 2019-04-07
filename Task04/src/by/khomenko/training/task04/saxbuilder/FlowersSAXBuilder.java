@@ -3,11 +3,13 @@ package by.khomenko.training.task04.saxbuilder;
 import by.khomenko.training.task04.entity.Flower;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Set;
 
 public class FlowersSAXBuilder {
@@ -35,10 +37,10 @@ public class FlowersSAXBuilder {
         return flowers;
     }
 
-    public void buildSetFlowers(String fileName) {
+    public void buildSetFlowers(InputStream inputStream) {
         try {
             // разбор XML-документа
-            reader.parse(fileName);
+            reader.parse(new InputSource(inputStream));
         } catch (SAXException e) {
             String message = "SAX parser's error: ";
             LOGGER.error(message, e);
@@ -46,6 +48,7 @@ public class FlowersSAXBuilder {
             String message = "I/О stream's error: ";
             LOGGER.error(message, e);
         }
+
         flowers = flowerHandler.getFlowers();
     }
 }

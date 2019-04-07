@@ -38,7 +38,6 @@
 
     <simpleType name="Origin">
         <restriction base="string">
-            <!-- Add all country's enum here-->
             <enumeration value="Africa"/>
             <enumeration value="Australia"/>
             <enumeration value="Asia"/>

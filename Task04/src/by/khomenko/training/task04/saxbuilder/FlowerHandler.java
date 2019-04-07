@@ -70,6 +70,7 @@ public class FlowerHandler extends DefaultHandler {
                     current.setOrigin(s);
                     break;
                 case VISUAL_PARAMETERS:
+                    //TODO Consider to put it in outer getVisualParameters method!
                     //current.setVisualParameters();
                     break;
                 case SIZE:
@@ -82,6 +83,7 @@ public class FlowerHandler extends DefaultHandler {
                     current.getVisualParameters().setStemColor(s);
                     break;
                 case GROWING_TIPS:
+                    //TODO Consider to put it in outer getGrowingTips method!
                     //current.setGrowingTips();
                     break;
                 case TEMPERATURE:
@@ -108,6 +110,52 @@ public class FlowerHandler extends DefaultHandler {
             }
         }
         currentEnum = null;
+    }
+    //TODO Not used method! Needed to be changed in case of using.
+    private Flower.VisualParameters getVisualParameters(FlowerEnum currentEnum, String s){
+
+        Flower.VisualParameters visualParams = new Flower.VisualParameters();
+        if (currentEnum != null){
+            switch (currentEnum){
+                case SIZE:
+                    visualParams.setSize(Integer.parseInt(s));
+                    break;
+                case LEAF_COLOR:
+                    visualParams.setLeafColor(s);
+                    break;
+                case STEM_COLOR:
+                    visualParams.setStemColor(s);
+                    break;
+                default:
+                    break;
+            }
+        }
+        return visualParams;
+    }
+
+    //TODO Not used method! Needed to be changed in case of using.
+    private Flower.GrowingTips getGrowingTips(FlowerEnum currentEnum, String s){
+
+        Flower.GrowingTips growingTips = new Flower.GrowingTips();
+        if (currentEnum != null){
+            switch (currentEnum){
+                case TEMPERATURE:
+                    growingTips.setTemperature(Integer.parseInt(s));
+                    break;
+                case HUMIDITY:
+                    growingTips.setHumidity(Integer.parseInt(s));
+                    break;
+                case LIGHT_LEVEL:
+                    growingTips.setLightLevel(s);
+                    break;
+                case WATER:
+                    growingTips.setWater(Integer.parseInt(s));
+                    break;
+                default:
+                    break;
+            }
+        }
+        return growingTips;
     }
 
     private Date getPlantingDate(String stringDate) {

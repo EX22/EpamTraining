@@ -12,6 +12,7 @@ import javax.xml.stream.XMLStreamReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -39,12 +40,11 @@ public class FlowersStAXBuilder {
         return flowers;
     }
 
-    public void buildSetFlowers(String fileName) {
+    public void buildSetFlowers(InputStream inputStream) {
 
         XMLStreamReader reader;
         String elementName;
-        try (FileInputStream inputStream = new FileInputStream(new File(fileName))) {
-
+        try {
             reader = inputFactory.createXMLStreamReader(inputStream);
             // StAX parsing
             while (reader.hasNext()) {
@@ -60,9 +60,6 @@ public class FlowersStAXBuilder {
         } catch (XMLStreamException ex) {
             String message = "StAX parsing error! ";
             LOGGER.error(message, ex.getMessage());
-        } catch (IOException ex) {
-            String message = "File " + fileName + " not found! ";
-            LOGGER.error(message, ex);
         } catch (ParseException ex) {
             String message = "Date parsing error! ";
             LOGGER.error(message, ex);

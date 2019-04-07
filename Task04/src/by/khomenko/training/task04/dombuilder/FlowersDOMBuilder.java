@@ -13,6 +13,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -42,11 +43,11 @@ public class FlowersDOMBuilder {
         return flowers;
     }
 
-    public void buildSetFlowers(String fileName) {
+    public void buildSetFlowers(InputStream inputStream) {
         Document doc;
         try {
             // parsing XML-документа и создание древовидной структуры
-            doc = docBuilder.parse(fileName);
+            doc = docBuilder.parse(inputStream);
             Element root = doc.getDocumentElement();
             // получение списка дочерних элементов <flower>
             NodeList flowersList = root.getElementsByTagName("flower");

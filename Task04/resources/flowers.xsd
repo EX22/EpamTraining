@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+        targetNamespace="http://training.by/flowers"
+        xmlns:tns="http://training.by/flowers"
+        elementFormDefault="qualified">
+
+    <element name="flowers">
+        <complexType>
+            <sequence>
+                <element name="flower"
+                         type="tns:Flowers"
+                         maxOccurs="unbounded"/>
+            </sequence>
+        </complexType>
+    </element>
+
+    <complexType name="Flowers">
+        <all>
+            <element name="name" type="string"/>
+            <element name="soil" type="tns:Soil"/>
+            <element name="origin" type="tns:Origin"/>
+            <element name="visual-parameters" type="tns:Visual-parameters"/>
+            <element name="growing-tips" type="tns:Growing-tips"/>
+            <element name="multiplying" type="tns:Multiplying"/>
+            <element name="planting-date" type="date"/>
+        </all>
+    </complexType>
+
+    <simpleType name="Soil">
+        <restriction base="string">
+            <enumeration value="loam"/>
+            <enumeration value="sandy"/>
+            <enumeration value="silt"/>
+            <enumeration value="mixed"/>
+        </restriction>
+    </simpleType>
+
+    <simpleType name="Origin">
+        <restriction base="string">
+            <enumeration value="Africa"/>
+            <enumeration value="Australia"/>
+            <enumeration value="Asia"/>
+            <enumeration value="China"/>
+            <enumeration value="Europe"/>
+            <enumeration value="North-America"/>
+            <enumeration value="South-America"/>
+        </restriction>
+    </simpleType>
+
+    <complexType name="Visual-parameters">
+        <sequence>
+            <element name="size" type="tns:Size"/>
+            <element name="leaf-color" type="string"/>
+            <element name="stem-color" type="string" default="green"/>
+        </sequence>
+    </complexType>
+
+    <simpleType name="sizeRestriction">
+        <restriction base="positiveInteger">
+            <maxInclusive value="3000"/>
+        </restriction>
+    </simpleType>
+
+    <complexType name="Size">
+        <simpleContent>
+            <extension base="tns:sizeRestriction">
+                <attribute name="type" type="string"/>
+            </extension>
+        </simpleContent>
+    </complexType>
+
+    <complexType name="Growing-tips">
+        <sequence>
+            <element name="temperature" type="tns:Temperature"/>
+            <element name="humidity" type="positiveInteger"/>
+            <element name="light-level" type="tns:Light-level"/>
+            <element name="water" type="tns:Water"/>
+        </sequence>
+    </complexType>
+
+    <simpleType name="temperatureRestriction">
+        <restriction base="positiveInteger">
+            <maxInclusive value="50"/>
+        </restriction>
+    </simpleType>
+
+    <complexType name="Temperature">
+        <simpleContent>
+            <extension base="tns:temperatureRestriction">
+                <attribute name="type" type="string" use="required"/>
+            </extension>
+        </simpleContent>
+    </complexType>
+
+    <simpleType name="waterRestriction">
+        <restriction base="positiveInteger">
+            <maxInclusive value="2000"/>
+        </restriction>
+    </simpleType>
+
+    <complexType name="Water">
+        <simpleContent>
+            <extension base="tns:waterRestriction">
+                <attribute name="type" type="string" use="required"/>
+            </extension>
+        </simpleContent>
+    </complexType>
+
+    <simpleType name="Light-level">
+        <restriction base="string">
+            <enumeration value="low"/>
+            <enumeration value="medium"/>
+            <enumeration value="high"/>
+        </restriction>
+    </simpleType>
+
+    <simpleType name="Multiplying">
+        <restriction base="string">
+            <enumeration value="seeds"/>
+            <enumeration value="stems"/>
+            <enumeration value="roots"/>
+        </restriction>
+    </simpleType>
+
+</schema>

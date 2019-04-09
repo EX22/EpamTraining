@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<flowers xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://training.by/flowers"
+         xsi:schemaLocation="http://training.by/flowers  /resources/flowers.xsd">
+    <flower>
+
+        <name>African-Violets</name>
+
+        <soil>mixed</soil>
+
+        <origin>Africa</origin>
+
+        <visual-parameters>
+            <size type="cm">20</size>
+            <leaf-color>blue</leaf-color>
+            <stem-color>green</stem-color>
+        </visual-parameters>
+
+        <growing-tips>
+            <temperature type="celsius">18</temperature>
+            <humidity>30</humidity>
+            <light-level>medium</light-level>
+            <water type="ml/week">150</water>
+        </growing-tips>
+
+        <multiplying>stems</multiplying>
+        <planting-date>2019-03-31</planting-date>
+    </flower>
+
+    <flower>
+
+        <name>Orchids</name>
+
+        <soil>loam</soil>
+
+        <origin>Australia</origin>
+
+        <visual-parameters>
+            <size type="cm">30</size>
+            <leaf-color>orange</leaf-color>
+            <stem-color>green</stem-color>
+        </visual-parameters>
+
+        <growing-tips>
+            <temperature type="celsius">20</temperature>
+            <humidity>40</humidity>
+            <light-level>high</light-level>
+            <water type="ml/week">200</water>
+        </growing-tips>
+
+        <multiplying>stems</multiplying>
+        <planting-date>2019-02-03</planting-date>
+    </flower>
+
+    <flower>
+
+        <name>Roses</name>
+
+        <soil>sandy</soil>
+
+        <origin>China</origin>
+
+        <visual-parameters>
+            <size type="cm">50</size>
+            <leaf-color>red</leaf-color>
+            <stem-color>green</stem-color>
+        </visual-parameters>
+
+        <growing-tips>
+            <temperature type="celsius">15</temperature>
+            <humidity>50</humidity>
+            <light-level>high</light-level>
+            <water type="ml/week">300</water>
+        </growing-tips>
+
+        <multiplying>stems</multiplying>
+        <planting-date>2019-01-07</planting-date>
+    </flower>
+
+    <flower>
+
+        <name>Amazon-Lilies</name>
+
+        <soil>silt</soil>
+
+        <origin>North-America</origin>
+
+        <visual-parameters>
+            <size type="cm">25</size>
+            <leaf-color>white</leaf-color>
+            <stem-color>green</stem-color>
+        </visual-parameters>
+
+        <growing-tips>
+            <temperature type="celsius">18</temperature>
+            <humidity>30</humidity>
+            <light-level>high</light-level>
+            <water type="ml/week">100</water>
+        </growing-tips>
+
+        <multiplying>roots</multiplying>
+        <planting-date>2019-03-20</planting-date>
+    </flower>
+
+    <flower>
+
+        <name>Chinese-Hibiscus</name>
+
+        <soil>sandy</soil>
+
+        <origin>Asia</origin>
+
+        <visual-parameters>
+            <size type="cm">20</size>
+            <leaf-color>yellow</leaf-color>
+            <stem-color>green</stem-color>
+        </visual-parameters>
+
+        <growing-tips>
+            <temperature type="celsius">20</temperature>
+            <humidity>60</humidity>
+            <light-level>high</light-level>
+            <water type="ml/week">400</water>
+        </growing-tips>
+
+        <multiplying>roots</multiplying>
+        <planting-date>2019-04-04</planting-date>
+    </flower>
+
+</flowers>

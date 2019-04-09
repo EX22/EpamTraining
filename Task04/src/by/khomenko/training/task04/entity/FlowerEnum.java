@@ -20,8 +20,8 @@ public enum FlowerEnum {
 
     private String value;
 
-    FlowerEnum(String value) {
-        this.value = value;
+    FlowerEnum(final String valueVal) {
+        this.value = valueVal;
     }
 
     public String getValue() {

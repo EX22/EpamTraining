@@ -14,7 +14,8 @@ import java.util.Set;
 
 public class FlowersSAXBuilder {
 
-    private static final Logger LOGGER = LogManager.getLogger(FlowersSAXBuilder.class);
+    private static final Logger LOGGER
+            = LogManager.getLogger(FlowersSAXBuilder.class);
 
     private Set<Flower> flowers;
     private FlowerHandler flowerHandler;

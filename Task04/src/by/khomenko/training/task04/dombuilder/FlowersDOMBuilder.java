@@ -22,7 +22,8 @@ import java.util.Set;
 
 public class FlowersDOMBuilder {
 
-    private static final Logger LOGGER = LogManager.getLogger(FlowersDOMBuilder.class);
+    private static final Logger LOGGER
+            = LogManager.getLogger(FlowersDOMBuilder.class);
 
     private Set<Flower> flowers;
     private DocumentBuilder docBuilder;
@@ -43,7 +44,7 @@ public class FlowersDOMBuilder {
         return flowers;
     }
 
-    public void buildSetFlowers(InputStream inputStream) {
+    public void buildSetFlowers(final InputStream inputStream) {
         Document doc;
         try {
             // parsing XML-документа и создание древовидной структуры
@@ -68,7 +69,8 @@ public class FlowersDOMBuilder {
         }
     }
 
-    private Flower buildFlower(Element flowerElement) throws ParseException {
+    private Flower buildFlower(final Element flowerElement)
+            throws ParseException {
 
         Flower flower = new Flower();
 
@@ -77,35 +79,54 @@ public class FlowersDOMBuilder {
         flower.setOrigin(getElementTextContent(flowerElement, "origin"));
 
         Flower.VisualParameters visualParameters = flower.getVisualParameters();
-        Element visualParamsElement = (Element) flowerElement.getElementsByTagName("visual-parameters").item(0);
+        Element visualParamsElement = (Element) flowerElement
+                .getElementsByTagName("visual-parameters").item(0);
 
-        visualParameters.setSize(Integer.parseInt(getElementTextContent(visualParamsElement, "size")));
-        visualParameters.setLeafColor(getElementTextContent(visualParamsElement, "leaf-color"));
-        visualParameters.setStemColor(getElementTextContent(visualParamsElement, "stem-color"));
+        visualParameters.setSize(Integer
+                .parseInt(getElementTextContent(visualParamsElement,
+                        "size")));
+        visualParameters
+                .setLeafColor(getElementTextContent(visualParamsElement,
+                        "leaf-color"));
+        visualParameters
+                .setStemColor(getElementTextContent(visualParamsElement,
+                        "stem-color"));
 
         Flower.GrowingTips growingTips = flower.getGrowingTips();
-        Element growTipsElement = (Element) flowerElement.getElementsByTagName("growing-tips").item(0);
+        Element growTipsElement = (Element) flowerElement
+                .getElementsByTagName("growing-tips").item(0);
 
-        growingTips.setTemperature(Integer.parseInt(getElementTextContent(growTipsElement, "temperature")));
-        growingTips.setHumidity(Integer.parseInt(getElementTextContent(growTipsElement, "humidity")));
-        growingTips.setLightLevel(getElementTextContent(growTipsElement, "light-level"));
-        growingTips.setWater(Integer.parseInt(getElementTextContent(growTipsElement, "water")));
+        growingTips.setTemperature(Integer
+                .parseInt(getElementTextContent(growTipsElement,
+                        "temperature")));
+        growingTips.setHumidity(Integer
+                .parseInt(getElementTextContent(growTipsElement,
+                        "humidity")));
+        growingTips
+                .setLightLevel(getElementTextContent(growTipsElement,
+                        "light-level"));
+        growingTips.setWater(Integer
+                .parseInt(getElementTextContent(growTipsElement, "water")));
 
-        flower.setMultiplying(getElementTextContent(flowerElement, "multiplying"));
+        flower.setMultiplying(getElementTextContent(flowerElement,
+                "multiplying"));
 
-        flower.setPlantingDate(getPlantingDate(getElementTextContent(flowerElement, "planting-date")));
+        flower.setPlantingDate(getPlantingDate(
+                getElementTextContent(flowerElement, "planting-date")));
 
         return flower;
     }
 
     // получение текстового содержимого тега
-    private static String getElementTextContent(Element element, String elementName) {
+    private static String getElementTextContent(final Element element,
+                                                final String elementName) {
         NodeList nodeList = element.getElementsByTagName(elementName);
         Node node = nodeList.item(0);
         return node.getTextContent();
     }
 
-    private Date getPlantingDate(String stringDate) throws ParseException {
+    private Date getPlantingDate(final String stringDate)
+            throws ParseException {
         String pattern = "yyyy-MM-dd";
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
 

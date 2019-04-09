@@ -6,7 +6,10 @@ import by.khomenko.training.task04.staxbuilder.FlowersStAXBuilder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
 public class Main {
 
@@ -16,19 +19,20 @@ public class Main {
 
     public static void main(String[] args) {
 
-        try (InputStream inputStream = new FileInputStream(new File(FILE_PATH))) {
+        try (InputStream inputStream
+                     = new FileInputStream(new File(FILE_PATH))) {
 
             FlowersSAXBuilder saxBuilder = new FlowersSAXBuilder();
             saxBuilder.buildSetFlowers(inputStream);
             System.out.println(saxBuilder.getFlowers());
 
-            /*FlowersDOMBuilder domBuilder = new FlowersDOMBuilder();
+            FlowersDOMBuilder domBuilder = new FlowersDOMBuilder();
             domBuilder.buildSetFlowers(inputStream);
-            System.out.println(domBuilder.getFlowers());*/
+            System.out.println(domBuilder.getFlowers());
 
-            /*FlowersStAXBuilder staxBuilder = new FlowersStAXBuilder();
+            FlowersStAXBuilder staxBuilder = new FlowersStAXBuilder();
             staxBuilder.buildSetFlowers(inputStream);
-            System.out.println(staxBuilder.getFlowers());*/
+            System.out.println(staxBuilder.getFlowers());
 
         } catch (IOException e) {
             String message = "File or I/O error: ";

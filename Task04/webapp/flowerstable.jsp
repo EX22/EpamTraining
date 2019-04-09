@@ -5,6 +5,7 @@
 <%@ page import = "java.io.*,java.util.Locale" %>
 <%@ page import = "javax.servlet.*,javax.servlet.http.* "%>
 
+<fmt:setLocale value="${localeType}" scope="session" />
 <fmt:setBundle basename="flowers-bundle" />
 
 <html>
@@ -16,6 +17,7 @@
 <h1><fmt:message key="flowerstable"/></h1>
 <p><fmt:message key="flowersingreenhouse"/>:</p>
 <p><fmt:message key="chosenparser"/>: <strong><c:out value="${parserType}"/></strong></p>
+<p><fmt:message key="passedvalidation"/>: <strong><fmt:message key="${isValid}"/></strong></p>
 <table id="flowers">
 <tr>
 <th><fmt:message key="flowers.table.name"/></th>

@@ -9,11 +9,17 @@ import org.xml.sax.helpers.DefaultHandler;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Date;
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 public class FlowerHandler extends DefaultHandler {
 
-    private static final Logger LOGGER = LogManager.getLogger(FlowerHandler.class);
+    private static final Logger LOGGER
+            = LogManager.getLogger(FlowerHandler.class);
 
     private Set<Flower> flowers;
     private Flower current = null;
@@ -22,7 +28,8 @@ public class FlowerHandler extends DefaultHandler {
 
     public FlowerHandler() {
         flowers = new HashSet<>();
-        EnumSet<FlowerEnum> elementSet = EnumSet.range(FlowerEnum.NAME, FlowerEnum.PLANTING_DATE);
+        EnumSet<FlowerEnum> elementSet
+                = EnumSet.range(FlowerEnum.NAME, FlowerEnum.PLANTING_DATE);
         elementMap = new HashMap<>();
         for (FlowerEnum f : elementSet) {
             elementMap.put(f.getValue(), f);
@@ -34,7 +41,8 @@ public class FlowerHandler extends DefaultHandler {
     }
 
     @Override
-    public void startElement(String uri, String localName, String qName, Attributes attrs) {
+    public void startElement(final String uri, final String localName,
+                             final String qName, final Attributes attrs) {
         if ("flower".equals(localName)) {
             current = new Flower();
             current.setName(attrs.getValue(0));
@@ -49,14 +57,15 @@ public class FlowerHandler extends DefaultHandler {
     }
 
     @Override
-    public void endElement(String uri, String localName, String qName) {
+    public void endElement(final String uri, final String localName,
+                           final String qName) {
         if ("flower".equals(localName)) {
             flowers.add(current);
         }
     }
 
     @Override
-    public void characters(char[] ch, int start, int length) {
+    public void characters(final char[] ch, final int start, final int length) {
         String s = new String(ch, start, length).trim();
         if (currentEnum != null) {
             switch (currentEnum) {
@@ -70,8 +79,6 @@ public class FlowerHandler extends DefaultHandler {
                     current.setOrigin(s);
                     break;
                 case VISUAL_PARAMETERS:
-                    //TODO Consider to put it in outer getVisualParameters method!
-                    //current.setVisualParameters();
                     break;
                 case SIZE:
                     current.getVisualParameters().setSize(Integer.parseInt(s));
@@ -83,8 +90,6 @@ public class FlowerHandler extends DefaultHandler {
                     current.getVisualParameters().setStemColor(s);
                     break;
                 case GROWING_TIPS:
-                    //TODO Consider to put it in outer getGrowingTips method!
-                    //current.setGrowingTips();
                     break;
                 case TEMPERATURE:
                     current.getGrowingTips().setTemperature(Integer.parseInt(s));
@@ -111,54 +116,9 @@ public class FlowerHandler extends DefaultHandler {
         }
         currentEnum = null;
     }
-    //TODO Not used method! Needed to be changed in case of using.
-    private Flower.VisualParameters getVisualParameters(FlowerEnum currentEnum, String s){
 
-        Flower.VisualParameters visualParams = new Flower.VisualParameters();
-        if (currentEnum != null){
-            switch (currentEnum){
-                case SIZE:
-                    visualParams.setSize(Integer.parseInt(s));
-                    break;
-                case LEAF_COLOR:
-                    visualParams.setLeafColor(s);
-                    break;
-                case STEM_COLOR:
-                    visualParams.setStemColor(s);
-                    break;
-                default:
-                    break;
-            }
-        }
-        return visualParams;
-    }
 
-    //TODO Not used method! Needed to be changed in case of using.
-    private Flower.GrowingTips getGrowingTips(FlowerEnum currentEnum, String s){
-
-        Flower.GrowingTips growingTips = new Flower.GrowingTips();
-        if (currentEnum != null){
-            switch (currentEnum){
-                case TEMPERATURE:
-                    growingTips.setTemperature(Integer.parseInt(s));
-                    break;
-                case HUMIDITY:
-                    growingTips.setHumidity(Integer.parseInt(s));
-                    break;
-                case LIGHT_LEVEL:
-                    growingTips.setLightLevel(s);
-                    break;
-                case WATER:
-                    growingTips.setWater(Integer.parseInt(s));
-                    break;
-                default:
-                    break;
-            }
-        }
-        return growingTips;
-    }
-
-    private Date getPlantingDate(String stringDate) {
+    private Date getPlantingDate(final String stringDate) {
         String pattern = "yyyy-MM-dd";
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
         Date date = null;

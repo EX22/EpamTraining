@@ -56,13 +56,11 @@
         </sequence>
     </complexType>
 
-    <complexType name="sizeRestriction">
-        <simpleContent>
-            <restriction base="positiveInteger">
-                <maxInclusive value="3000"/>
-            </restriction>
-        </simpleContent>
-    </complexType>
+    <simpleType name="sizeRestriction">
+        <restriction base="positiveInteger">
+            <maxInclusive value="3000"/>
+        </restriction>
+    </simpleType>
 
     <complexType name="Size">
         <simpleContent>
@@ -81,13 +79,11 @@
         </sequence>
     </complexType>
 
-    <complexType name="temperatureRestriction">
-        <simpleContent>
-            <restriction base="positiveInteger">
-                <maxInclusive value="50"/>
-            </restriction>
-        </simpleContent>
-    </complexType>
+    <simpleType name="temperatureRestriction">
+        <restriction base="positiveInteger">
+            <maxInclusive value="50"/>
+        </restriction>
+    </simpleType>
 
     <complexType name="Temperature">
         <simpleContent>
@@ -97,13 +93,11 @@
         </simpleContent>
     </complexType>
 
-    <complexType name="waterRestriction">
-        <simpleContent>
-            <restriction base="positiveInteger">
-                <maxInclusive value="2000"/>
-            </restriction>
-        </simpleContent>
-    </complexType>
+    <simpleType name="waterRestriction">
+        <restriction base="positiveInteger">
+            <maxInclusive value="2000"/>
+        </restriction>
+    </simpleType>
 
     <complexType name="Water">
         <simpleContent>

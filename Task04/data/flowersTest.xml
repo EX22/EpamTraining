@@ -30,56 +30,6 @@
 
     <flower>
 
-        <name>Orchids</name>
-
-        <soil>loam</soil>
-
-        <origin>Australia</origin>
-
-        <visual-parameters>
-            <size type="cm">30</size>
-            <leaf-color>orange</leaf-color>
-            <stem-color>green</stem-color>
-        </visual-parameters>
-
-        <growing-tips>
-            <temperature type="celsius">20</temperature>
-            <humidity>40</humidity>
-            <light-level>high</light-level>
-            <water type="ml/week">200</water>
-        </growing-tips>
-
-        <multiplying>stems</multiplying>
-        <planting-date>2019-02-03</planting-date>
-    </flower>
-
-    <flower>
-
-        <name>Roses</name>
-
-        <soil>sandy</soil>
-
-        <origin>China</origin>
-
-        <visual-parameters>
-            <size type="cm">50</size>
-            <leaf-color>red</leaf-color>
-            <stem-color>green</stem-color>
-        </visual-parameters>
-
-        <growing-tips>
-            <temperature type="celsius">15</temperature>
-            <humidity>50</humidity>
-            <light-level>high</light-level>
-            <water type="ml/week">300</water>
-        </growing-tips>
-
-        <multiplying>stems</multiplying>
-        <planting-date>2019-01-07</planting-date>
-    </flower>
-
-    <flower>
-
         <name>Amazon-Lilies</name>
 
         <soil>silt</soil>

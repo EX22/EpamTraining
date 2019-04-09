@@ -1,6 +1,9 @@
 package by.khomenko.training.task04.entity;
 
-import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -29,16 +32,18 @@ public class Flower {
     public Flower() {
     }
 
-    public Flower(String name, String soil, String origin,
-                  VisualParameters visualParameters, GrowingTips growingTips,
-                  String multiplying, Date plantingDate) {
-        this.name = name;
-        this.soil = soil;
-        this.origin = origin;
-        this.visualParameters = visualParameters;
-        this.growingTips = growingTips;
-        this.multiplying = multiplying;
-        this.plantingDate = plantingDate;
+    public Flower(final String nameVal, final String soilVal,
+                  final String originVal,
+                  final VisualParameters visualParametersVal,
+                  final GrowingTips growingTipsVal,
+                  final String multiplyingVal, final Date plantingDateVal) {
+        this.name = nameVal;
+        this.soil = soilVal;
+        this.origin = originVal;
+        this.visualParameters = visualParametersVal;
+        this.growingTips = growingTipsVal;
+        this.multiplying = multiplyingVal;
+        this.plantingDate = plantingDateVal;
     }
 
 
@@ -46,24 +51,24 @@ public class Flower {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setName(final String nameVal) {
+        this.name = nameVal;
     }
 
     public String getSoil() {
         return soil;
     }
 
-    public void setSoil(String soil) {
-        this.soil = soil;
+    public void setSoil(final String soilVal) {
+        this.soil = soilVal;
     }
 
     public String getOrigin() {
         return origin;
     }
 
-    public void setOrigin(String origin) {
-        this.origin = origin;
+    public void setOrigin(final String originVal) {
+        this.origin = originVal;
     }
 
 
@@ -71,38 +76,39 @@ public class Flower {
         return visualParameters;
     }
 
-    public void setVisualParameters(VisualParameters visualParameters) {
-        this.visualParameters = visualParameters;
+    public void setVisualParameters(
+            final VisualParameters visualParametersVal) {
+        this.visualParameters = visualParametersVal;
     }
 
     public GrowingTips getGrowingTips() {
         return growingTips;
     }
 
-    public void setGrowingTips(GrowingTips growingTips) {
-        this.growingTips = growingTips;
+    public void setGrowingTips(final GrowingTips growingTipsVal) {
+        this.growingTips = growingTipsVal;
     }
 
     public String getMultiplying() {
         return multiplying;
     }
 
-    public void setMultiplying(String multiplying) {
-        this.multiplying = multiplying;
+    public void setMultiplying(final String multiplyingVal) {
+        this.multiplying = multiplyingVal;
     }
 
     public Date getPlantingDate() {
         return plantingDate;
     }
 
-    public String getPlantingDateString(){
+    public String getPlantingDateString() {
         String pattern = "yyyy-MM-dd";
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
         return simpleDateFormat.format(plantingDate);
     }
 
-    public void setPlantingDate(Date plantingDate) {
-        this.plantingDate = plantingDate;
+    public void setPlantingDate(final Date plantingDateVal) {
+        this.plantingDate = plantingDateVal;
     }
 
     @Override
@@ -120,42 +126,43 @@ public class Flower {
             "leaf-color",
             "stem-color"
     })
-    public static class VisualParameters { // внутренний класс
+    public static class VisualParameters {
         private int size;
         private String leafColor;
         private String stemColor;
 
-        public VisualParameters() {// необходим для маршаллизации/демаршалиизации XML
+        public VisualParameters() {
         }
 
-        public VisualParameters(int size, String leafColor, String stemColor) {
-            this.size = size;
-            this.leafColor = leafColor;
-            this.stemColor = stemColor;
+        public VisualParameters(final int sizeVal, final String leafColorVal,
+                                final String stemColorVal) {
+            this.size = sizeVal;
+            this.leafColor = leafColorVal;
+            this.stemColor = stemColorVal;
         }
 
         public int getSize() {
             return size;
         }
 
-        public void setSize(int size) {
-            this.size = size;
+        public void setSize(final int sizeVal) {
+            this.size = sizeVal;
         }
 
         public String getLeafColor() {
             return leafColor;
         }
 
-        public void setLeafColor(String leafColor) {
-            this.leafColor = leafColor;
+        public void setLeafColor(final String leafColorVal) {
+            this.leafColor = leafColorVal;
         }
 
         public String getStemColor() {
             return stemColor;
         }
 
-        public void setStemColor(String stemColor) {
-            this.stemColor = stemColor;
+        public void setStemColor(final String stemColorVal) {
+            this.stemColor = stemColorVal;
         }
 
         public String toString() {
@@ -182,44 +189,44 @@ public class Flower {
         public GrowingTips() {
         }
 
-        public GrowingTips(int temperature, int humidity, String lightLevel,
-                           int water) {
-            this.temperature = temperature;
-            this.humidity = humidity;
-            this.lightLevel = lightLevel;
-            this.water = water;
+        public GrowingTips(final int temperatureVal, final int humidityVal,
+                           final String lightLevelVal, final int waterVal) {
+            this.temperature = temperatureVal;
+            this.humidity = humidityVal;
+            this.lightLevel = lightLevelVal;
+            this.water = waterVal;
         }
 
         public int getTemperature() {
             return temperature;
         }
 
-        public void setTemperature(int temperature) {
-            this.temperature = temperature;
+        public void setTemperature(final int temperatureVal) {
+            this.temperature = temperatureVal;
         }
 
         public int getHumidity() {
             return humidity;
         }
 
-        public void setHumidity(int humidity) {
-            this.humidity = humidity;
+        public void setHumidity(final int humidityVal) {
+            this.humidity = humidityVal;
         }
 
         public String getLightLevel() {
             return lightLevel;
         }
 
-        public void setLightLevel(String lightLevel) {
-            this.lightLevel = lightLevel;
+        public void setLightLevel(final String lightLevelVal) {
+            this.lightLevel = lightLevelVal;
         }
 
         public int getWater() {
             return water;
         }
 
-        public void setWater(int water) {
-            this.water = water;
+        public void setWater(final int waterVal) {
+            this.water = waterVal;
         }
 
         @Override

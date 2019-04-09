@@ -9,17 +9,20 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Date;
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 public class FlowersStAXBuilder {
 
-    private static final Logger LOGGER = LogManager.getLogger(FlowersStAXBuilder.class);
+    private static final Logger LOGGER
+            = LogManager.getLogger(FlowersStAXBuilder.class);
 
     private Set<Flower> flowers = new HashSet<>();
     private XMLInputFactory inputFactory;
@@ -28,7 +31,8 @@ public class FlowersStAXBuilder {
     public FlowersStAXBuilder() {
 
         inputFactory = XMLInputFactory.newInstance();
-        EnumSet<FlowerEnum> elementSet = EnumSet.range(FlowerEnum.FLOWERS, FlowerEnum.PLANTING_DATE);
+        EnumSet<FlowerEnum> elementSet
+                = EnumSet.range(FlowerEnum.FLOWERS, FlowerEnum.PLANTING_DATE);
         elementMap = new HashMap<>();
         for (FlowerEnum f : elementSet) {
             elementMap.put(f.getValue(), f);
@@ -40,7 +44,7 @@ public class FlowersStAXBuilder {
         return flowers;
     }
 
-    public void buildSetFlowers(InputStream inputStream) {
+    public void buildSetFlowers(final InputStream inputStream) {
 
         XMLStreamReader reader;
         String elementName;
@@ -66,7 +70,8 @@ public class FlowersStAXBuilder {
         }
     }
 
-    private Flower buildFlower(XMLStreamReader reader) throws XMLStreamException, ParseException {
+    private Flower buildFlower(final XMLStreamReader reader)
+            throws XMLStreamException, ParseException {
         Flower flower = new Flower();
 
         String elementName;
@@ -95,7 +100,8 @@ public class FlowersStAXBuilder {
                         flower.setMultiplying(getXMLText(reader));
                         break;
                     case PLANTING_DATE:
-                        flower.setPlantingDate(getPlantingDate(getXMLText(reader)));
+                        flower.setPlantingDate(getPlantingDate(
+                                getXMLText(reader)));
                         break;
                     default:
                         break;
@@ -111,7 +117,8 @@ public class FlowersStAXBuilder {
         throw new XMLStreamException("Unknown element in tag Flower");
     }
 
-    private Flower.VisualParameters getXMLVisualParams(XMLStreamReader reader) throws XMLStreamException {
+    private Flower.VisualParameters
+    getXMLVisualParams(final XMLStreamReader reader) throws XMLStreamException {
 
         Flower.VisualParameters visualParams = new Flower.VisualParameters();
         int type;
@@ -122,7 +129,8 @@ public class FlowersStAXBuilder {
                 elementName = reader.getLocalName();
                 switch (getEnumByString(elementName)) {
                     case SIZE:
-                        visualParams.setSize(Integer.parseInt(getXMLText(reader)));
+                        visualParams.setSize(Integer
+                                .parseInt(getXMLText(reader)));
                         break;
                     case LEAF_COLOR:
                         visualParams.setLeafColor(getXMLText(reader));
@@ -135,7 +143,8 @@ public class FlowersStAXBuilder {
                 }
             } else if (type == XMLStreamConstants.END_ELEMENT) {
                 elementName = reader.getLocalName();
-                if (getEnumByString(elementName) == FlowerEnum.VISUAL_PARAMETERS) {
+                if (getEnumByString(elementName)
+                        == FlowerEnum.VISUAL_PARAMETERS) {
                     return visualParams;
                 }
             }
@@ -144,7 +153,8 @@ public class FlowersStAXBuilder {
     }
 
 
-    private Flower.GrowingTips getXMLGrowTips(XMLStreamReader reader) throws XMLStreamException {
+    private Flower.GrowingTips getXMLGrowTips(final XMLStreamReader reader)
+            throws XMLStreamException {
 
         Flower.GrowingTips growTips = new Flower.GrowingTips();
         int type;
@@ -155,10 +165,12 @@ public class FlowersStAXBuilder {
                 elementName = reader.getLocalName();
                 switch (getEnumByString(elementName)) {
                     case TEMPERATURE:
-                        growTips.setTemperature(Integer.parseInt(getXMLText(reader)));
+                        growTips.setTemperature(Integer
+                                .parseInt(getXMLText(reader)));
                         break;
                     case HUMIDITY:
-                        growTips.setHumidity(Integer.parseInt(getXMLText(reader)));
+                        growTips.setHumidity(Integer
+                                .parseInt(getXMLText(reader)));
                         break;
                     case LIGHT_LEVEL:
                         growTips.setLightLevel(getXMLText(reader));
@@ -180,7 +192,8 @@ public class FlowersStAXBuilder {
     }
 
 
-    private String getXMLText(XMLStreamReader reader) throws XMLStreamException {
+    private String getXMLText(final XMLStreamReader reader)
+            throws XMLStreamException {
         String text = null;
         if (reader.hasNext()) {
             reader.next();
@@ -189,12 +202,12 @@ public class FlowersStAXBuilder {
         return text;
     }
 
-    private FlowerEnum getEnumByString(String value) {
+    private FlowerEnum getEnumByString(final String value) {
 
         return elementMap.get(value);
     }
 
-    private Date getPlantingDate(String stringDate) throws ParseException {
+    private Date getPlantingDate(final String stringDate) throws ParseException {
         String pattern = "yyyy-MM-dd";
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
 

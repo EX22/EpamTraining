@@ -16,16 +16,38 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * SAX event handler.
+ */
 public class FlowerHandler extends DefaultHandler {
 
+    /**
+     * Instance of logger that provides logging capability for this class'
+     * performance.
+     */
     private static final Logger LOGGER
             = LogManager.getLogger(FlowerHandler.class);
 
+    /**
+     * Set contains collection of flower's instances.
+     */
     private Set<Flower> flowers;
+    /**
+     * Utility Flower's variable.
+     */
     private Flower current = null;
+    /**
+     * Flower's enumeration utility variable.
+     */
     private FlowerEnum currentEnum = null;
+    /**
+     * Map of enum values with their corresponding String representation.
+     */
     private Map<String, FlowerEnum> elementMap;
 
+    /**
+     * Constructor, sets all requirements to instantiate class' instance.
+     */
     public FlowerHandler() {
         flowers = new HashSet<>();
         EnumSet<FlowerEnum> elementSet
@@ -36,10 +58,19 @@ public class FlowerHandler extends DefaultHandler {
         }
     }
 
+    /**
+     * @return Set of Flower's instances.
+     */
     public Set<Flower> getFlowers() {
         return flowers;
     }
 
+    /**
+     * @param uri       nameSpace's unique name.
+     * @param localName element's name without prefix.
+     * @param qName     element's full name with prefix.
+     * @param attrs     attributes' list
+     */
     @Override
     public void startElement(final String uri, final String localName,
                              final String qName, final Attributes attrs) {
@@ -56,6 +87,11 @@ public class FlowerHandler extends DefaultHandler {
         }
     }
 
+    /**
+     * @param uri       nameSpace's unique name.
+     * @param localName element's name without prefix.
+     * @param qName     element's full name with prefix.
+     */
     @Override
     public void endElement(final String uri, final String localName,
                            final String qName) {
@@ -64,6 +100,11 @@ public class FlowerHandler extends DefaultHandler {
         }
     }
 
+    /**
+     * @param ch     character having read from tag's body.
+     * @param start  start character sequence for reading.
+     * @param length length character sequence foe reading.
+     */
     @Override
     public void characters(final char[] ch, final int start, final int length) {
         String s = new String(ch, start, length).trim();
@@ -92,7 +133,8 @@ public class FlowerHandler extends DefaultHandler {
                 case GROWING_TIPS:
                     break;
                 case TEMPERATURE:
-                    current.getGrowingTips().setTemperature(Integer.parseInt(s));
+                    current.getGrowingTips()
+                            .setTemperature(Integer.parseInt(s));
                     break;
                 case HUMIDITY:
                     current.getGrowingTips().setHumidity(Integer.parseInt(s));
@@ -111,13 +153,18 @@ public class FlowerHandler extends DefaultHandler {
                     break;
                 default:
                     throw new EnumConstantNotPresentException(
-                            currentEnum.getDeclaringClass(), currentEnum.name());
+                            currentEnum.getDeclaringClass(),
+                            currentEnum.name());
             }
         }
         currentEnum = null;
     }
 
 
+    /**
+     * @param stringDate Date tag's content.
+     * @return Date instance.
+     */
     private Date getPlantingDate(final String stringDate) {
         String pattern = "yyyy-MM-dd";
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);

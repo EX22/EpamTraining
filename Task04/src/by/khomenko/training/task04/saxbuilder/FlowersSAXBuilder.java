@@ -12,15 +12,36 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Set;
 
+/**
+ * SAX XML parser, implements Builder pattern.
+ */
 public class FlowersSAXBuilder {
 
+    /**
+     * Instance of logger that provides logging capability for this class'
+     * performance.
+     */
     private static final Logger LOGGER
             = LogManager.getLogger(FlowersSAXBuilder.class);
 
+    /**
+     * Set contains collection of flower's instances.
+     */
     private Set<Flower> flowers;
+
+    /**
+     * SAX event handler.
+     */
     private FlowerHandler flowerHandler;
+    /**
+     * Reader for XML document.
+     */
     private XMLReader reader;
 
+    /**
+     * Constructor, sets all requirements to instantiate class' instance,
+     * including factory for creating an XML reader.
+     */
     public FlowersSAXBuilder() {
         // создание SAX-анализатора
         flowerHandler = new FlowerHandler();
@@ -34,11 +55,17 @@ public class FlowersSAXBuilder {
         }
     }
 
+    /**
+     * @return Set Flower's instances.
+     */
     public Set<Flower> getFlowers() {
         return flowers;
     }
 
-    public void buildSetFlowers(InputStream inputStream) {
+    /**
+     * @param inputStream stream that contains data from XML file.
+     */
+    public void buildSetFlowers(final InputStream inputStream) {
         try {
             // разбор XML-документа
             reader.parse(new InputSource(inputStream));

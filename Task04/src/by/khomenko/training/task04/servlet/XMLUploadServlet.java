@@ -11,7 +11,11 @@ import org.xml.sax.SAXException;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
-import javax.servlet.http.*;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import javax.servlet.http.Part;
 import javax.xml.XMLConstants;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.SchemaFactory;
@@ -25,9 +29,19 @@ import java.util.Set;
 @MultipartConfig
 public class XMLUploadServlet extends HttpServlet {
 
+    /**
+     * Instance of logger that provides logging capability for this class'
+     * performance.
+     */
     private static final Logger LOGGER
             = LogManager.getLogger(XMLUploadServlet.class);
 
+    /**
+     * @param request  object that contains the request the client has made of
+     *                 the servlet.
+     * @param response object that contains the response the servlet sends to
+     *                 the client.
+     */
     @Override
     protected void doPost(final HttpServletRequest request,
                           final HttpServletResponse response) {
@@ -46,7 +60,7 @@ public class XMLUploadServlet extends HttpServlet {
             request.setAttribute("parserType", parser);
 
             String locale = request.getParameter("locale");
-            HttpSession session=request.getSession();
+            HttpSession session = request.getSession();
             session.setAttribute("localeType", locale);
 
 
@@ -87,6 +101,11 @@ public class XMLUploadServlet extends HttpServlet {
     }
 
 
+    /**
+     * @param xmlStream xml file data from input stream.
+     * @param xsdFile   xsd file data from input stream.
+     * @return true if an xml file corresponds to xsd file.
+     */
     private boolean validateXMLByXSD(final InputStream xmlStream,
                                      final InputStream xsdFile) {
         try {
@@ -108,6 +127,12 @@ public class XMLUploadServlet extends HttpServlet {
         return true;
     }
 
+    /**
+     * Creates StAX Builder.
+     *
+     * @param fileContent xml file's content from input stream.
+     * @return Set of Flower's instances.
+     */
     private Set<Flower> getStAXBuilder(final InputStream fileContent) {
         FlowersStAXBuilder staxBuilder = new FlowersStAXBuilder();
         staxBuilder.buildSetFlowers(fileContent);
@@ -115,6 +140,12 @@ public class XMLUploadServlet extends HttpServlet {
     }
 
 
+    /**
+     * Creates SAX Builder.
+     *
+     * @param fileContent xml file's content from input stream.
+     * @return Set of Flower's instances.
+     */
     private Set<Flower> getSAXBuilder(final InputStream fileContent) {
         FlowersSAXBuilder saxBuilder = new FlowersSAXBuilder();
         saxBuilder.buildSetFlowers(fileContent);
@@ -122,6 +153,12 @@ public class XMLUploadServlet extends HttpServlet {
         return saxBuilder.getFlowers();
     }
 
+    /**
+     * Creates DOM Builder.
+     *
+     * @param fileContent xml file's content from input stream.
+     * @return Set of Flower's instances.
+     */
     private Set<Flower> getDOMBuilder(final InputStream fileContent) {
         FlowersDOMBuilder domBuilder = new FlowersDOMBuilder();
         domBuilder.buildSetFlowers(fileContent);

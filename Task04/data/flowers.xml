@@ -128,4 +128,304 @@
         <planting-date>2019-04-04</planting-date>
     </flower>
 
+    <flower>
+
+        <name>Tulips</name>
+
+        <soil>mixed</soil>
+
+        <origin>Europe</origin>
+
+        <visual-parameters>
+            <size type="cm">20</size>
+            <leaf-color>yellow</leaf-color>
+            <stem-color>green</stem-color>
+        </visual-parameters>
+
+        <growing-tips>
+            <temperature type="celsius">20</temperature>
+            <humidity>45</humidity>
+            <light-level>low</light-level>
+            <water type="ml/week">250</water>
+        </growing-tips>
+
+        <multiplying>roots</multiplying>
+        <planting-date>2019-03-09</planting-date>
+    </flower>
+
+    <flower>
+
+        <name>Gladiolus</name>
+
+        <soil>silt</soil>
+
+        <origin>Asia</origin>
+
+        <visual-parameters>
+            <size type="cm">50</size>
+            <leaf-color>green</leaf-color>
+            <stem-color>green</stem-color>
+        </visual-parameters>
+
+        <growing-tips>
+            <temperature type="celsius">18</temperature>
+            <humidity>50</humidity>
+            <light-level>medium</light-level>
+            <water type="ml/week">200</water>
+        </growing-tips>
+
+        <multiplying>roots</multiplying>
+        <planting-date>2019-02-15</planting-date>
+    </flower>
+
+    <flower>
+
+        <name>Eucalyptus</name>
+
+        <soil>sandy</soil>
+
+        <origin>Africa</origin>
+
+        <visual-parameters>
+            <size type="cm">60</size>
+            <leaf-color>white</leaf-color>
+            <stem-color>green</stem-color>
+        </visual-parameters>
+
+        <growing-tips>
+            <temperature type="celsius">25</temperature>
+            <humidity>70</humidity>
+            <light-level>high</light-level>
+            <water type="ml/week">150</water>
+        </growing-tips>
+
+        <multiplying>stems</multiplying>
+        <planting-date>2019-01-12</planting-date>
+    </flower>
+
+    <flower>
+
+        <name>Peonies</name>
+
+        <soil>mixed</soil>
+
+        <origin>Asia</origin>
+
+        <visual-parameters>
+            <size type="cm">30</size>
+            <leaf-color>white</leaf-color>
+            <stem-color>green</stem-color>
+        </visual-parameters>
+
+        <growing-tips>
+            <temperature type="celsius">17</temperature>
+            <humidity>40</humidity>
+            <light-level>medium</light-level>
+            <water type="ml/week">300</water>
+        </growing-tips>
+
+        <multiplying>roots</multiplying>
+        <planting-date>2019-02-26</planting-date>
+    </flower>
+
+    <flower>
+
+        <name>Sunflowers</name>
+
+        <soil>sandy</soil>
+
+        <origin>North-America</origin>
+
+        <visual-parameters>
+            <size type="cm">100</size>
+            <leaf-color>yellow</leaf-color>
+            <stem-color>green</stem-color>
+        </visual-parameters>
+
+        <growing-tips>
+            <temperature type="celsius">20</temperature>
+            <humidity>50</humidity>
+            <light-level>high</light-level>
+            <water type="ml/week">200</water>
+        </growing-tips>
+
+        <multiplying>seeds</multiplying>
+        <planting-date>2019-04-05</planting-date>
+    </flower>
+
+    <flower>
+
+        <name>Dianthus</name>
+
+        <soil>mixed</soil>
+
+        <origin>Europe</origin>
+
+        <visual-parameters>
+            <size type="cm">45</size>
+            <leaf-color>red</leaf-color>
+            <stem-color>green</stem-color>
+        </visual-parameters>
+
+        <growing-tips>
+            <temperature type="celsius">17</temperature>
+            <humidity>60</humidity>
+            <light-level>medium</light-level>
+            <water type="ml/week">250</water>
+        </growing-tips>
+
+        <multiplying>roots</multiplying>
+        <planting-date>2019-03-10</planting-date>
+    </flower>
+
+    <flower>
+
+        <name>Gypsophila</name>
+
+        <soil>mixed</soil>
+
+        <origin>Europe</origin>
+
+        <visual-parameters>
+            <size type="cm">30</size>
+            <leaf-color>white</leaf-color>
+            <stem-color>green</stem-color>
+        </visual-parameters>
+
+        <growing-tips>
+            <temperature type="celsius">20</temperature>
+            <humidity>40</humidity>
+            <light-level>low</light-level>
+            <water type="ml/week">150</water>
+        </growing-tips>
+
+        <multiplying>stems</multiplying>
+        <planting-date>2019-03-10</planting-date>
+    </flower>
+
+    <flower>
+
+        <name>Alpine-Forget-Me-Not</name>
+
+        <soil>sandy</soil>
+
+        <origin>Europe</origin>
+
+        <visual-parameters>
+            <size type="cm">25</size>
+            <leaf-color>blue</leaf-color>
+            <stem-color>green</stem-color>
+        </visual-parameters>
+
+        <growing-tips>
+            <temperature type="celsius">15</temperature>
+            <humidity>50</humidity>
+            <light-level>low</light-level>
+            <water type="ml/week">100</water>
+        </growing-tips>
+
+        <multiplying>stems</multiplying>
+        <planting-date>2019-01-02</planting-date>
+    </flower>
+
+    <flower>
+
+        <name>Jacobs-Ladder</name>
+
+        <soil>loam</soil>
+
+        <origin>Australia</origin>
+
+        <visual-parameters>
+            <size type="cm">50</size>
+            <leaf-color>blue</leaf-color>
+            <stem-color>green</stem-color>
+        </visual-parameters>
+
+        <growing-tips>
+            <temperature type="celsius">20</temperature>
+            <humidity>60</humidity>
+            <light-level>medium</light-level>
+            <water type="ml/week">300</water>
+        </growing-tips>
+
+        <multiplying>roots</multiplying>
+        <planting-date>2019-02-19</planting-date>
+    </flower>
+
+    <flower>
+
+        <name>Solomons-Seal</name>
+
+        <soil>mixed</soil>
+
+        <origin>Africa</origin>
+
+        <visual-parameters>
+            <size type="cm">60</size>
+            <leaf-color>green</leaf-color>
+            <stem-color>green</stem-color>
+        </visual-parameters>
+
+        <growing-tips>
+            <temperature type="celsius">18</temperature>
+            <humidity>40</humidity>
+            <light-level>high</light-level>
+            <water type="ml/week">100</water>
+        </growing-tips>
+
+        <multiplying>stems</multiplying>
+        <planting-date>2019-03-25</planting-date>
+    </flower>
+
+    <flower>
+
+        <name>Lungwort</name>
+
+        <soil>mixed</soil>
+
+        <origin>South-America</origin>
+
+        <visual-parameters>
+            <size type="cm">40</size>
+            <leaf-color>blue</leaf-color>
+            <stem-color>green</stem-color>
+        </visual-parameters>
+
+        <growing-tips>
+            <temperature type="celsius">25</temperature>
+            <humidity>50</humidity>
+            <light-level>high</light-level>
+            <water type="ml/week">250</water>
+        </growing-tips>
+
+        <multiplying>roots</multiplying>
+        <planting-date>2019-02-16</planting-date>
+    </flower>
+
+    <flower>
+
+        <name>Begonias</name>
+
+        <soil>loam</soil>
+
+        <origin>South-America</origin>
+
+        <visual-parameters>
+            <size type="cm">250</size>
+            <leaf-color>yellow</leaf-color>
+            <stem-color>green</stem-color>
+        </visual-parameters>
+
+        <growing-tips>
+            <temperature type="celsius">18</temperature>
+            <humidity>40</humidity>
+            <light-level>medium</light-level>
+            <water type="ml/week">350</water>
+        </growing-tips>
+
+        <multiplying>roots</multiplying>
+        <planting-date>2019-01-19</planting-date>
+    </flower>
+
 </flowers>

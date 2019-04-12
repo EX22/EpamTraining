@@ -19,15 +19,34 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * StAX XML parser, implements Builder pattern.
+ */
 public class FlowersStAXBuilder {
 
+    /**
+     * Instance of logger that provides logging capability for this class'
+     * performance.
+     */
     private static final Logger LOGGER
             = LogManager.getLogger(FlowersStAXBuilder.class);
 
+    /**
+     * Set contains collection of flower's instances.
+     */
     private Set<Flower> flowers = new HashSet<>();
+    /**
+     * Defines an abstract implementation of a factory for getting streams.
+     */
     private XMLInputFactory inputFactory;
+    /**
+     * Map of enum values with their corresponding String representation.
+     */
     private Map<String, FlowerEnum> elementMap;
 
+    /**
+     * Constructor, sets all requirements to instantiate class' instance.
+     */
     public FlowersStAXBuilder() {
 
         inputFactory = XMLInputFactory.newInstance();
@@ -40,17 +59,22 @@ public class FlowersStAXBuilder {
 
     }
 
+    /**
+     * @return Set of Flower's instances.
+     */
     public Set<Flower> getFlowers() {
         return flowers;
     }
 
+    /**
+     * @param inputStream stream that contains data from XML file.
+     */
     public void buildSetFlowers(final InputStream inputStream) {
 
         XMLStreamReader reader;
         String elementName;
         try {
             reader = inputFactory.createXMLStreamReader(inputStream);
-            // StAX parsing
             while (reader.hasNext()) {
                 int type = reader.next();
                 if (type == XMLStreamConstants.START_ELEMENT) {
@@ -70,6 +94,15 @@ public class FlowersStAXBuilder {
         }
     }
 
+    /**
+     * @param reader XML data reader.
+     * @return instance of Flower.
+     * @throws XMLStreamException The base exception for unexpected processing
+     *                            errors. Reports well-formedness errors
+     *                            as well as unexpected processing conditions.
+     * @throws ParseException     Signals that an error has been reached
+     *                            unexpectedly while parsing.
+     */
     private Flower buildFlower(final XMLStreamReader reader)
             throws XMLStreamException, ParseException {
         Flower flower = new Flower();
@@ -117,6 +150,14 @@ public class FlowersStAXBuilder {
         throw new XMLStreamException("Unknown element in tag Flower");
     }
 
+    /**
+     * @param reader XML data reader.
+     * @return instantiated flower's VisualParameters.
+     * @throws XMLStreamException The base exception for unexpected processing
+     *                            errors. Reports well-formedness errors
+     *                            as well as unexpected processing
+     *                            conditions.
+     */
     private Flower.VisualParameters
     getXMLVisualParams(final XMLStreamReader reader) throws XMLStreamException {
 
@@ -149,10 +190,19 @@ public class FlowersStAXBuilder {
                 }
             }
         }
-        throw new XMLStreamException("Unknown element in tag visual-parameters");
+        throw new XMLStreamException("Unknown element in tag"
+                + " visual-parameters");
     }
 
 
+    /**
+     * @param reader XML data reader.
+     * @return instantiated flower's GrowingTips.
+     * @throws XMLStreamException The base exception for unexpected processing
+     *                            errors. Reports well-formedness errors
+     *                            as well as unexpected processing
+     *                            conditions.
+     */
     private Flower.GrowingTips getXMLGrowTips(final XMLStreamReader reader)
             throws XMLStreamException {
 
@@ -192,6 +242,14 @@ public class FlowersStAXBuilder {
     }
 
 
+    /**
+     * @param reader XML data reader.
+     * @return XML tag's content.
+     * @throws XMLStreamException The base exception for unexpected processing
+     *                            errors. Reports well-formedness errors
+     *                            as well as unexpected processing
+     *                            conditions.
+     */
     private String getXMLText(final XMLStreamReader reader)
             throws XMLStreamException {
         String text = null;
@@ -202,12 +260,23 @@ public class FlowersStAXBuilder {
         return text;
     }
 
+    /**
+     * @param value XML tag's value.
+     * @return corresponding enum element.
+     */
     private FlowerEnum getEnumByString(final String value) {
 
         return elementMap.get(value);
     }
 
-    private Date getPlantingDate(final String stringDate) throws ParseException {
+    /**
+     * @param stringDate Date tag's content.
+     * @return Date instance.
+     * @throws ParseException Signals that an error has been reached
+     *                        unexpectedly while parsing.
+     */
+    private Date getPlantingDate(final String stringDate)
+            throws ParseException {
         String pattern = "yyyy-MM-dd";
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
 

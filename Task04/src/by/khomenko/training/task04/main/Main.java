@@ -11,13 +11,31 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+/**
+ * Runs SAX, StAX and DOM parsers.
+ */
 public class Main {
 
+    /**
+     * Instance of logger that provides logging capability for this class'
+     * performance.
+     */
     private static final Logger LOGGER = LogManager.getLogger(Main.class);
+    /**
+     * Path to the xml file with data for Flowers' set creation.
+     */
     private static final String FILE_PATH = "data/flowers.xml";
 
+    /**
+     * Default constructor.
+     */
+    protected Main() {
+    }
 
-    public static void main(String[] args) {
+    /**
+     * @param args incoming arguments.
+     */
+    public static void main(final String[] args) {
 
         try (InputStream inputStream
                      = new FileInputStream(new File(FILE_PATH))) {

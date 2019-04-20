@@ -2,22 +2,22 @@ package by.khomenko.training.finaltask05.entity;
 
 public class Favorite extends Entity {
 
-    private Integer userIdentity;
-    private Integer categoryIdentity;
+    private Integer userId;
+    private Integer categoryId;
 
-    public Integer getUserIdentity() {
-        return userIdentity;
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void setUserIdentity(Integer userIdentity) {
-        this.userIdentity = userIdentity;
+    public void setUserId(final Integer userIdentity) {
+        this.userId = userIdentity;
     }
 
-    public Integer getCategoryIdentity() {
-        return categoryIdentity;
+    public Integer getCategoryId() {
+        return categoryId;
     }
 
-    public void setCategoryIdentity(Integer categoryIdentity) {
-        this.categoryIdentity = categoryIdentity;
+    public void setCategoryId(final Integer categoryIdentity) {
+        this.categoryId = categoryIdentity;
     }
 }

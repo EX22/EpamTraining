@@ -1,46 +1,55 @@
 USE `crowdsource_db`;
 
-CREATE TABLE `categories` (
-	`identity` INTEGER NOT NULL AUTO_INCREMENT,
+CREATE TABLE IF NOT EXISTS `categories` (
+	`id` INTEGER NOT NULL AUTO_INCREMENT,
 	`name` VARCHAR(255) NOT NULL,
-	`imagePath` VARCHAR(255),
-	PRIMARY KEY (`identity`)
+	PRIMARY KEY (`id`)
 ) ENGINE=INNODB DEFAULT CHARACTER SET utf8;
 
-CREATE TABLE `users` (
-    `identity` INTEGER NOT NULL AUTO_INCREMENT,
+CREATE TABLE IF NOT EXISTS `users` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
     `login` VARCHAR(255) NOT NULL UNIQUE,
     `name` VARCHAR(64),
     `level` INTEGER,
     `password` CHAR(32) NOT NULL,
-    `photoPath` VARCHAR(255),
-    PRIMARY KEY (`identity`)
+    `photo_path` VARCHAR(255),
+    `role` TINYINT NOT NULL CHECK (`role` IN (0, 1)),
+    PRIMARY KEY (`id`)
 ) ENGINE=INNODB DEFAULT CHARACTER SET utf8;
 
-CREATE TABLE `images` (
-    `identity` INTEGER NOT NULL AUTO_INCREMENT,
+CREATE TABLE IF NOT EXISTS `images` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
 	`path` VARCHAR(255),
 	`category` INTEGER,
-	PRIMARY KEY (`identity`),
+	PRIMARY KEY (`id`),
 	FOREIGN KEY (`category`)
-    REFERENCES `categories` (`identity`)
+    REFERENCES `categories` (`id`)
     ON UPDATE CASCADE
     ON DELETE RESTRICT
 ) ENGINE=INNODB DEFAULT CHARACTER SET utf8;
 
-CREATE TABLE `favorites` (
-	`identity` INTEGER NOT NULL AUTO_INCREMENT,
-	`user_identity` INTEGER NOT NULL,
-	`category_identity` INTEGER NOT NULL,
-	PRIMARY KEY (`identity`),
-	FOREIGN KEY (`user_identity`)
-	REFERENCES `users` (`identity`)
+CREATE TABLE IF NOT EXISTS `favorites` (
+	`user_id` INTEGER NOT NULL,
+	`category_id` INTEGER NOT NULL,
+	FOREIGN KEY (`user_id`)
+	REFERENCES `users` (`id`)
 	ON UPDATE CASCADE
 	ON DELETE RESTRICT,
-	FOREIGN KEY (`category_identity`)
-	REFERENCES `categories` (`identity`)
+	FOREIGN KEY (`category_id`)
+	REFERENCES `categories` (`id`)
 	ON UPDATE CASCADE
 	ON DELETE RESTRICT
+) ENGINE=INNODB DEFAULT CHARACTER SET utf8;
+
+CREATE TABLE IF NOT EXISTS `settings` (
+	`settings_name` VARCHAR(64) NOT NULL,
+	`settings_value` VARCHAR(255) NOT NULL
+) ENGINE=INNODB DEFAULT CHARACTER SET utf8;
+
+CREATE TABLE IF NOT EXISTS `blacklist` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+	`login` VARCHAR(255) NOT NULL,
+	PRIMARY KEY (`id`)
 ) ENGINE=INNODB DEFAULT CHARACTER SET utf8;
 
 

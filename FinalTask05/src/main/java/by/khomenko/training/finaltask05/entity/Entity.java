@@ -4,22 +4,22 @@ import java.io.Serializable;
 
 public abstract class Entity implements Serializable {
 
-    private Integer identity;
+    private Integer id;
 
     public Integer getIdentity() {
-        return identity;
+        return id;
     }
 
     public void setIdentity(Integer identity) {
-        this.identity = identity;
+        this.id = identity;
     }
 
     @Override
     public boolean equals(Object object) {
         if (object != null) {
             if (object != this) {
-                if (object.getClass() == getClass() && identity != null) {
-                    return identity.equals(((Entity) object).identity);
+                if (object.getClass() == getClass() && id != null) {
+                    return id.equals(((Entity) object).id);
                 }
                 return false;
             }
@@ -30,7 +30,7 @@ public abstract class Entity implements Serializable {
 
     @Override
     public int hashCode() {
-        return identity != null ? identity.hashCode() : 0;
+        return id != null ? id.hashCode() : 0;
     }
 }
 

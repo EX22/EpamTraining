@@ -5,17 +5,20 @@ import java.util.List;
 public class User extends Entity{
 
     private String name;
+    //TODO Use URL instead of photo Path.
     private String photoPath = "c/photoPath.by";
+    //TODO Find out what level depends on and based on.
     private Integer level;
     private String login;
     private String password;
+    private Role role;
     private List<Favorite> favorites;
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(final String name) {
         this.name = name;
     }
 
@@ -23,7 +26,7 @@ public class User extends Entity{
         return photoPath;
     }
 
-    public void setPhotoPath(String photoPath) {
+    public void setPhotoPath(final String photoPath) {
         this.photoPath = photoPath;
     }
 
@@ -31,7 +34,7 @@ public class User extends Entity{
         return level;
     }
 
-    public void setLevel(Integer level) {
+    public void setLevel(final Integer level) {
         this.level = level;
     }
 
@@ -39,7 +42,7 @@ public class User extends Entity{
         return login;
     }
 
-    public void setLogin(String login) {
+    public void setLogin(final String login) {
         this.login = login;
     }
 
@@ -47,15 +50,23 @@ public class User extends Entity{
         return password;
     }
 
-    public void setPassword(String password) {
+    public void setPassword(final String password) {
         this.password = password;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     public List<Favorite> getFavorites() {
         return favorites;
     }
 
-    public void setFavorites(List<Favorite> favorites) {
+    public void setFavorites(final List<Favorite> favorites) {
         this.favorites = favorites;
     }
 }

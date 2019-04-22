@@ -8,11 +8,11 @@ public class BlackList extends Entity {
         this.userLogin = userLoginVal;
     }
 
-    public String getUser_login() {
+    public String getUserLogin() {
         return userLogin;
     }
 
-    public void setUser_login(final String userLoginVal) {
+    public void setUserLogin(final String userLoginVal) {
         this.userLogin = userLoginVal;
     }
 }

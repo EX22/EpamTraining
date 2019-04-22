@@ -10,6 +10,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 public class BlackListDaoImpl extends BaseDaoImpl implements BlackListDao {
 
@@ -22,13 +24,13 @@ public class BlackListDaoImpl extends BaseDaoImpl implements BlackListDao {
 
     @Override
     public Integer create(BlackList blackList) throws PersistentException {
-        String sql = "INSERT INTO blacklist (user_login) VALUES (?)";
+        String sql = "INSERT INTO blacklist (login) VALUES (?)";
         //TODO Find out if it the proper way to use try with resources.
         try (PreparedStatement statement = connection.prepareStatement(sql,
                 Statement.RETURN_GENERATED_KEYS);
              ResultSet resultSet = statement.getGeneratedKeys()) {
 
-            statement.setString(1, blackList.getUser_login());
+            statement.setString(1, blackList.getUserLogin());
             statement.executeUpdate();
 
             if (resultSet.next()) {
@@ -55,9 +57,9 @@ public class BlackListDaoImpl extends BaseDaoImpl implements BlackListDao {
 
         String sql = "UPDATE black_list SET login = ?";
 
-        try (PreparedStatement statement = connection.prepareStatement(sql)){
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
 
-            statement.setString(1, blackList.getUser_login());
+            statement.setString(1, blackList.getUserLogin());
 
             statement.executeUpdate();
         } catch (SQLException e) {
@@ -74,7 +76,7 @@ public class BlackListDaoImpl extends BaseDaoImpl implements BlackListDao {
 
         String sql = "DELETE FROM black_list WHERE id = ?";
 
-        try (PreparedStatement statement = connection.prepareStatement(sql)){
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
 
             statement.setInt(1, identity);
             statement.executeUpdate();
@@ -83,6 +85,55 @@ public class BlackListDaoImpl extends BaseDaoImpl implements BlackListDao {
             LOGGER.error("Deleting blacklist entry exception occurred", e);
             throw new PersistentException(e);
         }
+
+    }
+
+    @Override
+    public List<BlackList> readAll(int page, int pageSize) throws PersistentException {
+        String sql = "SELECT * FROM blacklist LIMIT ? OFFSET ?";
+        int limit = pageSize;
+        int offset = (page - 1) * pageSize;
+        ResultSet resultSet = null;
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, limit);
+            statement.setInt(2, offset);
+            resultSet = statement.executeQuery();
+            List<BlackList> blackLists = new ArrayList<>();
+            while (resultSet.next()) {
+                BlackList blackList = new BlackList(resultSet.getString(
+                        "login"));
+                blackLists.add(blackList);
+            }
+            return blackLists;
+        } catch (SQLException e) {
+            throw new PersistentException(e);
+        } finally {
+            try {
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+            } catch (SQLException e) {
+                //TODO Add logger
+            }
+
+        }
+    }
+
+    @Override
+    public int count() throws PersistentException {
+        String sql = "SELECT COUNT(id) FROM blacklist";
+
+        try (PreparedStatement statement = connection.prepareStatement(sql);
+             ResultSet resultSet = statement.executeQuery()) {
+            int c = 0;
+            if (resultSet.next()) {
+                c = resultSet.getInt(1);
+            }
+            return c;
+        } catch (SQLException e) {
+            throw new PersistentException(e);
+        }
+
 
     }
 }

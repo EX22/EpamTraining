@@ -15,30 +15,29 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FavoruteDaoImpl extends BaseDaoImpl implements FavoriteDao {
+public class FavoriteDaoImpl extends BaseDaoImpl implements FavoriteDao {
 
     /**
      * Instance of logger that provides logging capability for this class'
      * performance.
      */
     private static final Logger LOGGER
-            = LogManager.getLogger(FavoruteDaoImpl.class);
+            = LogManager.getLogger(FavoriteDaoImpl.class);
 
     @Override
     public Integer create(Favorite favorite) throws PersistentException {
+
         String sql = "INSERT INTO favorites (user_id,"
                 + " category_id) VALUES (?, ?)";
-        PreparedStatement statement = null;
-        ResultSet resultSet = null;
-        //TODO Possibly to use try with resources here.
-        try {
-            statement = connection.prepareStatement(sql,
-                    Statement.RETURN_GENERATED_KEYS);
+
+        try (PreparedStatement statement = connection.prepareStatement(sql,
+                Statement.RETURN_GENERATED_KEYS);
+             ResultSet resultSet = statement.getGeneratedKeys();) {
+
             statement.setInt(1, favorite.getUserId());
             statement.setInt(2, favorite.getCategoryId());
-
             statement.executeUpdate();
-            resultSet = statement.getGeneratedKeys();
+
             if (resultSet.next()) {
                 return resultSet.getInt(1);
             } else {
@@ -48,17 +47,6 @@ public class FavoruteDaoImpl extends BaseDaoImpl implements FavoriteDao {
             }
         } catch (SQLException e) {
             throw new PersistentException(e);
-        } finally {
-            try {
-                resultSet.close();
-            } catch (SQLException | NullPointerException e) {
-                //TODO What should be inside this catch statement?
-            }
-            try {
-                statement.close();
-            } catch (SQLException | NullPointerException e) {
-                //TODO What should be inside this catch statement?
-            }
         }
     }
 
@@ -82,13 +70,12 @@ public class FavoruteDaoImpl extends BaseDaoImpl implements FavoriteDao {
 
         String sql = "SELECT category_id"
                 + " FROM favorites WHERE user_id = ?";
-        PreparedStatement statement = null;
-        ResultSet resultSet = null;
-        //TODO Possibly to use try with resources here.
-        try {
-            statement = connection.prepareStatement(sql);
+
+        try (PreparedStatement statement = connection.prepareStatement(sql);
+             ResultSet resultSet = statement.executeQuery()) {
+
             statement.setInt(1, user.getIdentity());
-            resultSet = statement.executeQuery();
+
             List<Favorite> favoriteList = new ArrayList<>();
             Favorite favorite;
             while (resultSet.next()) {
@@ -102,15 +89,6 @@ public class FavoruteDaoImpl extends BaseDaoImpl implements FavoriteDao {
             return favoriteList;
         } catch (SQLException e) {
             throw new PersistentException(e);
-        } finally {
-            try {
-                resultSet.close();
-            } catch (SQLException | NullPointerException e) {
-            }
-            try {
-                statement.close();
-            } catch (SQLException | NullPointerException e) {
-            }
         }
     }
 
@@ -119,20 +97,14 @@ public class FavoruteDaoImpl extends BaseDaoImpl implements FavoriteDao {
 
         String sql = "DELETE FROM favorites WHERE user_id = ?"
                 + " AND category_id = ?";
-        PreparedStatement statement = null;
 
-        try {
-            statement = connection.prepareStatement(sql);
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+
             statement.setInt(1, userId);
             statement.setInt(2, categoryId);
             statement.executeUpdate();
         } catch (SQLException e) {
             throw new PersistentException(e);
-        } finally {
-            try {
-                statement.close();
-            } catch (SQLException | NullPointerException e) {
-            }
         }
     }
 

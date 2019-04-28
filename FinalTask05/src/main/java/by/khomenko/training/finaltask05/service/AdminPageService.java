@@ -5,6 +5,8 @@ import by.khomenko.training.finaltask05.dao.mysql.BlackListDaoImpl;
 import by.khomenko.training.finaltask05.dao.pool.ConnectionPool;
 import by.khomenko.training.finaltask05.entity.BlackList;
 import by.khomenko.training.finaltask05.exception.PersistentException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,6 +16,13 @@ import java.util.Map;
 public class AdminPageService {
 
     public static final int BLACKLIST_PAGE_SIZE = 10;
+
+    /**
+     * Instance of logger that provides logging capability for this class'
+     * performance.
+     */
+    private static final Logger LOGGER
+            = LogManager.getLogger(AdminPageService.class);
 
     public Map<String, Object> load(int page) {
 
@@ -28,8 +37,8 @@ public class AdminPageService {
             int pageCount = c/BLACKLIST_PAGE_SIZE + 1;
             map.put("pageCount", pageCount);
         } catch (PersistentException e) {
-            e.printStackTrace();
-            //TODO Add logger
+            //TODO Put appropriate message into log.
+            LOGGER.error("Some message here. ", e);
         }
 
         map.put("filesize", 45);
@@ -49,9 +58,9 @@ public class AdminPageService {
             blackListDao.setConnection( ConnectionPool.getInstance().getConnection());
             blackListDao.create(new BlackList(login));
 
-        } catch (PersistentException e) {
-            e.printStackTrace();
-            //TODO Add logger
+        } catch (PersistentException ex) {
+            //TODO Put appropriate message into log.
+            LOGGER.error("During adding user to blacklist an exception occurred. ", ex);
         }
     }
 }

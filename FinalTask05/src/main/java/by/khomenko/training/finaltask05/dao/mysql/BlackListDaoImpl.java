@@ -22,10 +22,13 @@ public class BlackListDaoImpl extends BaseDaoImpl implements BlackListDao {
     private static final Logger LOGGER
             = LogManager.getLogger(BlackListDaoImpl.class);
 
+    //TODO Put sql queries into constants.
+
     @Override
     public Integer create(BlackList blackList) throws PersistentException {
+        //TODO Add user's id in query!
         String sql = "INSERT INTO blacklist (login) VALUES (?)";
-        //TODO Find out if it the proper way to use try with resources.
+
         try (PreparedStatement statement = connection.prepareStatement(sql,
                 Statement.RETURN_GENERATED_KEYS);
              ResultSet resultSet = statement.getGeneratedKeys()) {
@@ -37,12 +40,11 @@ public class BlackListDaoImpl extends BaseDaoImpl implements BlackListDao {
                 return resultSet.getInt(1);
             } else {
                 //TODO Put a proper message into the log.
-                LOGGER.error("There is some message");
+                LOGGER.error("Some message here. ");
                 throw new PersistentException();
             }
         } catch (SQLException e) {
-            //TODO Should exception thrown here be different from the else block above?
-            LOGGER.error("Some message");
+            LOGGER.error("Creating blacklist entry an exception occurred. ", e);
             throw new PersistentException(e);
         }
     }
@@ -54,7 +56,7 @@ public class BlackListDaoImpl extends BaseDaoImpl implements BlackListDao {
 
     @Override
     public void update(BlackList blackList) throws PersistentException {
-
+        //TODO Add user's id in query!
         String sql = "UPDATE black_list SET login = ?";
 
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -63,8 +65,7 @@ public class BlackListDaoImpl extends BaseDaoImpl implements BlackListDao {
 
             statement.executeUpdate();
         } catch (SQLException e) {
-            //TODO Put a proper message into the log.
-            LOGGER.error("Some message here");
+            LOGGER.error("Updating blacklist entry an exception occurred. ", e);
             throw new PersistentException(e);
         }
 
@@ -73,7 +74,7 @@ public class BlackListDaoImpl extends BaseDaoImpl implements BlackListDao {
 
     @Override
     public void delete(Integer identity) throws PersistentException {
-
+        //TODO Add user's id in query!
         String sql = "DELETE FROM black_list WHERE id = ?";
 
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -81,8 +82,7 @@ public class BlackListDaoImpl extends BaseDaoImpl implements BlackListDao {
             statement.setInt(1, identity);
             statement.executeUpdate();
         } catch (SQLException e) {
-            //TODO Put a proper message into the log.
-            LOGGER.error("Deleting blacklist entry exception occurred", e);
+            LOGGER.error("Deleting blacklist entry an exception occurred. ", e);
             throw new PersistentException(e);
         }
 
@@ -106,14 +106,16 @@ public class BlackListDaoImpl extends BaseDaoImpl implements BlackListDao {
             }
             return blackLists;
         } catch (SQLException e) {
+            LOGGER.error("Reading blacklist an exception occurred. ", e);
             throw new PersistentException(e);
         } finally {
             try {
                 if (resultSet != null) {
                     resultSet.close();
                 }
-            } catch (SQLException e) {
-                //TODO Add logger
+            } catch (SQLException ex) {
+                //TODO Put appropriate message into log.
+                LOGGER.error("Exception occurred", ex);
             }
 
         }
@@ -131,6 +133,8 @@ public class BlackListDaoImpl extends BaseDaoImpl implements BlackListDao {
             }
             return c;
         } catch (SQLException e) {
+            //TODO Put appropriate message into log.
+            LOGGER.error("Exception occurred", e);
             throw new PersistentException(e);
         }
 

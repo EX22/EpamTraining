@@ -154,7 +154,6 @@ public class ConnectionPool {
                 password));
     }
 
-    //TODO Find out whether unlock method called in a proper place here.
     public void destroy() {
         lock.lock();
         usedConnections.addAll(freeConnections);

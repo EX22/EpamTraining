@@ -6,8 +6,8 @@ public enum Role {
 
     private String name;
 
-    Role(String name) {
-        this.name = name;
+    Role(final String nameVal) {
+        this.name = nameVal;
     }
 
     public String getName() {
@@ -18,7 +18,7 @@ public enum Role {
         return ordinal();
     }
 
-    public static Role getByIdentity(Integer identity) {
+    public static Role getByIdentity(final Integer identity) {
         return Role.values()[identity];
     }
 }

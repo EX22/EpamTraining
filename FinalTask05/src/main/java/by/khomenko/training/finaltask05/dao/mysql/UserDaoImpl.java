@@ -25,17 +25,16 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
     @Override
     public Integer create(User user) throws PersistentException {
         String sql = "INSERT INTO users (login, password, role) VALUES (?, ?, ?)";
-        PreparedStatement statement = null;
-        ResultSet resultSet = null;
-        //TODO Possibly to use try with resources here.
-        try {
-            statement = connection.prepareStatement(sql,
-                    Statement.RETURN_GENERATED_KEYS);
+
+        try (PreparedStatement statement = connection.prepareStatement(sql,
+                Statement.RETURN_GENERATED_KEYS);
+             ResultSet resultSet = statement.getGeneratedKeys()) {
+
             statement.setString(1, user.getLogin());
             statement.setString(2, user.getPassword());
             statement.setInt(3, user.getRole().getIdentity());
             statement.executeUpdate();
-            resultSet = statement.getGeneratedKeys();
+
             if (resultSet.next()) {
                 return resultSet.getInt(1);
             } else {
@@ -45,15 +44,6 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
             }
         } catch (SQLException e) {
             throw new PersistentException(e);
-        } finally {
-            try {
-                resultSet.close();
-            } catch (SQLException | NullPointerException e) {
-            }
-            try {
-                statement.close();
-            } catch (SQLException | NullPointerException e) {
-            }
         }
     }
 
@@ -61,13 +51,13 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
     public User read(Integer identity) throws PersistentException {
 
         String sql = "SELECT login, password, role FROM users WHERE id = ?";
-        PreparedStatement statement = null;
-        ResultSet resultSet = null;
-        //TODO Possibly to use try with resources here.
-        try {
-            statement = connection.prepareStatement(sql);
+
+
+        try (PreparedStatement statement = connection.prepareStatement(sql);
+             ResultSet resultSet = statement.executeQuery()) {
+
             statement.setInt(1, identity);
-            resultSet = statement.executeQuery();
+
             User user = null;
             if (resultSet.next()) {
                 user = new User();
@@ -80,15 +70,6 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
             return user;
         } catch (SQLException e) {
             throw new PersistentException(e);
-        } finally {
-            try {
-                resultSet.close();
-            } catch (SQLException | NullPointerException e) {
-            }
-            try {
-                statement.close();
-            } catch (SQLException | NullPointerException e) {
-            }
         }
     }
 
@@ -96,10 +77,9 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
     public void update(User user) throws PersistentException {
 
         String sql = "UPDATE users SET login = ?, password = ?, role = ? WHERE id = ?";
-        PreparedStatement statement = null;
-        //TODO Possibly to use try with resources here.
-        try {
-            statement = connection.prepareStatement(sql);
+
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+
             statement.setString(1, user.getLogin());
             statement.setString(2, user.getPassword());
             statement.setInt(3, user.getRole().getIdentity());
@@ -107,11 +87,6 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
             statement.executeUpdate();
         } catch (SQLException e) {
             throw new PersistentException(e);
-        } finally {
-            try {
-                statement.close();
-            } catch (SQLException | NullPointerException e) {
-            }
         }
     }
 
@@ -119,34 +94,26 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
     public void delete(Integer identity) throws PersistentException {
 
         String sql = "DELETE FROM users WHERE id = ?";
-        PreparedStatement statement = null;
-        //TODO Possibly to use try with resources here.
-        try {
-            statement = connection.prepareStatement(sql);
+
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+
             statement.setInt(1, identity);
             statement.executeUpdate();
         } catch (SQLException e) {
             throw new PersistentException(e);
-        } finally {
-            try {
-                statement.close();
-            } catch (SQLException | NullPointerException e) {
-            }
         }
-
     }
 
     public User read(String login, String password) throws PersistentException {
 
         String sql = "SELECT id, role FROM users WHERE login = ? AND password = ?";
-        PreparedStatement statement = null;
-        ResultSet resultSet = null;
-        //TODO Possibly to use try with resources here.
-        try {
-            statement = connection.prepareStatement(sql);
+
+        try (PreparedStatement statement = connection.prepareStatement(sql);
+             ResultSet resultSet = statement.executeQuery()) {
+
             statement.setString(1, login);
             statement.setString(2, password);
-            resultSet = statement.executeQuery();
+
             User user = null;
             if (resultSet.next()) {
                 user = new User();
@@ -159,15 +126,6 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
             return user;
         } catch (SQLException e) {
             throw new PersistentException(e);
-        } finally {
-            try {
-                resultSet.close();
-            } catch (SQLException | NullPointerException e) {
-            }
-            try {
-                statement.close();
-            } catch (SQLException | NullPointerException e) {
-            }
         }
     }
 }

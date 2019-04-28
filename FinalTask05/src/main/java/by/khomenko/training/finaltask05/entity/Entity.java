@@ -10,12 +10,12 @@ public abstract class Entity implements Serializable {
         return id;
     }
 
-    public void setIdentity(Integer identity) {
+    public void setIdentity(final Integer identity) {
         this.id = identity;
     }
 
     @Override
-    public boolean equals(Object object) {
+    public boolean equals(final Object object) {
         if (object != null) {
             if (object != this) {
                 if (object.getClass() == getClass() && id != null) {

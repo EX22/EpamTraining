@@ -15,4 +15,6 @@ public class BlackList extends Entity {
     public void setUserLogin(final String userLoginVal) {
         this.userLogin = userLoginVal;
     }
+
+
 }

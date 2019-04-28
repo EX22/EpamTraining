@@ -54,7 +54,7 @@ public class DispatcherServlet extends HttpServlet {
                 }
                 AdminPageService adminPageService = new AdminPageService();
                 Map<String, Object> loadedData = adminPageService.load(page);
-                for (String key : loadedData.keySet()){
+                for (String key : loadedData.keySet()) {
                     request.setAttribute(key, loadedData.get(key));
                 }
                 request.getRequestDispatcher("WEB-INF/jsp/adminpage.jsp")
@@ -64,12 +64,35 @@ public class DispatcherServlet extends HttpServlet {
                 request.getRequestDispatcher("WEB-INF/jsp/category.jsp")
                         .forward(request, response);
                 break;
+            case "/forgotpass.html":
+                request.getRequestDispatcher("WEB-INF/jsp/forgotpass.jsp")
+                        .forward(request, response);
+                break;
+            case "/home.html":
+                request.getRequestDispatcher("WEB-INF/jsp/home.jsp")
+                        .forward(request, response);
+                break;
+            case "/login.html":
+                request.getRequestDispatcher("WEB-INF/jsp/login.jsp")
+                        .forward(request, response);
+                break;
             case "/myimages.html":
                 request.getRequestDispatcher("WEB-INF/jsp/myimages.jsp")
                         .forward(request, response);
                 break;
+            case "/profile.html":
+                request.getRequestDispatcher("WEB-INF/jsp/profile.jsp")
+                        .forward(request, response);
+                break;
+            case "/registration.html":
+                request.getRequestDispatcher("WEB-INF/jsp/registration.jsp")
+                        .forward(request, response);
+                break;
+
 
         }
+
+
     }
 
     @Override
@@ -85,7 +108,7 @@ public class DispatcherServlet extends HttpServlet {
                 AdminPageService adminPageService = new AdminPageService();
                 adminPageService.addUserToBlacklist(request.getParameter("userloginadd"));
                 Map<String, Object> loadedData = adminPageService.load(1);
-                for (String key : loadedData.keySet()){
+                for (String key : loadedData.keySet()) {
                     request.setAttribute(key, loadedData.get(key));
                 }
                 request.getRequestDispatcher("WEB-INF/jsp/adminpage.jsp")
@@ -100,7 +123,7 @@ public class DispatcherServlet extends HttpServlet {
                 /*request.getRequestDispatcher("WEB-INF/jsp/category.jsp")
                         .forward(request, response);*/
                 Part part = request.getPart("description");
-                byte [] arr = new byte[(int) (part.getSize())];
+                byte[] arr = new byte[(int) (part.getSize())];
 
                 part.getInputStream().read(arr);
                 String string = new String(arr);

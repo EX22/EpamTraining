@@ -46,6 +46,7 @@ public class FavoriteDaoImpl extends BaseDaoImpl implements FavoriteDao {
                 throw new PersistentException();
             }
         } catch (SQLException e) {
+            LOGGER.error("Creating favorite category an exception occurred. ", e);
             throw new PersistentException(e);
         }
     }
@@ -74,20 +75,25 @@ public class FavoriteDaoImpl extends BaseDaoImpl implements FavoriteDao {
         try (PreparedStatement statement = connection.prepareStatement(sql);
              ResultSet resultSet = statement.executeQuery()) {
 
-            statement.setInt(1, user.getIdentity());
+            statement.setInt(1, user.getId());
 
             List<Favorite> favoriteList = new ArrayList<>();
             Favorite favorite;
             while (resultSet.next()) {
-                Category category = new Category();
-                category.setIdentity(resultSet.getInt("category_id"));
+                Category category = new Category(resultSet.getInt("id"),
+                        resultSet.getString("name"),
+                        resultSet.getString("image_path"),
+                        resultSet.getString("question"));
+                category.setId(resultSet.getInt("category_id"));
                 favorite = new Favorite();
-                favorite.setUserId(user.getIdentity());
-                favorite.setCategoryId(category.getIdentity());
+                favorite.setUserId(user.getId());
+                favorite.setCategoryId(category.getId());
                 favoriteList.add(favorite);
             }
             return favoriteList;
         } catch (SQLException e) {
+            LOGGER.error("Reading from table `favorites`"
+                    + " an exception occurred. ", e);
             throw new PersistentException(e);
         }
     }
@@ -104,6 +110,8 @@ public class FavoriteDaoImpl extends BaseDaoImpl implements FavoriteDao {
             statement.setInt(2, categoryId);
             statement.executeUpdate();
         } catch (SQLException e) {
+            LOGGER.error("Deleting from table `favorites`"
+                    + " an exception occurred. ", e);
             throw new PersistentException(e);
         }
     }

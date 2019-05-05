@@ -4,7 +4,7 @@
     <head>
         <title> Crowdsource welcome page </title>
 
-        <h1> Crowdsource image recognition app </h1>
+        <h1> Crowdsource image recognition application </h1>
     </head>
 
     <body>
@@ -12,4 +12,3 @@
 
     </body>
 </html>
-

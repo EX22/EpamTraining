@@ -20,21 +20,21 @@ INSERT INTO `categories`
 (4, 'sculpture', '/categories/category4.jpg', 'Is there any sculpture on this image?');
 
 INSERT INTO `images`
-(`id`, `path`, `category_id`) VALUES
-(1, '/imagesDir/imageOne.jpg', 1),
-(2, '/imagesDir/imageTwo.jpg', 1),
-(3, '/imagesDir/imageThree.jpg', 1),
-(4, '/imagesDir/imageFour.jpg', 1),
-(5, '/imagesDir/imageFive.jpg', 2),
-(6, '/imagesDir/imageSix.jpg', 2),
-(7, '/imagesDir/imageSeven.jpg', 2),
-(8, '/imagesDir/imageEight.jpg', 2),
-(9, '/imagesDir/imageNine.jpg', 3),
-(10, '/imagesDir/imageTen.jpg', 3),
-(11, '/imagesDir/imageEleven.jpg', 3),
-(12, '/imagesDir/imageTwelve.jpg', 4),
-(13, '/imagesDir/imageThirteen.jpg', 4),
-(14, '/imagesDir/imageFourteen.jpg', 4);
+(`id`, `user_id`, `path`, `category_id`) VALUES
+(1, 2,  '/imagesDir/imageOne.jpg', 1),
+(2, 3, '/imagesDir/imageTwo.jpg', 1),
+(3, 3, '/imagesDir/imageThree.jpg', 1),
+(4, 3, '/imagesDir/imageFour.jpg', 1),
+(5, 2,'/imagesDir/imageFive.jpg', 2),
+(6, 3, '/imagesDir/imageSix.jpg', 2),
+(7, 2, '/imagesDir/imageSeven.jpg', 2),
+(8, 3, '/imagesDir/imageEight.jpg', 2),
+(9, 2, '/imagesDir/imageNine.jpg', 3),
+(10, 4, '/imagesDir/imageTen.jpg', 3),
+(11, 4, '/imagesDir/imageEleven.jpg', 3),
+(12, 4, '/imagesDir/imageTwelve.jpg', 4),
+(13, 5, '/imagesDir/imageThirteen.jpg', 4),
+(14, 5, '/imagesDir/imageFourteen.jpg', 4);
 
 INSERT INTO `favorites`
 (`user_id`, `category_id`) VALUES

@@ -45,7 +45,6 @@ public class AdminPageService {
         map.put("extension", "jpeg,png,bmp");
         map.put("blacklist", blacklist);
 
-
         return map;
     }
 

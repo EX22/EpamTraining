@@ -29,24 +29,17 @@ public class BlackListDaoImpl extends BaseDaoImpl implements BlackListDao {
         //TODO Add user's id in query!
         String sql = "INSERT INTO blacklist (login) VALUES (?)";
 
-        try (PreparedStatement statement = connection.prepareStatement(sql,
-                Statement.RETURN_GENERATED_KEYS);
-             ResultSet resultSet = statement.getGeneratedKeys()) {
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
 
             statement.setString(1, blackList.getUserLogin());
             statement.executeUpdate();
 
-            if (resultSet.next()) {
-                return resultSet.getInt(1);
-            } else {
-                //TODO Put a proper message into the log.
-                LOGGER.error("Some message here. ");
-                throw new PersistentException();
-            }
+
         } catch (SQLException e) {
             LOGGER.error("Creating blacklist entry an exception occurred. ", e);
             throw new PersistentException(e);
         }
+        return 0;
     }
 
     @Override
@@ -57,13 +50,13 @@ public class BlackListDaoImpl extends BaseDaoImpl implements BlackListDao {
     @Override
     public void update(BlackList blackList) throws PersistentException {
         //TODO Add user's id in query!
-        String sql = "UPDATE black_list SET login = ?";
+        String sql = "UPDATE blacklist SET  login = ?";
 
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
 
             statement.setString(1, blackList.getUserLogin());
-
             statement.executeUpdate();
+
         } catch (SQLException e) {
             LOGGER.error("Updating blacklist entry an exception occurred. ", e);
             throw new PersistentException(e);
@@ -75,7 +68,7 @@ public class BlackListDaoImpl extends BaseDaoImpl implements BlackListDao {
     @Override
     public void delete(Integer identity) throws PersistentException {
         //TODO Add user's id in query!
-        String sql = "DELETE FROM black_list WHERE id = ?";
+        String sql = "DELETE FROM blacklist WHERE user_id = ?";
 
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
 
@@ -100,8 +93,9 @@ public class BlackListDaoImpl extends BaseDaoImpl implements BlackListDao {
             resultSet = statement.executeQuery();
             List<BlackList> blackLists = new ArrayList<>();
             while (resultSet.next()) {
-                BlackList blackList = new BlackList(resultSet.getString(
-                        "login"));
+                BlackList blackList
+                        = new BlackList(resultSet.getInt("user_id"),
+                        resultSet.getString("login"));
                 blackLists.add(blackList);
             }
             return blackLists;

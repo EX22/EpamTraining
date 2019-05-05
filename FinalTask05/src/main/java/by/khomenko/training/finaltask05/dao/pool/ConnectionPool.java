@@ -53,7 +53,6 @@ public class ConnectionPool {
                         try {
                             connection.getConnection().close();
                         } catch (SQLException e) {
-                            //TODO What should be inside this catch statement?
                             LOGGER.info("Closing connection ", e);
                         }
                         connection = null;

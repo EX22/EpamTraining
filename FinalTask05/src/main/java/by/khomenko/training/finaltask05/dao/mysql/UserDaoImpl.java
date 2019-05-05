@@ -24,6 +24,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
 
     @Override
     public Integer create(User user) throws PersistentException {
+
         String sql = "INSERT INTO users (login, password, role) VALUES (?, ?, ?)";
 
         try (PreparedStatement statement = connection.prepareStatement(sql,
@@ -43,6 +44,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
                 throw new PersistentException();
             }
         } catch (SQLException e) {
+            LOGGER.error("Creating user an exception occurred. ", e);
             throw new PersistentException(e);
         }
     }
@@ -52,7 +54,6 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
 
         String sql = "SELECT login, password, role FROM users WHERE id = ?";
 
-
         try (PreparedStatement statement = connection.prepareStatement(sql);
              ResultSet resultSet = statement.executeQuery()) {
 
@@ -61,7 +62,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
             User user = null;
             if (resultSet.next()) {
                 user = new User();
-                user.setIdentity(identity);
+                user.setId(identity);
                 user.setLogin(resultSet.getString("login"));
                 user.setPassword(resultSet.getString("password"));
                 user.setRole(Role.getByIdentity(resultSet.getInt("role")));
@@ -69,6 +70,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
             }
             return user;
         } catch (SQLException e) {
+            LOGGER.error("Reading table `users` an exception occurred. ", e);
             throw new PersistentException(e);
         }
     }
@@ -83,9 +85,10 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
             statement.setString(1, user.getLogin());
             statement.setString(2, user.getPassword());
             statement.setInt(3, user.getRole().getIdentity());
-            statement.setInt(4, user.getIdentity());
+            statement.setInt(4, user.getId());
             statement.executeUpdate();
         } catch (SQLException e) {
+            LOGGER.error("Updating user an exception occurred. ", e);
             throw new PersistentException(e);
         }
     }
@@ -100,6 +103,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
             statement.setInt(1, identity);
             statement.executeUpdate();
         } catch (SQLException e) {
+            LOGGER.error("Deleting user an exception occurred. ", e);
             throw new PersistentException(e);
         }
     }
@@ -117,7 +121,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
             User user = null;
             if (resultSet.next()) {
                 user = new User();
-                user.setIdentity(resultSet.getInt("id"));
+                user.setId(resultSet.getInt("id"));
                 user.setLogin(login);
                 user.setPassword(password);
                 user.setRole(Role.getByIdentity(resultSet.getInt("role")));
@@ -125,6 +129,8 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
             }
             return user;
         } catch (SQLException e) {
+            LOGGER.error("Reading user by login and password"
+                    + " an exception occurred. ", e);
             throw new PersistentException(e);
         }
     }

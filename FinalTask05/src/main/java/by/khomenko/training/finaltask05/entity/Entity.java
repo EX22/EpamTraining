@@ -6,12 +6,12 @@ public abstract class Entity implements Serializable {
 
     private Integer id;
 
-    public Integer getIdentity() {
+    public Integer getId() {
         return id;
     }
 
-    public void setIdentity(final Integer identity) {
-        this.id = identity;
+    public void setId(final Integer identityVal) {
+        this.id = identityVal;
     }
 
     @Override

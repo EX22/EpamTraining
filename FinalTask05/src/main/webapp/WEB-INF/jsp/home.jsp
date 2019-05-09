@@ -1,26 +1,53 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<html>
-    <head>
-        <title> Home page </title>
-    </head>
 
-    <body>
-        <h2> Home Profile SingIn\SignOut Language </h2>
-        <h3> Select a category </h3>
-        <h4> Some categories pictures should be shown here. </h4>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title> Home page </title>
 
-    <br/>
-        <c:forEach var="elem" items="${categories}">
-            <a href="category.html?id=${elem.id}">
-            <img src="${elem.imagePath}"/></a>
-            <c:out value="${elem.name}"/><br/>
-        </c:forEach>
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
 
-        <c:forEach var="elem" begin="1" end="${pageCount}" step="1">
-            <a href="?page=${elem}"><c:out value="${elem}"/></a>
-        </c:forEach>
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
 
-    </body>
+      <jsp:include page="headmenu.jsp"/>
 
+      <h3> Select a category </h3>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <c:forEach var="elem" items="${categories}">
+                        <p><strong><c:out value="${elem.name}"/></strong><br/>
+                        <a href="category.html?id=${elem.id}">
+                        <img src="${elem.imagePath}" alt="Responsive image" class="img-responsive" /></a>
+                    </c:forEach>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <c:forEach var="elem" begin="1" end="${pageCount}" step="1">
+                    <h3><a href="?page=${elem}"><c:out value="${elem}"/></a></h3>
+                </c:forEach>
+            </div>
+        </div>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ" crossorigin="anonymous"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
+  </body>
 </html>

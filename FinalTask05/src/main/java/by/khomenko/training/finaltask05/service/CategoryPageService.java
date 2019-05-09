@@ -21,8 +21,6 @@ import java.util.Map;
 
 public class CategoryPageService {
 
-
-
     /**
      * Instance of logger that provides logging capability for this class'
      * performance.
@@ -34,19 +32,21 @@ public class CategoryPageService {
 
         Map<String, Object> map = new HashMap<>();
         List<Image> images = new ArrayList<>();
-
         ImageDao imageDao = new ImageDaoImpl();
+        CategoryDao categoryDao = new CategoryDaoImpl();
+        Category category = new Category();
 
         try {
-            imageDao.setConnection( ConnectionPool.getInstance().getConnection());
+            imageDao.setConnection(ConnectionPool.getInstance().getConnection());
             images = imageDao.readAll(userId, categoryId, 1, 10);
-
+            categoryDao.setConnection(ConnectionPool.getInstance().getConnection());
+            category = categoryDao.read(categoryId);
         } catch (PersistentException e) {
-            //TODO Put appropriate message into log.
-            LOGGER.error("Some message here. ", e);
+            LOGGER.error("Loading category images an exception occurred. ", e);
         }
 
         map.put("images", images);
+        map.put("category", category);
 
         return map;
     }
@@ -55,13 +55,12 @@ public class CategoryPageService {
 
         RecognizedImgDao recognizedImgDao = new RecognizedImgDaoImpl();
         try {
-            recognizedImgDao.setConnection( ConnectionPool.getInstance().getConnection());
+            recognizedImgDao.setConnection(ConnectionPool.getInstance().getConnection());
             for (RecognizedImg recognizedImg : recognizedImgList) {
                 recognizedImgDao.create(recognizedImg);
             }
         } catch (PersistentException e) {
-            //TODO Put appropriate message into log.
-            LOGGER.error("Some message here. ", e);
+            LOGGER.error("Saving recognized images an exception occurred. ", e);
         }
     }
 }

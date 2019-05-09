@@ -27,20 +27,22 @@ public class CategoryDaoImpl extends BaseDaoImpl implements CategoryDao {
 
         String sql = "INSERT INTO categories (name, image_path) VALUES (?, ?)";
 
-        try(PreparedStatement statement = connection.prepareStatement(sql,
-                Statement.RETURN_GENERATED_KEYS);
-            ResultSet resultSet = statement.getGeneratedKeys()) {
+        try (PreparedStatement statement = connection.prepareStatement(sql,
+                Statement.RETURN_GENERATED_KEYS)) {
 
             statement.setString(1, category.getName());
             statement.setString(2, category.getImagePath());
             statement.executeUpdate();
 
-            if (resultSet.next()) {
-                return resultSet.getInt(1);
-            } else {
-                LOGGER.error("There is no autoincremented index after"
-                        + " trying to add record into table `categories`");
-                throw new PersistentException();
+            try (ResultSet resultSet = statement.getGeneratedKeys()) {
+
+                if (resultSet.next()) {
+                    return resultSet.getInt(1);
+                } else {
+                    LOGGER.error("There is no autoincremented index after"
+                            + " trying to add record into table `categories`");
+                    throw new PersistentException();
+                }
             }
         } catch (SQLException e) {
             LOGGER.error("Creating category an exception occurred. ", e);
@@ -51,19 +53,23 @@ public class CategoryDaoImpl extends BaseDaoImpl implements CategoryDao {
     @Override
     public Category read(Integer identity) throws PersistentException {
 
-        String sql = "SELECT name, image_path, question FROM categories WHERE id = ?";
+        String sql = "SELECT name, image_path, question FROM categories"
+                + " WHERE id = ?";
 
-        try (PreparedStatement statement = connection.prepareStatement(sql);
-             ResultSet resultSet = statement.executeQuery()) {
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
 
             statement.setInt(1, identity);
 
             Category category = null;
-            if (resultSet.next()) {
-                category = new Category(identity,
-                        resultSet.getString("name"),
-                        resultSet.getString("image_path"),
-                        resultSet.getString("question"));
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+
+                if (resultSet.next()) {
+                    category = new Category(identity,
+                            resultSet.getString("name"),
+                            resultSet.getString("image_path"),
+                            resultSet.getString("question"));
+                }
             }
             return category;
         } catch (SQLException e) {
@@ -106,38 +112,35 @@ public class CategoryDaoImpl extends BaseDaoImpl implements CategoryDao {
         }
     }
 
-    public List<Category> readAll(int page, int pageSize) throws PersistentException {
+    public List<Category> readAll(int page, int pageSize)
+            throws PersistentException {
+
         String sql = "SELECT * FROM categories LIMIT ? OFFSET ?";
-        int limit = pageSize;
+
         int offset = (page - 1) * pageSize;
-        ResultSet resultSet = null;
+
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setInt(1, limit);
+
+            statement.setInt(1, pageSize);
             statement.setInt(2, offset);
-            resultSet = statement.executeQuery();
+
             List<Category> categories = new ArrayList<>();
-            while (resultSet.next()) {
-                Category category
-                        = new Category(resultSet.getInt("id"),
-                        resultSet.getString("name"),
-                        resultSet.getString("image_path"),
-                        resultSet.getString("question"));
-                categories.add(category);
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+
+                while (resultSet.next()) {
+                    Category category
+                            = new Category(resultSet.getInt("id"),
+                            resultSet.getString("name"),
+                            resultSet.getString("image_path"),
+                            resultSet.getString("question"));
+                    categories.add(category);
+                }
             }
             return categories;
         } catch (SQLException e) {
             LOGGER.error("Reading blacklist an exception occurred. ", e);
             throw new PersistentException(e);
-        } finally {
-            try {
-                if (resultSet != null) {
-                    resultSet.close();
-                }
-            } catch (SQLException ex) {
-                //TODO Put appropriate message into log.
-                LOGGER.error("Exception occurred", ex);
-            }
-
         }
     }
 
@@ -153,8 +156,7 @@ public class CategoryDaoImpl extends BaseDaoImpl implements CategoryDao {
             }
             return c;
         } catch (SQLException e) {
-            //TODO Put appropriate message into log.
-            LOGGER.error("Exception occurred", e);
+            LOGGER.error("Counting categories an exception occurred", e);
             throw new PersistentException(e);
         }
 

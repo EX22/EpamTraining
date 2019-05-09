@@ -6,7 +6,7 @@ INSERT INTO `users` (
 	`role`
 ) VALUES (
 	1,
-	"admin",
+	"admin@admin.com",
 	"AdminName",
 	MD5("admin"),
 	0

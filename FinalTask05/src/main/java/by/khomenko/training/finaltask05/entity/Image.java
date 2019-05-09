@@ -11,10 +11,11 @@ public class Image extends Entity {
     public Image() {
     }
 
-    public Image(String path, Integer userId, Integer categoryId) {
-        this.path = path;
-        this.userId = userId;
-        this.categoryId = categoryId;
+    public Image(final String pathVal, final Integer userIdVal,
+                 final Integer categoryIdVal) {
+        this.path = pathVal;
+        this.userId = userIdVal;
+        this.categoryId = categoryIdVal;
     }
 
     public String getPath() {
@@ -43,17 +44,24 @@ public class Image extends Entity {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Image)) return false;
-        if (!super.equals(o)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Image)) {
+            return false;
+        }
+        if (!super.equals(o)){
+            return false;
+        }
         Image image = (Image) o;
-        return getPath().equals(image.getPath()) &&
-                getUserId().equals(image.getUserId()) &&
-                getCategoryId().equals(image.getCategoryId());
+        return getPath().equals(image.getPath())
+                && getUserId().equals(image.getUserId())
+                && getCategoryId().equals(image.getCategoryId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), getPath(), getUserId(), getCategoryId());
+        return Objects.hash(super.hashCode(), getPath(), getUserId(),
+                getCategoryId());
     }
 }

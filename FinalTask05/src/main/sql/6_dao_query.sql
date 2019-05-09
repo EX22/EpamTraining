@@ -22,9 +22,9 @@ SELECT user_id, login FROM blacklist LIMIT 1 OFFSET 1;
 
 # CategoryDaoImpl
 # Create
-INSERT INTO categories (name, image_path, question) VALUES ('road', '/categories/categoryTest.png', 'Is there any road on this image?');
+INSERT INTO categories (name, image_path, question) VALUES ('road', 'categories/categorytest.png', 'Is there any road on this image?');
 # Update
-UPDATE categories SET name = 'fogTest', image_path = '/categories/testFogImage.bmp', question = 'Is test works?' WHERE id = 2;
+UPDATE categories SET name = 'fogTest', image_path = 'categories/testfogimage.bmp', question = 'Is test works?' WHERE id = 2;
 # Read
 SELECT name, image_path, question FROM categories WHERE id = 4;
 # Delete

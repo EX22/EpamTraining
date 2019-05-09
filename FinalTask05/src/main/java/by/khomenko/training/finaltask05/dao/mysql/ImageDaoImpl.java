@@ -25,23 +25,26 @@ public class ImageDaoImpl extends BaseDaoImpl implements ImageDao {
     @Override
     public Integer create(Image image) throws PersistentException {
 
-        String sql = "INSERT INTO images (path, user_id, category_id) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO images (path, user_id, category_id)"
+                + " VALUES (?, ?, ?)";
 
-        try(PreparedStatement statement = connection.prepareStatement(sql,
-                Statement.RETURN_GENERATED_KEYS);
-            ResultSet resultSet = statement.getGeneratedKeys()) {
+        try (PreparedStatement statement = connection.prepareStatement(sql,
+                Statement.RETURN_GENERATED_KEYS)) {
 
             statement.setString(1, image.getPath());
             statement.setInt(2, image.getUserId());
             statement.setInt(3, image.getCategoryId());
             statement.executeUpdate();
 
-            if (resultSet.next()) {
-                return resultSet.getInt(1);
-            } else {
-                LOGGER.error("There is no autoincremented index after"
-                        + " trying to add record into table `images`");
-                throw new PersistentException();
+            try (ResultSet resultSet = statement.getGeneratedKeys()) {
+
+                if (resultSet.next()) {
+                    return resultSet.getInt(1);
+                } else {
+                    LOGGER.error("There is no autoincremented index after"
+                            + " trying to add record into table `images`");
+                    throw new PersistentException();
+                }
             }
         } catch (SQLException e) {
             LOGGER.error("Creating image an exception occurred. ", e);
@@ -51,8 +54,9 @@ public class ImageDaoImpl extends BaseDaoImpl implements ImageDao {
 
     @Override
     public Image read(Integer identity) throws PersistentException {
-        //TODO Find out why it underline comma in sql query.
-        String sql = "SELECT path, user_id, category_id FROM images WHERE id = ?";
+
+        String sql = "SELECT path, user_id, category_id FROM images"
+                + " WHERE id = ?";
 
 
         try (PreparedStatement statement = connection.prepareStatement(sql);
@@ -70,7 +74,8 @@ public class ImageDaoImpl extends BaseDaoImpl implements ImageDao {
             }
             return image;
         } catch (SQLException e) {
-            LOGGER.error("Reading from table `images` an exception occurred. ", e);
+            LOGGER.error("Reading from table `images`"
+                    + " an exception occurred. ", e);
             throw new PersistentException(e);
         }
     }
@@ -79,7 +84,8 @@ public class ImageDaoImpl extends BaseDaoImpl implements ImageDao {
     @Override
     public void update(Image image) throws PersistentException {
 
-        String sql = "UPDATE images SET path = ?, user_id = ?, category_id = ? WHERE id = ?";
+        String sql = "UPDATE images SET path = ?, user_id = ?,"
+                + " category_id = ? WHERE id = ?";
 
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
 
@@ -88,7 +94,8 @@ public class ImageDaoImpl extends BaseDaoImpl implements ImageDao {
             statement.setInt(3, image.getCategoryId());
             statement.executeUpdate();
         } catch (SQLException e) {
-            LOGGER.error("Updating table `images` an exception occurred. ", e);
+            LOGGER.error("Updating table `images`"
+                    + " an exception occurred. ", e);
             throw new PersistentException(e);
         }
 
@@ -110,58 +117,82 @@ public class ImageDaoImpl extends BaseDaoImpl implements ImageDao {
     }
 
     @Override
-    public List<Image> readAll(Integer userId, Integer categoryId, int page, int pageSize) throws PersistentException {
-        String sql = "SELECT id, path " +
-                " FROM images " +
-                " WHERE category_id = ? AND user_id <> ? " +
-                " AND id NOT IN " +
-                " ( " +
-                " SELECT im.id " +
-                " FROM images AS im " +
-                " JOIN recognizedimgs AS re " +
-                " ON im.id = re.image_id " +
-                " WHERE im.category_id = ? " +
-                " AND re.user_id = ?) LIMIT ? OFFSET ?";
-        int limit = pageSize;
+    public List<Image> readAll(Integer userId, Integer categoryId, int page,
+                               int pageSize) throws PersistentException {
+
+        String sql = "SELECT id, path "
+                + " FROM images WHERE category_id = ? AND user_id <> ? "
+                + " AND id NOT IN (SELECT im.id FROM images AS im "
+                + " JOIN recognizedimgs AS re ON im.id = re.image_id "
+                + " WHERE im.category_id = ? AND re.user_id = ?)"
+                + " LIMIT ? OFFSET ?";
+
         int offset = (page - 1) * pageSize;
-        ResultSet resultSet = null;
+
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
+
             statement.setInt(1, categoryId);
             statement.setInt(2, userId);
             statement.setInt(3, categoryId);
             statement.setInt(4, userId);
-            statement.setInt(5, limit);
+            statement.setInt(5, pageSize);
             statement.setInt(6, offset);
-            resultSet = statement.executeQuery();
-            List<Image> images = new ArrayList<>();
-            while (resultSet.next()) {
-                Image image = new Image();
-                image.setId(resultSet.getInt("id"));
-                image.setUserId(userId);
-                image.setPath(resultSet.getString("path"));
-                image.setCategoryId(categoryId);
 
-                images.add(image);
+            List<Image> images = new ArrayList<>();
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+
+                while (resultSet.next()) {
+                    Image image = new Image();
+                    image.setId(resultSet.getInt("id"));
+                    image.setUserId(userId);
+                    image.setPath(resultSet.getString("path"));
+                    image.setCategoryId(categoryId);
+
+                    images.add(image);
+                }
             }
             return images;
         } catch (SQLException e) {
             LOGGER.error("Reading blacklist an exception occurred. ", e);
             throw new PersistentException(e);
-        } finally {
-            try {
-                if (resultSet != null) {
-                    resultSet.close();
-                }
-            } catch (SQLException ex) {
-                //TODO Put appropriate message into log.
-                LOGGER.error("Exception occurred", ex);
-            }
+        }
+    }
 
+    public List<Image> readUserImages(Integer userId)
+            throws PersistentException {
+
+        String sql = "SELECT path, category_id, id FROM images"
+                + " WHERE user_id = ?";
+
+
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setInt(1, userId);
+            List<Image> images = new ArrayList<>();
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+
+                while (resultSet.next()) {
+                    Image image = new Image();
+                    image.setId(resultSet.getInt("id"));
+                    image.setPath(resultSet.getString("path"));
+                    image.setUserId(userId);
+                    image.setCategoryId(resultSet.getInt("category_id"));
+                    images.add(image);
+                }
+            }
+            return images;
+        } catch (SQLException e) {
+            LOGGER.error("Reading from table `images`"
+                    + " an exception occurred. ", e);
+            throw new PersistentException(e);
         }
     }
 
     @Override
     public int count() throws PersistentException {
+
         String sql = "SELECT COUNT(id) FROM images";
 
         try (PreparedStatement statement = connection.prepareStatement(sql);
@@ -172,11 +203,27 @@ public class ImageDaoImpl extends BaseDaoImpl implements ImageDao {
             }
             return c;
         } catch (SQLException e) {
-            //TODO Put appropriate message into log.
-            LOGGER.error("Exception occurred", e);
+            LOGGER.error("Counting images an exception occurred", e);
             throw new PersistentException(e);
         }
+    }
 
+    public void updateImageCategories(List<Image> imageList)
+            throws PersistentException {
+
+        String sql = "UPDATE images SET category_id = ? WHERE id = ?";
+
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            for (Image image : imageList) {
+                statement.setInt(1, image.getCategoryId());
+                statement.setInt(2, image.getId());
+                statement.executeUpdate();
+            }
+        } catch (SQLException e) {
+            LOGGER.error("Updating categories table `images`"
+                    + " an exception occurred. ", e);
+            throw new PersistentException(e);
+        }
 
     }
 }

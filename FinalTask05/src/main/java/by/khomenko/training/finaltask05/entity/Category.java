@@ -8,6 +8,9 @@ public class Category extends Entity {
     private String imagePath;
     private String question;
 
+    public Category() {
+    }
+
     public Category(Integer id, String name, String imagePath, String question) {
         this.setId(id);
         this.name = name;

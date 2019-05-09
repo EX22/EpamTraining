@@ -1,27 +1,61 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<html>
-    <head>
-        <title> Category page </title>
-    </head>
 
-    <body>
-        <h2> Home Profile SingIn\SignOut Language </h2>
-        <h3> some pictures should be placed here </h3>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title> Category page </title>
 
-        <form method="post">
-        <br/>
-                <c:forEach var="elem" items="${images}">
-                    <img src="${elem.path}"/>
-                    <c:out value="${elem.categoryId}"/>
-                    <input type="radio" name="answer-${elem.id}" value="yes"> Yes
-                    <input type="radio" name="answer-${elem.id}" value="no"> No
-                    <br/>
-                </c:forEach>
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
 
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
 
+   <jsp:include page="headmenu.jsp"/>
 
+    <form method="post">
+        <div class="container">
+            <div class="row">
+                <h3><c:out value="${category.question}"/></h3>
+            </div>
+        </div>
+        <c:forEach var="elem" items="${images}">
+            <div class="container">
+                 <div class="row">
+                      <div class="col-md-12">
+                          <img src="${elem.path}" class="img-responsive"/>
+                          <c:out value="${elem.categoryId}"/>
+                          <div class="container">
+                              <div class="row">
+                                  <input type="radio" name="answer-${elem.id}" value="yes"> Yes
+                                  <input type="radio" name="answer-${elem.id}" value="no"> No
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+             </div>
+        </c:forEach>
+            <div class="container">
+                <div class="row">
                     <input type="submit" name="submit">
-        </form>
-    </body>
+                </div>
+            </div>
+    </form>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ" crossorigin="anonymous"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
+  </body>
 </html>

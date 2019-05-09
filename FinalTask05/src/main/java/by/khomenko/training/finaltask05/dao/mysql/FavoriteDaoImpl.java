@@ -31,22 +31,25 @@ public class FavoriteDaoImpl extends BaseDaoImpl implements FavoriteDao {
                 + " category_id) VALUES (?, ?)";
 
         try (PreparedStatement statement = connection.prepareStatement(sql,
-                Statement.RETURN_GENERATED_KEYS);
-             ResultSet resultSet = statement.getGeneratedKeys();) {
+                Statement.RETURN_GENERATED_KEYS)) {
 
             statement.setInt(1, favorite.getUserId());
             statement.setInt(2, favorite.getCategoryId());
             statement.executeUpdate();
 
-            if (resultSet.next()) {
-                return resultSet.getInt(1);
-            } else {
-                LOGGER.error("There is no autoincremented index after "
-                        + "trying to add record into table `favorites`");
-                throw new PersistentException();
+            try (ResultSet resultSet = statement.getGeneratedKeys()) {
+
+                if (resultSet.next()) {
+                    return resultSet.getInt(1);
+                } else {
+                    LOGGER.error("There is no autoincremented index after "
+                            + "trying to add record into table `favorites`");
+                    throw new PersistentException();
+                }
             }
         } catch (SQLException e) {
-            LOGGER.error("Creating favorite category an exception occurred. ", e);
+            LOGGER.error("Creating favorite category "
+                    + "an exception occurred. ", e);
             throw new PersistentException(e);
         }
     }
@@ -72,23 +75,25 @@ public class FavoriteDaoImpl extends BaseDaoImpl implements FavoriteDao {
         String sql = "SELECT category_id"
                 + " FROM favorites WHERE user_id = ?";
 
-        try (PreparedStatement statement = connection.prepareStatement(sql);
-             ResultSet resultSet = statement.executeQuery()) {
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
 
             statement.setInt(1, user.getId());
-
             List<Favorite> favoriteList = new ArrayList<>();
-            Favorite favorite;
-            while (resultSet.next()) {
-                Category category = new Category(resultSet.getInt("id"),
-                        resultSet.getString("name"),
-                        resultSet.getString("image_path"),
-                        resultSet.getString("question"));
-                category.setId(resultSet.getInt("category_id"));
-                favorite = new Favorite();
-                favorite.setUserId(user.getId());
-                favorite.setCategoryId(category.getId());
-                favoriteList.add(favorite);
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+
+                Favorite favorite;
+                while (resultSet.next()) {
+                    Category category = new Category(resultSet.getInt("id"),
+                            resultSet.getString("name"),
+                            resultSet.getString("image_path"),
+                            resultSet.getString("question"));
+                    category.setId(resultSet.getInt("category_id"));
+                    favorite = new Favorite();
+                    favorite.setUserId(user.getId());
+                    favorite.setCategoryId(category.getId());
+                    favoriteList.add(favorite);
+                }
             }
             return favoriteList;
         } catch (SQLException e) {

@@ -10,6 +10,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SettingDaoImpl extends BaseDaoImpl implements SettingDao {
 
@@ -23,7 +25,8 @@ public class SettingDaoImpl extends BaseDaoImpl implements SettingDao {
     @Override
     public Integer create(Setting setting) throws PersistentException {
 
-        String sql = "INSERT INTO settings (settings_name, settings_value) VALUES (?, ?)";
+        String sql = "INSERT INTO settings (settings_name, settings_value) "
+                + "VALUES (?, ?)";
 
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
 
@@ -44,33 +47,38 @@ public class SettingDaoImpl extends BaseDaoImpl implements SettingDao {
         return null;
     }
 
-    public Setting read(Setting settingVal) throws PersistentException {
+    public List<Setting> read(Setting settingVal) throws PersistentException {
 
-        String sql = "SELECT settings_value FROM settings WHERE settings_name = ?";
+        String sql = "SELECT settings_name, settings_value FROM settings";
 
 
-        try (PreparedStatement statement = connection.prepareStatement(sql);
-             ResultSet resultSet = statement.executeQuery()) {
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
 
-            statement.setString(1, settingVal.getName());
+            List<Setting> settingList = new ArrayList<>();
 
-            Setting setting = null;
-            if (resultSet.next()) {
-                setting = new Setting();
-                setting.setName(settingVal.getName());
-                setting.setValue(resultSet.getString("settings_value"));
+            try (ResultSet resultSet = statement.executeQuery()) {
+
+                Setting setting;
+                while (resultSet.next()) {
+                    setting = new Setting();
+                    setting.setName(resultSet.getString("settings_name"));
+                    setting.setValue(resultSet.getString("settings_value"));
+                    settingList.add(setting);
+                }
             }
-            return setting;
+            return settingList;
         } catch (SQLException e) {
             LOGGER.error("Reading table `users` an exception occurred. ", e);
             throw new PersistentException(e);
         }
     }
 
+
     @Override
     public void update(Setting setting) throws PersistentException {
 
-        String sql = "UPDATE settings SET settings_value = ? WHERE settings_name = ?";
+        String sql = "UPDATE settings SET settings_value = ?"
+                + " WHERE settings_name = ?";
 
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
 
@@ -78,13 +86,14 @@ public class SettingDaoImpl extends BaseDaoImpl implements SettingDao {
             statement.setString(2, setting.getName());
             statement.executeUpdate();
         } catch (SQLException e) {
-            LOGGER.error("Updating table `settings` an exception occurred. ", e);
+            LOGGER.error("Updating table `settings` "
+                    + "an exception occurred. ", e);
             throw new PersistentException(e);
         }
     }
 
     @Override
     public void delete(Integer identity) throws PersistentException {
-    //TODO Find out whether this method needed to be implemented.
+        //TODO Find out whether this method needed to be implemented.
     }
 }

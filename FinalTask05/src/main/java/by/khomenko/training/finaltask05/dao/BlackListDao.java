@@ -7,6 +7,8 @@ import java.util.List;
 
 public interface BlackListDao extends Dao<BlackList> {
 
+    void deleteBylogin(String login) throws PersistentException;
+
     List<BlackList> readAll(int page, int pageSize) throws PersistentException;
 
     int count() throws PersistentException;

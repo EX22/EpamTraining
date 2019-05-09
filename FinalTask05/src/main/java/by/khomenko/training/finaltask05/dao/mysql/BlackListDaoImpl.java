@@ -9,7 +9,6 @@ import org.apache.logging.log4j.Logger;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +21,6 @@ public class BlackListDaoImpl extends BaseDaoImpl implements BlackListDao {
     private static final Logger LOGGER
             = LogManager.getLogger(BlackListDaoImpl.class);
 
-    //TODO Put sql queries into constants.
 
     @Override
     public Integer create(BlackList blackList) throws PersistentException {
@@ -36,7 +34,8 @@ public class BlackListDaoImpl extends BaseDaoImpl implements BlackListDao {
 
 
         } catch (SQLException e) {
-            LOGGER.error("Creating blacklist entry an exception occurred. ", e);
+            LOGGER.error("Creating blacklist entry "
+                    + "an exception occurred. ", e);
             throw new PersistentException(e);
         }
         return 0;
@@ -58,7 +57,8 @@ public class BlackListDaoImpl extends BaseDaoImpl implements BlackListDao {
             statement.executeUpdate();
 
         } catch (SQLException e) {
-            LOGGER.error("Updating blacklist entry an exception occurred. ", e);
+            LOGGER.error("Updating blacklist entry "
+                    + "an exception occurred. ", e);
             throw new PersistentException(e);
         }
 
@@ -75,49 +75,63 @@ public class BlackListDaoImpl extends BaseDaoImpl implements BlackListDao {
             statement.setInt(1, identity);
             statement.executeUpdate();
         } catch (SQLException e) {
-            LOGGER.error("Deleting blacklist entry an exception occurred. ", e);
+            LOGGER.error("Deleting blacklist entry "
+                    + "an exception occurred. ", e);
+            throw new PersistentException(e);
+        }
+
+    }
+
+    public void deleteBylogin(String login) throws PersistentException {
+        //TODO Add user's id in query!
+        String sql = "DELETE FROM blacklist WHERE login = ?";
+
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setString(1, login);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            LOGGER.error("Deleting user from blacklist by login "
+                    + "an exception occurred. ", e);
             throw new PersistentException(e);
         }
 
     }
 
     @Override
-    public List<BlackList> readAll(int page, int pageSize) throws PersistentException {
+    public List<BlackList> readAll(int page, int pageSize)
+            throws PersistentException {
+
         String sql = "SELECT * FROM blacklist LIMIT ? OFFSET ?";
-        int limit = pageSize;
+
         int offset = (page - 1) * pageSize;
-        ResultSet resultSet = null;
+
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setInt(1, limit);
+
+            statement.setInt(1, pageSize);
             statement.setInt(2, offset);
-            resultSet = statement.executeQuery();
+
             List<BlackList> blackLists = new ArrayList<>();
-            while (resultSet.next()) {
-                BlackList blackList
-                        = new BlackList(resultSet.getInt("user_id"),
-                        resultSet.getString("login"));
-                blackLists.add(blackList);
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+
+                while (resultSet.next()) {
+                    BlackList blackList
+                            = new BlackList(resultSet.getInt("user_id"),
+                            resultSet.getString("login"));
+                    blackLists.add(blackList);
+                }
             }
             return blackLists;
         } catch (SQLException e) {
             LOGGER.error("Reading blacklist an exception occurred. ", e);
             throw new PersistentException(e);
-        } finally {
-            try {
-                if (resultSet != null) {
-                    resultSet.close();
-                }
-            } catch (SQLException ex) {
-                //TODO Put appropriate message into log.
-                LOGGER.error("Exception occurred", ex);
-            }
-
         }
     }
 
     @Override
     public int count() throws PersistentException {
-        String sql = "SELECT COUNT(id) FROM blacklist";
+        String sql = "SELECT COUNT(user_id) FROM blacklist";
 
         try (PreparedStatement statement = connection.prepareStatement(sql);
              ResultSet resultSet = statement.executeQuery()) {
@@ -127,8 +141,8 @@ public class BlackListDaoImpl extends BaseDaoImpl implements BlackListDao {
             }
             return c;
         } catch (SQLException e) {
-            //TODO Put appropriate message into log.
-            LOGGER.error("Exception occurred", e);
+            LOGGER.error("Counting blacklist entries "
+                    + "an Exception occurred", e);
             throw new PersistentException(e);
         }
 

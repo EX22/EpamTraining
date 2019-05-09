@@ -11,7 +11,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class RecognizedImgDaoImpl extends BaseDaoImpl implements RecognizedImgDao {
+public class RecognizedImgDaoImpl extends BaseDaoImpl
+        implements RecognizedImgDao {
 
     /**
      * Instance of logger that provides logging capability for this class'
@@ -21,11 +22,13 @@ public class RecognizedImgDaoImpl extends BaseDaoImpl implements RecognizedImgDa
             = LogManager.getLogger(RecognizedImgDaoImpl.class);
 
     @Override
-    public Integer create(RecognizedImg recognizedImg) throws PersistentException {
+    public Integer create(RecognizedImg recognizedImg)
+            throws PersistentException {
 
-        String sql = "INSERT INTO recognizedimgs (image_id, user_id, answer) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO recognizedimgs (image_id, user_id, answer)"
+                + " VALUES (?, ?, ?)";
 
-        try (PreparedStatement statement = connection.prepareStatement(sql)){
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
 
             statement.setInt(1, recognizedImg.getImageId());
             statement.setInt(2, recognizedImg.getUserId());
@@ -45,16 +48,18 @@ public class RecognizedImgDaoImpl extends BaseDaoImpl implements RecognizedImgDa
         // in the method and put in an sql accordingly.
         String sql = "SELECT user_id, answer FROM recognizedimgs WHERE id = ?";
 
-        try (PreparedStatement statement = connection.prepareStatement(sql);
-             ResultSet resultSet = statement.executeQuery()) {
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
 
             statement.setInt(1, identity);
-
             RecognizedImg recognizedImg = null;
-            if (resultSet.next()) {
-                recognizedImg = new RecognizedImg();
-                recognizedImg.setUserId(resultSet.getInt("user_id"));
-                recognizedImg.setAnswer(resultSet.getString("answer"));
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+
+                if (resultSet.next()) {
+                    recognizedImg = new RecognizedImg();
+                    recognizedImg.setUserId(resultSet.getInt("user_id"));
+                    recognizedImg.setAnswer(resultSet.getString("answer"));
+                }
             }
             return recognizedImg;
         } catch (SQLException e) {

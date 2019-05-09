@@ -7,18 +7,21 @@ public class User extends Entity {
 
     private String name;
     //TODO Use URL instead of photo Path.
-    private String photoPath = "c/photoPath.by";
-
+    private String photoPath;
     /**
      * User's level depends on quantity of images they recognized.
      * For demonstration purposes the one recognized image gains level up
-     * to one grade.
+     * to one point.
      */
     private Integer level;
     private String login;
     private String password;
     private Role role;
     private List<Favorite> favorites;
+
+    public User() {
+        this.role = Role.USER;
+    }
 
     public String getName() {
         return name;

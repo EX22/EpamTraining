@@ -7,6 +7,14 @@ public class Setting extends Entity {
     private String name;
     private String value;
 
+    public Setting() {
+    }
+
+    public Setting(String nameVal, String val) {
+        this.name = nameVal;
+        this.value = val;
+    }
+
     public String getName() {
         return name;
     }

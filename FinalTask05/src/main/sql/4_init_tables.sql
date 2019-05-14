@@ -11,3 +11,8 @@ INSERT INTO `users` (
 	MD5("admin"),
 	0
 );
+
+INSERT INTO `settings`
+(`settings_name`, `settings_value`) VALUES
+('fileSize', '8 Mb'),
+('fileExtensions', 'jpg, png, bmp');

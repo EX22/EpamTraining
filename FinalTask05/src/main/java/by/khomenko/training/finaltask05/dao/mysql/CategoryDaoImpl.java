@@ -112,17 +112,12 @@ public class CategoryDaoImpl extends BaseDaoImpl implements CategoryDao {
         }
     }
 
-    public List<Category> readAll(int page, int pageSize)
+    public List<Category> readAll()
             throws PersistentException {
 
-        String sql = "SELECT * FROM categories LIMIT ? OFFSET ?";
-
-        int offset = (page - 1) * pageSize;
+        String sql = "SELECT * FROM categories";
 
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
-
-            statement.setInt(1, pageSize);
-            statement.setInt(2, offset);
 
             List<Category> categories = new ArrayList<>();
 
@@ -139,7 +134,7 @@ public class CategoryDaoImpl extends BaseDaoImpl implements CategoryDao {
             }
             return categories;
         } catch (SQLException e) {
-            LOGGER.error("Reading blacklist an exception occurred. ", e);
+            LOGGER.error("Reading categories an exception occurred. ", e);
             throw new PersistentException(e);
         }
     }

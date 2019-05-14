@@ -84,14 +84,10 @@ public class FavoriteDaoImpl extends BaseDaoImpl implements FavoriteDao {
 
                 Favorite favorite;
                 while (resultSet.next()) {
-                    Category category = new Category(resultSet.getInt("id"),
-                            resultSet.getString("name"),
-                            resultSet.getString("image_path"),
-                            resultSet.getString("question"));
-                    category.setId(resultSet.getInt("category_id"));
+
                     favorite = new Favorite();
                     favorite.setUserId(user.getId());
-                    favorite.setCategoryId(category.getId());
+                    favorite.setCategoryId(resultSet.getInt("category_id"));
                     favoriteList.add(favorite);
                 }
             }
@@ -113,6 +109,24 @@ public class FavoriteDaoImpl extends BaseDaoImpl implements FavoriteDao {
 
             statement.setInt(1, userId);
             statement.setInt(2, categoryId);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            LOGGER.error("Deleting from table `favorites`"
+                    + " an exception occurred. ", e);
+            throw new PersistentException(e);
+        }
+    }
+
+    public void deleteAll(Integer userId)
+            throws PersistentException {
+
+        String sql = "DELETE FROM favorites WHERE user_id = ?";
+
+
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setInt(1, userId);
+
             statement.executeUpdate();
         } catch (SQLException e) {
             LOGGER.error("Deleting from table `favorites`"

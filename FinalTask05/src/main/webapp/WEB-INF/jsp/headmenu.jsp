@@ -40,8 +40,6 @@
                    <script type="text/javascript">
                      context = "${context}"
                      active_id = window.location.pathname.substring(context.length + 1)
-                     console.log(context)
-                     console.log(active_id)
                      document.getElementById(active_id).className = "active"
                    </script>
               </c:when>

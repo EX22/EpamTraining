@@ -4,11 +4,12 @@ import java.util.Objects;
 
 public class BlackList extends Entity {
 
+    //TODO Remove login.
     private Integer userId;
     private String userLogin;
 
-    public BlackList(String userLogin) {
-        this.userLogin = userLogin;
+    public BlackList(Integer userId) {
+        this.userId = userId;
     }
 
     public BlackList(Integer userId, String userLogin) {

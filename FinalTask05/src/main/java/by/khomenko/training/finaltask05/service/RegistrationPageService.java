@@ -1,20 +1,13 @@
 package by.khomenko.training.finaltask05.service;
 
 import by.khomenko.training.finaltask05.dao.UserDao;
-import by.khomenko.training.finaltask05.dao.mysql.FavoriteDaoImpl;
 import by.khomenko.training.finaltask05.dao.mysql.UserDaoImpl;
 import by.khomenko.training.finaltask05.dao.pool.ConnectionPool;
-import by.khomenko.training.finaltask05.entity.Favorite;
 import by.khomenko.training.finaltask05.entity.User;
 import by.khomenko.training.finaltask05.exception.PersistentException;
 import by.khomenko.training.finaltask05.exception.ValidationException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class RegistrationPageService {
 
@@ -26,14 +19,16 @@ public class RegistrationPageService {
             = LogManager.getLogger(RegistrationPageService.class);
 
 
-    public Integer createUser(String login, String pass, String confirmPass) throws ValidationException, PersistentException {
+    public Integer createUser(String login, String pass, String confirmPass)
+            throws ValidationException, PersistentException {
 
         UserDao userDao = new UserDaoImpl();
 
         Integer userId;
         try {
             if (!pass.equals(confirmPass)) {
-                throw new ValidationException("Password and confirmPassword are not equal");
+                throw new ValidationException("Password and confirmPassword"
+                        + " are not equal");
             }
             userDao.setConnection(ConnectionPool.getInstance().getConnection());
             if (userDao.isUserExist(login)) {
@@ -50,7 +45,6 @@ public class RegistrationPageService {
         }
 
         return userId;
-
 
     }
 

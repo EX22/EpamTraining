@@ -28,13 +28,13 @@
 
         <div class="container">
             <div class="row">
-                <div class="col-md-4">
-                    <c:forEach var="elem" items="${categories}">
+                <c:forEach var="elem" items="${categories}">
+                    <div class="col-md-4">
                         <p><strong><c:out value="${elem.name}"/></strong><br/>
                         <a href="category.html?id=${elem.id}">
                         <img src="${elem.imagePath}" alt="Responsive image" class="img-responsive" /></a>
-                    </c:forEach>
-                </div>
+                    </div>
+                </c:forEach>
             </div>
         </div>
         <div class="container">

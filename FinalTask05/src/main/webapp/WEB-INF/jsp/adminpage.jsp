@@ -30,7 +30,7 @@
                 <div class="row">
                     <div class="container">
                         <div class="row">
-                            <h5><strong><p class="text-center">Currently allowed file size is : <c:out value="${filesize}"/></p></strong><h5>
+                            <h5><strong><p class="text-center">Currently allowed file size (Mb) is : <c:out value="${settings.fileSize}"/></p></strong><h5>
                         </div>
                     </div>
                     <div class="form-group">
@@ -41,18 +41,18 @@
                     </div>
                     <div class="container">
                         <div class="row">
-                            <h5><strong><p class="text-center">Currently allowed files extension is : <c:out value="${extension}"/></p></strong><h5>
+                            <h5><strong><p class="text-center">Currently allowed files extension is : <c:out value="${settings.fileExtensions}"/></p></strong><h5>
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="inputExtension3" class="col-sm-2 control-label">Enter allowed files extension</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" id="inputExtension3" name="fileExtension" placeholder="Files extension">
+                            <input type="text" class="form-control" id="inputExtension3" name="fileExtensions" placeholder="Files extension">
                         </div>
                     </div>
                     <div class="form-group">
                         <div class="col-sm-offset-2 col-sm-10">
-                            <button type="submit" class="btn btn-default">Submit</button>
+                            <button name="formAction" type="submit" value="saveSettings" class="btn btn-default">Submit</button>
                         </div>
                     </div>
                 </div>
@@ -66,41 +66,44 @@
             <div class="container">
                 <div class="row">
                       <c:forEach var="elem" items="${blacklist}">
-                          <c:out value="${elem.userLogin}"/></br>
+                          <c:out value="${elem.login}"/></br>
                       </c:forEach>
-                    <c:forEach var="elem" begin="1" end="${pageCount}" step="1">
-                        <h5><strong><a href="?page=${elem}"><c:out value="${elem}"/></a></strong></h5>
-                    </c:forEach>
                 </div>
             </div>
             <p>
             <div class="container">
                  <div class="row">
                      <div class="form-group">
-                         <label for="inputFileSize3" class="col-sm-2 control-label">Enter user login to add into blacklist</label>
+                         <label for="userToAdd3" class="col-sm-2 control-label">Choose user login to add into blacklist</label>
                          <div class="col-sm-10">
-                             <input type="text" class="form-control" id="inputFileSize3" name="userloginadd" placeholder="Add into blacklist">
+                             <p><select name="userToAdd" id="userToAdd3">
+                                 <option value="" disabled>Add user into blacklist</option>
+                                 <c:forEach var="user" items="${usersNotInBlacklist}">
+                                     <option value="${user.id}"><c:out value="${user.login}"/></option>
+                                 </c:forEach>
+                             </select></p>
                          </div>
                      </div>
                      <div class="form-group">
                          <div class="col-sm-offset-2 col-sm-10">
-                             <button type="submit" class="btn btn-default">Add</button>
-                         </div>
-                     </div>
-                 </div>
-            </div>
-            <div class="container">
-                 <div class="row">
-                     <div class="form-group">
-                         <label for="removeFromBlacklist3" class="col-sm-2 control-label">Enter user login to remove from blacklist</label>
-                         <div class="col-sm-10">
-                             <input type="text" class="form-control" id="removeFromBlacklist3" name="userloginremove"  placeholder="Remove from blacklist">
+                             <button name="formAction" type="submit" value="addUserToBlacklist" class="btn btn-default">Add</button>
                          </div>
                      </div>
                      <div class="form-group">
-                         <div class="col-sm-offset-2 col-sm-10">
-                             <button type="submit" class="btn btn-default">Remove</button>
-                         </div>
+                          <label for="userRemoveFrom3" class="col-sm-2 control-label">Choose user login to remove from blacklist</label>
+                          <div class="col-sm-10">
+                              <p><select name="userRemoveFrom" id="userRemoveFrom3">
+                                  <option value="" disabled>Remove user from blacklist</option>
+                                  <c:forEach var="user" items="${blacklist}">
+                                      <option value="${user.id}"><c:out value="${user.login}"/></option>
+                                  </c:forEach>
+                              </select></p>
+                          </div>
+                      </div>
+                     <div class="form-group">
+                          <div class="col-sm-offset-2 col-sm-10">
+                              <button name="formAction" type="submit" value="removeUserFromBlacklist" class="btn btn-default">Remove</button>
+                          </div>
                      </div>
                  </div>
             </div>

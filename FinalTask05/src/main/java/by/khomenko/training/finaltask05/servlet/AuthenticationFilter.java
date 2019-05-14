@@ -10,7 +10,7 @@ import java.io.IOException;
 
 @WebFilter(description = "Redirect to login if not authorised",
         urlPatterns = {"/adminpage.html", "/category.html", "/myimages.html",
-                "/profile.html"})
+                "/profile.html", "/profilesettings.html"})
 public class AuthenticationFilter extends HttpFilter {
 
     @Override
@@ -27,6 +27,5 @@ public class AuthenticationFilter extends HttpFilter {
         }
 
     }
-
 
 }

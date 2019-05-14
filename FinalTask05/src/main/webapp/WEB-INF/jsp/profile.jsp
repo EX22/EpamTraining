@@ -64,9 +64,13 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-4">
-                        <c:forEach var="elem" items="${favorites}">
-                              <img src="${elem.categoryId}" class="img-responsive" alt="">
-                        </c:forEach>
+                        <ul>
+                            <c:forEach var="c" items="${categories}">
+                                <c:if test="${favoriteIds.contains(c.id)}">
+                                    <li><c:out value="${c.name}"/></li>
+                                </c:if>
+                            </c:forEach>
+                        </ul>
                     </div>
                 </div>
             </div>

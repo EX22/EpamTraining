@@ -11,6 +11,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserDaoImpl extends BaseDaoImpl implements UserDao {
 
@@ -119,7 +121,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
     public void updateUserPass(Integer curUserId, String newPass)
             throws PersistentException {
 
-        String sql = "UPDATE users SET password = ? WHERE id = ?";
+        String sql = "UPDATE users SET password = MD5(?) WHERE id = ?";
 
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
 
@@ -176,6 +178,69 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
             throw new PersistentException(e);
         }
     }
+
+    public List<User> readAllNotInBlacklist() throws PersistentException {
+
+        String sql = "SELECT * FROM users WHERE role <> 0 AND id NOT IN (SELECT user_id FROM blacklist)";
+
+        List<User> users = new ArrayList<>();
+
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+
+                while (resultSet.next()) {
+
+                    User user = new User();
+                    user.setName(resultSet.getString("name"));
+                    user.setId(resultSet.getInt("id"));
+                    user.setPhotoPath(resultSet.getString("photo_path"));
+                    user.setLevel(resultSet.getInt("level"));
+                    user.setLogin(resultSet.getString("login"));
+                    user.setPassword(resultSet.getString("password"));
+                    user.setRole(Role.getByIdentity(resultSet.getInt("role")));
+                    users.add(user);
+                }
+            }
+            return users;
+        } catch (SQLException e) {
+            LOGGER.error("Reading users not in blacklist"
+                    + " an exception occurred. ", e);
+            throw new PersistentException(e);
+        }
+    }
+
+    public List<User> readAllInBlacklist() throws PersistentException {
+
+        String sql = "SELECT * FROM users WHERE role <> 0 AND id IN (SELECT user_id FROM blacklist)";
+
+        List<User> users = new ArrayList<>();
+
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+
+                while (resultSet.next()) {
+
+                    User user = new User();
+                    user.setName(resultSet.getString("name"));
+                    user.setId(resultSet.getInt("id"));
+                    user.setPhotoPath(resultSet.getString("photo_path"));
+                    user.setLevel(resultSet.getInt("level"));
+                    user.setLogin(resultSet.getString("login"));
+                    user.setPassword(resultSet.getString("password"));
+                    user.setRole(Role.getByIdentity(resultSet.getInt("role")));
+                    users.add(user);
+                }
+            }
+            return users;
+        } catch (SQLException e) {
+            LOGGER.error("Reading users not in blacklist"
+                    + " an exception occurred. ", e);
+            throw new PersistentException(e);
+        }
+    }
+
 
     public boolean isUserExist(String login) throws PersistentException {
         String sql = "SELECT id FROM users WHERE login = ?";

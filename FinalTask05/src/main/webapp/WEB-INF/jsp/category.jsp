@@ -30,12 +30,11 @@
                 <h3><c:out value="${category.question}"/></h3>
             </div>
         </div>
-        <c:forEach var="elem" items="${images}">
-            <div class="container">
-                 <div class="row">
-                      <div class="col-md-12">
+        <div class="container">
+            <div class="row">
+                <c:forEach var="elem" items="${images}">
+                      <div class="col-md-4">
                           <img src="${elem.path}" class="img-responsive"/>
-                          <c:out value="${elem.categoryId}"/>
                           <div class="container">
                               <div class="row">
                                   <input type="radio" name="answer-${elem.id}" value="yes"> Yes
@@ -43,9 +42,9 @@
                               </div>
                           </div>
                       </div>
-                  </div>
-             </div>
-        </c:forEach>
+                </c:forEach>
+            </div>
+        </div>
             <div class="container">
                 <div class="row">
                     <input type="submit" name="submit">

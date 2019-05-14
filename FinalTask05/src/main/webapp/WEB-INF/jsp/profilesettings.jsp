@@ -74,8 +74,20 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-4">
-                        <c:forEach var="elem" items="${favorites}">
-                              <img src="${elem.categoryId}" class="img-responsive" alt="">
+                        <c:forEach var="c" items="${categories}">
+                              <div class="checkbox">
+                                <label>
+                                <c:choose>
+                                    <c:when test="${favoriteIds.contains(c.id)}">
+                                        <input type="checkbox" name="category-${c.id}" value="" checked>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <input type="checkbox" name="category-${c.id}" value="">
+                                    </c:otherwise>
+                                </c:choose>
+                                  <c:out value="${c.name}"/>
+                                </label>
+                              </div>
                         </c:forEach>
                     </div>
                 </div>
@@ -90,9 +102,9 @@
             <div class="container">
                 <div class="row">
                     <div class="form-group">
-                        <label for="currentPassword" class="col-sm-2 control-label">Enter your current password</label>
+                        <label for="currentPassword3" class="col-sm-2 control-label">Enter your current password</label>
                     <div class="col-sm-10">
-                    <input type="password" class="form-control" id="currentPassword" name="oldPassword" placeholder="Current password">
+                    <input type="password" class="form-control" id="currentPassword3" name="currentPassword" placeholder="Current password">
                 </div>
             </div>
             <div class="form-group">
@@ -112,7 +124,11 @@
                     <button type="submit" class="btn btn-default">Submit changes</button>
                 </div>
             </div>
-
+            <div class="form-group">
+                <div class="col-md-4 col-md-offset-4">
+                    <button type="reset" class="btn" value="Reset">Reset</button>
+                </div>
+            </div>
         </form>
 
 

@@ -24,17 +24,16 @@
 
     <jsp:include page="headmenu.jsp"/>
 
-      <form method="post" enctype="multipart/form-data">
+      <form method="post" enctype="multipart/form-data" class="form-horizontal">
             Pagination tabs should be placed here.
 
             <div class="container">
                 <div class="row">
-                    <div class="col-md-4">
-                        <c:forEach var="im" items="${images}">
+                    <c:forEach var="im" items="${images}">
+                        <div class="col-md-4">
                             <img src="${im.path}" class="img-responsive"/>
                             <p class="text-left">Category :
-                            <c:out value="${im.categoryId}"/>
-                                <p><select name="category-${im.id}">
+                            <p><select name="category-${im.id}">
                                 <option value="" disabled>Chose the category</option>
                                 <c:forEach var="cat" items="${categories}">
                                     <c:choose>
@@ -46,10 +45,9 @@
                                         </c:otherwise>
                                     </c:choose>
                                 </c:forEach>
-                                </select></p>
-                            <br/>
-                        </c:forEach>
-                    </div>
+                            </select></p>
+                        </div>
+                    </c:forEach>
                 </div>
             </div>
             <div class="container">
@@ -72,6 +70,11 @@
                     <div class="col-md-4">
                         <p><input type="submit" value="Save changes"></p>
                     </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-4 col-md-offset-4">
+                    <button type="reset" class="btn" value="Reset">Cancel</button>
                 </div>
             </div>
       </form>

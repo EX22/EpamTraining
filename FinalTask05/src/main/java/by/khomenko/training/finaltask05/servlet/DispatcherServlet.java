@@ -1,6 +1,7 @@
 package by.khomenko.training.finaltask05.servlet;
 
 import by.khomenko.training.finaltask05.dao.pool.ConnectionPool;
+import by.khomenko.training.finaltask05.entity.Favorite;
 import by.khomenko.training.finaltask05.entity.Image;
 import by.khomenko.training.finaltask05.entity.RecognizedImg;
 import by.khomenko.training.finaltask05.entity.User;
@@ -53,7 +54,8 @@ public class DispatcherServlet extends HttpServlet {
     public static final String CATEGORY = "category-";
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    protected void doGet(HttpServletRequest request,
+                         HttpServletResponse response)
             throws ServletException, IOException {
 
         int length = request.getContextPath().length();
@@ -64,13 +66,10 @@ public class DispatcherServlet extends HttpServlet {
             switch (s) {
 
                 case "/adminpage.html":
-                    String string = request.getParameter("page");
-                    int page = 1;
-                    if (string != null) {
-                        page = Integer.parseInt(string);
-                    }
+
                     AdminPageService adminPageService = new AdminPageService();
-                    Map<String, Object> loadedData = adminPageService.load(page);
+                    Map<String, Object> loadedData
+                            = adminPageService.load();
                     for (String key : loadedData.keySet()) {
                         request.setAttribute(key, loadedData.get(key));
                     }
@@ -93,13 +92,8 @@ public class DispatcherServlet extends HttpServlet {
 
                 case "/home.html":
 
-                    String hps = request.getParameter("page");
-                    int hp = 1;
-                    if (hps != null) {
-                        hp = Integer.parseInt(hps);
-                    }
                     HomePageService homePageService = new HomePageService();
-                    Map<String, Object> hpd = homePageService.load(hp);
+                    Map<String, Object> hpd = homePageService.load();
                     for (String key : hpd.keySet()) {
                         request.setAttribute(key, hpd.get(key));
                     }
@@ -125,7 +119,8 @@ public class DispatcherServlet extends HttpServlet {
 
                     showProfileInfo(request, response);
 
-                    Integer uId = (Integer) request.getSession().getAttribute("userId");
+                    Integer uId = (Integer) request.getSession()
+                            .getAttribute("userId");
                     Integer cuId = getCurrentUserId(request);
                     if (cuId.equals(uId)) {
                         request.getRequestDispatcher("WEB-INF/jsp/profile.jsp")
@@ -135,12 +130,14 @@ public class DispatcherServlet extends HttpServlet {
                         request.getRequestDispatcher("WEB-INF/jsp/registration.jsp")
                                 .forward(request, response);
                     }
+
                     break;
 
                 case "/registration.html":
 
                     request.getRequestDispatcher("WEB-INF/jsp/registration.jsp")
                             .forward(request, response);
+
                     break;
 
                 case "/logout.html":
@@ -159,11 +156,10 @@ public class DispatcherServlet extends HttpServlet {
 
                     break;
 
-
             }
 
         } catch (PersistentException e) {
-            LOGGER.error("Some exception in doGet method", e);
+            LOGGER.error("An exception in doGet method occurred.", e);
 
         }
 
@@ -171,8 +167,9 @@ public class DispatcherServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request,
+                          HttpServletResponse response)
+            throws ServletException {
 
         int length = request.getContextPath().length();
         String s = request.getRequestURI().substring(length);
@@ -184,17 +181,20 @@ public class DispatcherServlet extends HttpServlet {
                 case "/adminpage.html":
 
                     AdminPageService adminPageService = new AdminPageService();
-                    adminPageService.addUserToBlacklist(request.getParameter("userloginadd"));
-                    adminPageService.removeUserFromBlacklist(request.getParameter("userloginremove"));
-                    Map<String, Object> loadedData = adminPageService.load(1);
+                    if ("addUserToBlacklist".equals(request.getParameter("formAction"))) {
+                        adminPageService.addUserToBlacklist(request.getParameter("userToAdd"));
+                    } else if("removeUserFromBlacklist".equals(request.getParameter("formAction"))) {
+                        adminPageService.removeUserFromBlacklist(request.getParameter("userRemoveFrom"));
+                    } else if("saveSettings".equals(request.getParameter("formAction"))) {
+                        String fs = request.getParameter("fileSize");
+                        String fex = request.getParameter("fileExtensions");
+                        adminPageService.setSettings(fs, fex);
+                    }
+
+                    Map<String, Object> loadedData = adminPageService.load();
                     for (String key : loadedData.keySet()) {
                         request.setAttribute(key, loadedData.get(key));
                     }
-
-                    String fs = request.getParameter("fileSize");
-                    String fex = request.getParameter("fileExtension");
-                    adminPageService.setSettings(fs, fex);
-
 
                     request.getRequestDispatcher("WEB-INF/jsp/adminpage.jsp")
                             .forward(request, response);
@@ -224,11 +224,13 @@ public class DispatcherServlet extends HttpServlet {
                     break;
 
                 case "/forgotpass.html":
+
                     request.getRequestDispatcher("WEB-INF/jsp/forgotpass.jsp")
                             .forward(request, response);
                     break;
 
                 case "/home.html":
+
                     request.getRequestDispatcher("WEB-INF/jsp/home.jsp")
                             .forward(request, response);
                     break;
@@ -243,9 +245,11 @@ public class DispatcherServlet extends HttpServlet {
                         request.getSession().setAttribute("userId", loggedUser.getId());
                         response.sendRedirect("profile.html");
                     } else {
-                        request.getRequestDispatcher("WEB-INF/jsp/registration.jsp")
+                        request.setAttribute("errorMessage", "Incorrect login or password.");
+                        request.getRequestDispatcher("WEB-INF/jsp/login.jsp")
                                 .forward(request, response);
                     }
+
                     break;
 
                 case "/myimages.html":
@@ -307,31 +311,16 @@ public class DispatcherServlet extends HttpServlet {
 
                 case "/profilesettings.html":
 
-                    Part filePart = request.getPart("photoToUpload");
-                    InputStream fileContent = filePart.getInputStream();
-                    Files.copy(fileContent, Paths.get("C:\\Users"
-                                    + "\\Georgy\\IdeaProjects\\EpamTraining"
-                                    + "\\FinalTask05\\target\\crowdsourcing"
-                                    + "\\avatars\\",
-                            Paths.get(filePart.getSubmittedFileName())
-                                    .getFileName().toString()));
-
-                    Integer cuid = getCurrentUserId(request);
-                    String nuns = request.getParameter("newUserName");
-                    String nups = request.getParameter("newPassword");
-                    String cnups = request.getParameter("confirmNewPassword");
-
-                    ProfilePageService profilePageService = new ProfilePageService();
-                    profilePageService.updateProfile(cuid, nuns, nups, cnups);
+                    updateProfileSettings(request, response);
 
                     break;
 
             }
         } catch (PersistentException | IOException e) {
-            LOGGER.error("Some exception's message in doPost.");
+            LOGGER.error("An exception in doPost method occurred.", e);
             //TODO Put an appropriate message in log and throw some exception here.
         } catch (ValidationException e) {
-            e.printStackTrace();
+            LOGGER.error("Validation exception in doPost method occurred.", e);
         }
     }
 
@@ -348,7 +337,8 @@ public class DispatcherServlet extends HttpServlet {
         }
     }
 
-    private void showCategory(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private void showCategory(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException, PersistentException {
 
         Integer uid = getCurrentUserId(request);
         String ids = request.getParameter("id");
@@ -365,16 +355,13 @@ public class DispatcherServlet extends HttpServlet {
                 .forward(request, response);
     }
 
-    private void showMyImages(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private void showMyImages(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException, PersistentException {
 
         Integer uid = getCurrentUserId(request);
-        String ids = request.getParameter("id");
-        int cid = 1;
-        if (ids != null) {
-            cid = Integer.parseInt(ids);
-        }
+
         MyImagesPageService myImagesPageService = new MyImagesPageService();
-        Map<String, Object> mpd = myImagesPageService.load(uid, cid);
+        Map<String, Object> mpd = myImagesPageService.load(uid);
         for (String key : mpd.keySet()) {
             request.setAttribute(key, mpd.get(key));
         }
@@ -383,7 +370,8 @@ public class DispatcherServlet extends HttpServlet {
                 .forward(request, response);
     }
 
-    private void showProfileInfo(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private void showProfileInfo(HttpServletRequest request, HttpServletResponse response)
+            throws PersistentException {
         ProfilePageService profilePageService = new ProfilePageService();
         Map<String, Object> ppd = profilePageService.loadProfile(getCurrentUserId(request));
         for (String key : ppd.keySet()) {
@@ -391,10 +379,49 @@ public class DispatcherServlet extends HttpServlet {
         }
     }
 
+    private void updateProfileSettings(HttpServletRequest request,
+                                       HttpServletResponse response)
+            throws ServletException, IOException, PersistentException,
+            ValidationException {
+
+        Integer userId = getCurrentUserId(request);
+
+        Part filePart = request.getPart("photoToUpload");
+        if ((filePart!=null)&&(!filePart.getSubmittedFileName().isEmpty())) {
+            InputStream fileContent = filePart.getInputStream();
+            Files.copy(fileContent, Paths.get("C:\\Users"
+                            + "\\Georgy\\IdeaProjects\\EpamTraining"
+                            + "\\FinalTask05\\target\\crowdsourcing"
+                            + "\\avatars\\",
+                    Paths.get(filePart.getSubmittedFileName())
+                            .getFileName().toString()));
+        }
+
+        String newUserName = request.getParameter("newUserName");
+        String curUserPass = request.getParameter("currentPassword");
+        String newPass = request.getParameter("newPassword");
+        String confNewPass = request.getParameter("confirmNewPassword");
+
+        ProfilePageService profilePageService = new ProfilePageService();
+        profilePageService.updateProfile(userId, newUserName, curUserPass, newPass, confNewPass);
+
+        List<Favorite> favorites = new ArrayList<>();
+
+        for (Enumeration<String> e = request.getParameterNames(); e.hasMoreElements(); ) {
+            String id = e.nextElement();
+            if (id.startsWith(CATEGORY)) {
+                Favorite favorite = new Favorite();
+                favorite.setCategoryId(Integer.parseInt(id.substring(CATEGORY.length())));
+                favorite.setUserId(userId);
+                favorites.add(favorite);
+            }
+        }
+        profilePageService.saveFavorites(favorites, userId);
+        response.sendRedirect("profile.html");
+    }
+
 
     private Integer getCurrentUserId(HttpServletRequest request) {
-        //TODO Remove this user id.
-        //request.getSession().setAttribute("userId", 2);
 
         return (Integer) request.getSession().getAttribute("userId");
     }

@@ -57,7 +57,7 @@ CREATE TABLE IF NOT EXISTS `settings` (
 
 CREATE TABLE IF NOT EXISTS `blacklist` (
     `user_id` INTEGER NOT NULL,
-	`login` VARCHAR(255) NOT NULL UNIQUE,
+	`login` VARCHAR(255) NULL DEFAULT NULL,
 	INDEX `user_id` (`user_id`),
 	CONSTRAINT `user_id`
 	FOREIGN KEY (`user_id`)

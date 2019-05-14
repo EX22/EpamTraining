@@ -9,7 +9,6 @@ import org.apache.logging.log4j.Logger;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,12 +41,12 @@ public class SettingDaoImpl extends BaseDaoImpl implements SettingDao {
     }
 
     @Override
-    public Setting read(Integer identity) throws PersistentException {
+    public Setting read(Integer identity) {
         //TODO There's no need in this method implementation as far as there's no id in settings table.
         return null;
     }
 
-    public List<Setting> read(Setting settingVal) throws PersistentException {
+    public List<Setting> read() throws PersistentException {
 
         String sql = "SELECT settings_name, settings_value FROM settings";
 
@@ -93,7 +92,7 @@ public class SettingDaoImpl extends BaseDaoImpl implements SettingDao {
     }
 
     @Override
-    public void delete(Integer identity) throws PersistentException {
-        //TODO Find out whether this method needed to be implemented.
+    public void delete(Integer identity)  {
+
     }
 }

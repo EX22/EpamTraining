@@ -17,17 +17,20 @@ public class LogInPageService {
     private static final Logger LOGGER
             = LogManager.getLogger(AdminPageService.class);
 
-    public User logInUser(String login, String password) {
+    public User logInUser(String login, String password)
+            throws PersistentException {
 
         UserDao userDao = new UserDaoImpl();
-        User loggedUser = null;
+        User loggedUser;
         try {
             userDao.setConnection(ConnectionPool.getInstance().getConnection());
 
             loggedUser = userDao.read(login, password);
 
         } catch (PersistentException e) {
-            LOGGER.error("Checking user in `users` table an exception occurred. ", e);
+            LOGGER.error("Checking user in `users` table "
+                    + "an exception occurred. ", e);
+            throw new PersistentException(e);
         }
 
         return loggedUser;

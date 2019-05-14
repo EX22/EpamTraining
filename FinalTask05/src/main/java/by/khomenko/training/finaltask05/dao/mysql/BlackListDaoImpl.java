@@ -24,12 +24,11 @@ public class BlackListDaoImpl extends BaseDaoImpl implements BlackListDao {
 
     @Override
     public Integer create(BlackList blackList) throws PersistentException {
-        //TODO Add user's id in query!
-        String sql = "INSERT INTO blacklist (login) VALUES (?)";
+        String sql = "INSERT INTO blacklist (user_id) VALUES (?)";
 
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
 
-            statement.setString(1, blackList.getUserLogin());
+            statement.setInt(1, blackList.getUserId());
             statement.executeUpdate();
 
 
@@ -48,26 +47,13 @@ public class BlackListDaoImpl extends BaseDaoImpl implements BlackListDao {
 
     @Override
     public void update(BlackList blackList) throws PersistentException {
-        //TODO Add user's id in query!
-        String sql = "UPDATE blacklist SET  login = ?";
-
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
-
-            statement.setString(1, blackList.getUserLogin());
-            statement.executeUpdate();
-
-        } catch (SQLException e) {
-            LOGGER.error("Updating blacklist entry "
-                    + "an exception occurred. ", e);
-            throw new PersistentException(e);
-        }
 
     }
 
 
     @Override
     public void delete(Integer identity) throws PersistentException {
-        //TODO Add user's id in query!
+
         String sql = "DELETE FROM blacklist WHERE user_id = ?";
 
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -82,21 +68,6 @@ public class BlackListDaoImpl extends BaseDaoImpl implements BlackListDao {
 
     }
 
-    public void deleteBylogin(String login) throws PersistentException {
-        //TODO Add user's id in query!
-        String sql = "DELETE FROM blacklist WHERE login = ?";
-
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
-
-            statement.setString(1, login);
-            statement.executeUpdate();
-        } catch (SQLException e) {
-            LOGGER.error("Deleting user from blacklist by login "
-                    + "an exception occurred. ", e);
-            throw new PersistentException(e);
-        }
-
-    }
 
     @Override
     public List<BlackList> readAll(int page, int pageSize)

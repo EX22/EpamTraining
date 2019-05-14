@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface SettingDao extends Dao<Setting> {
 
-    List<Setting> read(Setting settingVal) throws PersistentException;
+    List<Setting> read() throws PersistentException;
 }

@@ -135,6 +135,23 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
         }
     }
 
+    public void updateUserAvatar(Integer curUserId, String newPhotoPath)
+            throws PersistentException {
+
+        String sql = "UPDATE users SET photo_path = ? WHERE id = ?";
+
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setString(1, newPhotoPath);
+            statement.setInt(2, curUserId);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            LOGGER.error("Updating user's avatar "
+                    + "an exception occurred. ", e);
+            throw new PersistentException(e);
+        }
+    }
+
     @Override
     public void delete(Integer identity) throws PersistentException {
 

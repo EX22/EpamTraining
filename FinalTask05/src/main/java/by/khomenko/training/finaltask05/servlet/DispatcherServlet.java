@@ -34,13 +34,13 @@ import java.util.Map;
                 "/registration.html", "/logout.html", "/profilesettings.html"})
 public class DispatcherServlet extends HttpServlet {
 
-    public static final String DB_DRIVER_CLASS = "com.mysql.jdbc.Driver";
-    public static final String DB_URL = "jdbc:mysql://localhost:3306/crowdsource_db?useUnicode=true&characterEncoding=UTF-8";
-    public static final String DB_USER = "crowdsource_user";
-    public static final String DB_PASSWORD = "crowdsource_password";
-    public static final int DB_POOL_START_SIZE = 10;
-    public static final int DB_POOL_MAX_SIZE = 1000;
-    public static final int DB_POOL_CHECK_CONNECTION_TIMEOUT = 0;
+    private static final String DB_DRIVER_CLASS = "com.mysql.jdbc.Driver";
+    private static final String DB_URL = "jdbc:mysql://localhost:3306/crowdsource_db?useUnicode=true&characterEncoding=UTF-8";
+    private static final String DB_USER = "crowdsource_user";
+    private static final String DB_PASSWORD = "crowdsource_password";
+    private static final int DB_POOL_START_SIZE = 10;
+    private static final int DB_POOL_MAX_SIZE = 1000;
+    private static final int DB_POOL_CHECK_CONNECTION_TIMEOUT = 0;
 
 
     /**
@@ -50,8 +50,8 @@ public class DispatcherServlet extends HttpServlet {
     private static final Logger LOGGER
             = LogManager.getLogger(DispatcherServlet.class);
 
-    public static final String ANSWER = "answer-";
-    public static final String CATEGORY = "category-";
+    private static final String ANSWER = "answer-";
+    private static final String CATEGORY = "category-";
 
     @Override
     protected void doGet(HttpServletRequest request,
@@ -143,7 +143,7 @@ public class DispatcherServlet extends HttpServlet {
                 case "/logout.html":
 
                     request.getSession().removeAttribute("userId");
-                    response.sendRedirect("login.html");
+                    response.sendRedirect("index.jsp");
 
                     break;
 
@@ -270,16 +270,22 @@ public class DispatcherServlet extends HttpServlet {
 
                     Part fp = request.getPart("imageToUpload");
                     InputStream fc = fp.getInputStream();
-                    Files.copy(fc, Paths.get("C:\\Users"
-                                    + "\\Georgy\\IdeaProjects\\EpamTraining"
-                                    + "\\FinalTask05\\target\\crowdsourcing"
-                                    + "\\imagesdir\\",
-                            Paths.get(fp.getSubmittedFileName())
-                                    .getFileName().toString()));
+                    String fileName = Paths.get(fp.getSubmittedFileName())
+                            .getFileName().toString();
+                    if(!("").equals(fileName)) {
+                        Files.copy(fc, Paths.get("C:\\Users"
+                                        + "\\Georgy\\IdeaProjects\\EpamTraining"
+                                        + "\\FinalTask05\\target\\crowdsourcing"
+                                        + "\\imagesdir\\",
+                                fileName));
 
-                    myImagesPageService.updateImgCategories(addedImagesList);
-                    request.getRequestDispatcher("WEB-INF/jsp/myimages.jsp")
-                            .forward(request, response);
+                        Image addedImage = new Image();
+                        addedImage.setPath("imagesdir/" + fileName);
+                        addedImage.setUserId(getCurrentUserId(request));
+                        myImagesPageService.addImage(addedImage);
+                        myImagesPageService.updateImgCategories(addedImagesList);
+                    }
+                    showMyImages(request, response);
 
                     break;
 
@@ -311,7 +317,9 @@ public class DispatcherServlet extends HttpServlet {
 
                 case "/profilesettings.html":
 
+
                     updateProfileSettings(request, response);
+                    showProfileInfo(request, response);
 
                     break;
 
@@ -385,16 +393,17 @@ public class DispatcherServlet extends HttpServlet {
             ValidationException {
 
         Integer userId = getCurrentUserId(request);
-
+        String avatarFileName = null;
         Part filePart = request.getPart("photoToUpload");
         if ((filePart!=null)&&(!filePart.getSubmittedFileName().isEmpty())) {
             InputStream fileContent = filePart.getInputStream();
+            avatarFileName = Paths.get(filePart.getSubmittedFileName())
+                    .getFileName().toString();
             Files.copy(fileContent, Paths.get("C:\\Users"
                             + "\\Georgy\\IdeaProjects\\EpamTraining"
                             + "\\FinalTask05\\target\\crowdsourcing"
                             + "\\avatars\\",
-                    Paths.get(filePart.getSubmittedFileName())
-                            .getFileName().toString()));
+                    avatarFileName));
         }
 
         String newUserName = request.getParameter("newUserName");
@@ -403,7 +412,8 @@ public class DispatcherServlet extends HttpServlet {
         String confNewPass = request.getParameter("confirmNewPassword");
 
         ProfilePageService profilePageService = new ProfilePageService();
-        profilePageService.updateProfile(userId, newUserName, curUserPass, newPass, confNewPass);
+        profilePageService.updateProfile(userId, avatarFileName, newUserName,
+                curUserPass, newPass, confNewPass);
 
         List<Favorite> favorites = new ArrayList<>();
 

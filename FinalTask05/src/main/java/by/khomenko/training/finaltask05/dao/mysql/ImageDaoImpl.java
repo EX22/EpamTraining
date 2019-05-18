@@ -6,10 +6,7 @@ import by.khomenko.training.finaltask05.exception.PersistentException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,7 +30,11 @@ public class ImageDaoImpl extends BaseDaoImpl implements ImageDao {
 
             statement.setString(1, image.getPath());
             statement.setInt(2, image.getUserId());
-            statement.setInt(3, image.getCategoryId());
+            if (image.getCategoryId() != null) {
+                statement.setInt(3, image.getCategoryId());
+            } else {
+                statement.setNull(3, Types.INTEGER);
+            }
             statement.executeUpdate();
 
             try (ResultSet resultSet = statement.getGeneratedKeys()) {

@@ -14,5 +14,5 @@ INSERT INTO `users` (
 
 INSERT INTO `settings`
 (`settings_name`, `settings_value`) VALUES
-('fileSize', '8 Mb'),
+('fileSize', '16'),
 ('fileExtensions', 'jpg, png, bmp');

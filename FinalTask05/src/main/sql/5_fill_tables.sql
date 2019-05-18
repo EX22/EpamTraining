@@ -1,19 +1,19 @@
 
 INSERT INTO `users`
 (`id`,`login`,`name`,`level`,`password`,`photo_path`,`role`) VALUES
-(2, 'user2@a.com', 'Bruce', 0, MD5('user2pass'), 'avatars/Bruce.jpg',1),
-(3, 'user3@b.com', 'Robert', 0, MD5('user3pass'), 'avatars/Robert.jpg', 1),
-(4, 'user4@c.com', 'Brad', 0, MD5('user4pass'), 'avatars/Brad.jpg', 1),
-(5, 'user5@d.com', 'Julce', 0, MD5('user5pass'), 'avatars/Julce.jpg', 1),
-(6, 'user6@e.com', 'Sasha', 0, MD5('user6pass'), 'avatars/Sasha.jpg', 1),
-(7, 'user7@f.com', 'Salvador', 0, MD5('user7pass'), 'avatars/Salvador.jpg', 1),
-(8, 'user8@g.com', 'Kevin', 0, MD5('user8pass'), 'avatars/Kevin.jpg', 1),
-(9, 'user9@h.com', 'Donald', 0, MD5('user9pass'), 'avatars/Donald.jpg', 1),
-(10, 'user10@i.com', 'Butch', 0, MD5('user10pass'), '', 1),
-(11, 'user11@k.com', 'Ocean', 0, MD5('user11pass'), '', 1),
-(12, 'user12@l.com', 'Marcelace', 0, MD5('user12pass'), '', 1),
-(13, 'user13@m.com', 'Archibald', 0, MD5('user13pass'), 'avatars/Archibald.jpg', 1),
-(14, 'user14@n.com', 'Jackie', 0, MD5('user14pass'), 'avatars/Jackie.jpg', 1);
+(2, 'user2@b.com', 'Bruce', 0, MD5('user2pass'), 'avatars/Bruce.jpg',1),
+(3, 'user3@c.com', 'Robert', 0, MD5('user3pass'), 'avatars/Robert.jpg', 1),
+(4, 'user4@d.com', 'Brad', 0, MD5('user4pass'), 'avatars/Brad.jpg', 1),
+(5, 'user5@e.com', 'Julce', 0, MD5('user5pass'), 'avatars/Julce.jpg', 1),
+(6, 'user6@f.com', 'Sasha', 0, MD5('user6pass'), 'avatars/Sasha.jpg', 1),
+(7, 'user7@g.com', 'Salvador', 0, MD5('user7pass'), 'avatars/Salvador.jpg', 1),
+(8, 'user8@h.com', 'Kevin', 0, MD5('user8pass'), 'avatars/Kevin.jpg', 1),
+(9, 'user9@i.com', 'Donald', 0, MD5('user9pass'), 'avatars/Donald.jpg', 1),
+(10, 'user10@k.com', 'Butch', 0, MD5('user10pass'), '', 1),
+(11, 'user11@l.com', 'Ocean', 0, MD5('user11pass'), '', 1),
+(12, 'user12@m.com', 'Marcelace', 0, MD5('user12pass'), '', 1),
+(13, 'user13@o.com', 'Archibald', 0, MD5('user13pass'), 'avatars/Archibald.jpg', 1),
+(14, 'user14@p.com', 'Jackie', 0, MD5('user14pass'), 'avatars/Jackie.jpg', 1);
 
 INSERT INTO `categories`
 (`id`, `name`, `image_path`, `question`) VALUES
@@ -95,8 +95,8 @@ INSERT INTO `favorites`
 
 INSERT INTO `blacklist`
 (`user_id`, `login`) VALUES
-(4, 'c@c.com'),
-(6, 'e@e.com');
+(4, 'user4@d.com'),
+(6, 'user6@f.com');
 
 INSERT INTO `recognizedimgs`
 (`image_id`, `user_id`, `answer`) VALUES

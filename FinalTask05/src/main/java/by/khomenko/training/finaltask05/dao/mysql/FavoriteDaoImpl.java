@@ -1,7 +1,6 @@
 package by.khomenko.training.finaltask05.dao.mysql;
 
 import by.khomenko.training.finaltask05.dao.FavoriteDao;
-import by.khomenko.training.finaltask05.entity.Category;
 import by.khomenko.training.finaltask05.entity.Favorite;
 import by.khomenko.training.finaltask05.entity.User;
 import by.khomenko.training.finaltask05.exception.PersistentException;
@@ -30,28 +29,18 @@ public class FavoriteDaoImpl extends BaseDaoImpl implements FavoriteDao {
         String sql = "INSERT INTO favorites (user_id,"
                 + " category_id) VALUES (?, ?)";
 
-        try (PreparedStatement statement = connection.prepareStatement(sql,
-                Statement.RETURN_GENERATED_KEYS)) {
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
 
             statement.setInt(1, favorite.getUserId());
             statement.setInt(2, favorite.getCategoryId());
             statement.executeUpdate();
 
-            try (ResultSet resultSet = statement.getGeneratedKeys()) {
-
-                if (resultSet.next()) {
-                    return resultSet.getInt(1);
-                } else {
-                    LOGGER.error("There is no autoincremented index after "
-                            + "trying to add record into table `favorites`");
-                    throw new PersistentException();
-                }
-            }
         } catch (SQLException e) {
             LOGGER.error("Creating favorite category "
                     + "an exception occurred. ", e);
             throw new PersistentException(e);
         }
+        return 0;
     }
 
 

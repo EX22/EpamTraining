@@ -11,11 +11,16 @@ public interface UserDao extends Dao<User> {
 
     boolean isUserExist(String login) throws PersistentException;
 
-    void updateUserName(String userName, Integer userId) throws PersistentException;
+    void updateUserName(String userName, Integer userId)
+            throws PersistentException;
 
-    void updateUserPass(Integer curUserId, String newPass) throws PersistentException;
+    void updateUserPass(Integer curUserId, String newPass)
+            throws PersistentException;
 
     List<User> readAllNotInBlacklist() throws PersistentException;
 
     List<User> readAllInBlacklist() throws PersistentException;
+
+    void updateUserAvatar(Integer curUserId, String newPhotoPath)
+            throws PersistentException;
 }

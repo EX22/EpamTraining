@@ -65,7 +65,7 @@ public class ProfilePageService {
         return map;
     }
 
-    public void updateProfile(Integer curUserId,
+    public void updateProfile(Integer curUserId, String avatarFileName,
                               String userName, String curUserPass,
                               String newPass, String confirmPass)
             throws PersistentException, ValidationException {
@@ -73,6 +73,14 @@ public class ProfilePageService {
         UserDao userDao = new UserDaoImpl();
         User loggedUser;
         try {
+
+            if ((avatarFileName != null)){
+                userDao.setConnection(ConnectionPool.getInstance()
+                        .getConnection());
+                userDao.updateUserAvatar(curUserId,
+                        ("avatars/" + avatarFileName));
+            }
+
 
             if ((userName != null) && (!"".equals(userName))) {
                 userDao.setConnection(ConnectionPool.getInstance()

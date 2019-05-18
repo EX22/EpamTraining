@@ -64,4 +64,19 @@ public class MyImagesPageService {
             throw new PersistentException(e);
         }
     }
+
+    public void addImage(Image image) throws PersistentException{
+
+        ImageDao imageDao = new ImageDaoImpl();
+        try {
+            imageDao.setConnection(ConnectionPool.getInstance()
+                    .getConnection());
+            LOGGER.error(image.getCategoryId());
+            imageDao.create(image);
+        } catch (PersistentException e) {
+            LOGGER.error("Adding image categories an "
+                    + "exception occurred. ", e);
+            throw new PersistentException(e);
+        }
+    }
 }

@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS `images` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `user_id` INTEGER NOT NULL,
 	`path` VARCHAR(255) NOT NULL,
-	`category_id` INTEGER NOT NULL,
+	`category_id` INTEGER NULL DEFAULT NULL,
 	PRIMARY KEY (`id`),
 	INDEX `category` (`category_id`),
 	CONSTRAINT `category_id`

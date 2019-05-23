@@ -6,6 +6,7 @@ import by.khomenko.training.finaltask05.exception.PersistentException;
 import java.sql.Connection;
 
 public interface Dao<T extends Entity> {
+
     Integer create(T entity) throws PersistentException;
 
     T read(Integer identity) throws PersistentException;

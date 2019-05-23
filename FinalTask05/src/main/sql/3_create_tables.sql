@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS `categories` (
 CREATE TABLE IF NOT EXISTS `users` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `login` VARCHAR(255) NOT NULL UNIQUE,
-    `name` VARCHAR(64) NOT NULL,
+    `name` VARCHAR(64) NOT NULL DEFAULT '',
     `level` INTEGER NULL DEFAULT '0',
     `password` VARCHAR(255) NOT NULL,
     `photo_path` VARCHAR(255) NULL DEFAULT NULL,
@@ -23,8 +23,9 @@ CREATE TABLE IF NOT EXISTS `users` (
 
 CREATE TABLE IF NOT EXISTS `images` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `user_id` INTEGER NOT NULL,
 	`path` VARCHAR(255) NOT NULL,
-	`category_id` INTEGER NOT NULL,
+	`category_id` INTEGER NULL DEFAULT NULL,
 	PRIMARY KEY (`id`),
 	INDEX `category` (`category_id`),
 	CONSTRAINT `category_id`
@@ -56,7 +57,7 @@ CREATE TABLE IF NOT EXISTS `settings` (
 
 CREATE TABLE IF NOT EXISTS `blacklist` (
     `user_id` INTEGER NOT NULL,
-	`login` VARCHAR(255) NOT NULL UNIQUE,
+	`login` VARCHAR(255) NULL DEFAULT NULL,
 	INDEX `user_id` (`user_id`),
 	CONSTRAINT `user_id`
 	FOREIGN KEY (`user_id`)

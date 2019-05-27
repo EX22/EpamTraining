@@ -12,7 +12,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SettingDaoImpl extends BaseDaoImpl implements SettingDao {
+public class SettingDaoImpl extends BaseDaoImpl<Setting> implements SettingDao {
 
     /**
      * Instance of logger that provides logging capability for this class'
@@ -20,6 +20,9 @@ public class SettingDaoImpl extends BaseDaoImpl implements SettingDao {
      */
     private static final Logger LOGGER
             = LogManager.getLogger(SettingDaoImpl.class);
+
+    public SettingDaoImpl() throws PersistentException {
+    }
 
     @Override
     public Integer create(Setting setting) throws PersistentException {

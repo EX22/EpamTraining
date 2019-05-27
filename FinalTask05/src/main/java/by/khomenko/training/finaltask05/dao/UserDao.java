@@ -23,4 +23,7 @@ public interface UserDao extends Dao<User> {
 
     void updateUserAvatar(Integer curUserId, String newPhotoPath)
             throws PersistentException;
+
+    void increaseUserLevel(Integer identity, Integer level)
+            throws PersistentException;
 }

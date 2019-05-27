@@ -20,14 +20,13 @@ public class LogInPageService {
     public User logInUser(String login, String password)
             throws PersistentException {
 
-        UserDao userDao = new UserDaoImpl();
         User loggedUser;
-        try {
-            userDao.setConnection(ConnectionPool.getInstance().getConnection());
+
+        try (UserDao userDao = new UserDaoImpl()) {
 
             loggedUser = userDao.read(login, password);
 
-        } catch (PersistentException e) {
+        } catch (Exception e) {
             LOGGER.error("Checking user in `users` table "
                     + "an exception occurred. ", e);
             throw new PersistentException(e);

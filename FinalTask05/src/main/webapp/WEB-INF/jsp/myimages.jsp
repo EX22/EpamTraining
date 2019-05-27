@@ -1,5 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<%@ page import = "java.io.*,java.util.Locale" %>
+<%@ page import = "javax.servlet.*,javax.servlet.http.* "%>
+
+<fmt:setLocale value="${localeType}" scope="session" />
+<fmt:setBundle basename="crowdsource-bundle" />
 
 <!doctype html>
 <html lang="en">
@@ -28,65 +35,99 @@
           <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
   </head>
-  <body>
+  <body class="no-background-cover-image">
+    <div class="site-wrapper">
+        <div class="site-wrapper-inner">
+            <div class="cover-container">
 
-    <jsp:include page="headmenu.jsp"/>
+                <jsp:include page="headmenu.jsp"/>
 
-      <form method="post" enctype="multipart/form-data" class="form-horizontal">
-            Pagination tabs should be placed here.
+                <div class="inner cover">
 
-            <div class="container">
-                <div class="row">
-                    <c:forEach var="im" items="${images}">
-                        <div class="col-md-4">
-                            <img src="${im.path}" class="img-responsive"/>
-                            <p class="text-left">Category :
-                            <p><select name="category-${im.id}">
-                                <option value="" disabled>Chose the category</option>
-                                <c:forEach var="cat" items="${categories}">
-                                    <c:choose>
-                                        <c:when test="${im.categoryId==cat.id}">
-                                            <option selected value="${cat.id}"><c:out value="${cat.name}"/></option>
-                                        </c:when>
-                                        <c:otherwise>
-                                            <option value="${cat.id}"><c:out value="${cat.name}"/></option>
-                                        </c:otherwise>
-                                    </c:choose>
+                    <nav aria-label="Page navigation">
+                      <ul class="pagination">
+                         <c:forEach var="elem" begin="1" end="${pageCount}" step="1">
+                         <c:choose>
+                             <c:when test="${page==elem}">
+                                 <li class="active"><a href="?page=${elem}"><c:out value="${elem}"/></a></li>
+                             </c:when>
+                             <c:otherwise>
+                                 <li><a href="?page=${elem}"><c:out value="${elem}"/></a></li>
+                             </c:otherwise>
+                         </c:choose>
+
+                        </c:forEach>
+                      </ul>
+                    </nav>
+
+                  <form method="post" enctype="multipart/form-data" class="form-horizontal">
+
+
+                        <div class="container">
+
+                            <jsp:include page="errormessage.jsp"/>
+
+                            <div class="row">
+                                <c:forEach var="im" items="${images}" varStatus="loop">
+                                    <c:if test="${loop.index%3==0 && loop.index!=0}">
+                                        </div>
+                                    </c:if>
+                                    <c:if test="${loop.index%3==0}">
+                                        <div class="row">
+                                    </c:if>
+                                    <div class="col-md-4">
+                                        <img src="${im.path}" class="img-responsive"/>
+                                        <p class="text-left"><fmt:message key="Category"/> :
+                                        <p><select name="category-${im.id}" class="category-select">
+                                            <option value="" disabled><fmt:message key="Choose the category"/></option>
+                                            <c:forEach var="cat" items="${categories}">
+                                                <c:choose>
+                                                    <c:when test="${im.categoryId==cat.id}">
+                                                        <option selected value="${cat.id}"><fmt:message key="${cat.name}"/></option>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <option value="${cat.id}"><fmt:message key="${cat.name}"/></option>
+                                                    </c:otherwise>
+                                                </c:choose>
+                                            </c:forEach>
+                                        </select></p>
+                                    </div>
                                 </c:forEach>
-                            </select></p>
+                            </div>
                         </div>
-                    </c:forEach>
+
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <p><h4><fmt:message key="Select image to upload"/>:</h4></p>
+                                    <p><input type="file" name="imageToUpload" id="imageToUpload"/></p>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <p><button type="submit" class="btn" value="Add image"><fmt:message key="Add image"/></button></p>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <p><button type="submit" class="btn" value="Save changes"><fmt:message key="Save changes"/></button></p>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-4 col-md-offset-4">
+                                    <button type="reset" class="btn" value="Reset"><fmt:message key="Cancel"/></button>
+                                </div>
+                            </div>
+                        </div>
+                  </form>
                 </div>
 
+                <jsp:include page="footer.jsp"/>
 
-                <div class="row">
-                    <div class="col-md-4">
-                        <p><h4>Select image to upload:</h4></p>
-                        <p><input type="file" name="imageToUpload" id="imageToUpload"></p>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-4">
-                        <p><input type="submit" value="Add image"></p>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-4">
-                        <p><input type="submit" value="Save changes"></p>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <div class="col-md-4 col-md-offset-4">
-                        <button type="reset" class="btn" value="Reset">Cancel</button>
-                    </div>
-                </div>
             </div>
-      </form>
-
-      <jsp:include page="footer.jsp"/>
+        </div>
+    </div>
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ" crossorigin="anonymous"></script>

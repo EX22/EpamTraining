@@ -1,5 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<%@ page import = "java.io.*,java.util.Locale" %>
+<%@ page import = "javax.servlet.*,javax.servlet.http.* "%>
+
+<fmt:setLocale value="${localeType}" scope="session" />
+<fmt:setBundle basename="crowdsource-bundle" />
 
 <!doctype html>
 <html lang="en">
@@ -28,63 +35,69 @@
           <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
   </head>
-  <body>
+  <body class="background-cover-image">
+    <div class="site-wrapper">
+        <div class="site-wrapper-inner">
+            <div class="cover-container">
 
-       <jsp:include page="headmenu.jsp"/>
+                <jsp:include page="headmenu.jsp"/>
 
+                <div class="inner cover">
+                    <form method="post" enctype="multipart/form-data" class="form-horizontal">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <img src="${user.photoPath}" class="img-responsive" alt="">
+                                </div>
+                            </div>
 
-        <form method="post" enctype="multipart/form-data" class="form-horizontal">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-4">
-                        <img src="${user.photoPath}" class="img-responsive" alt="">
-                    </div>
+                        <div class="form-group">
+                            <div class="row">
+                                 <div class="col-sm-offset-2 col-sm-10">
+                                     <h4><strong><a href="profilesettings.html"><fmt:message key="Profile settings"/></a></strong><h4>
+                                 </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <p><h5><em><fmt:message key="name"/></em><h5><p>
+                                    <p><h3><strong><c:out value = "${user.name}"/></strong><h3><p>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <p><h5><em><fmt:message key="level"/></em><h5><p>
+                                    <p><h3><strong><c:out value = "${user.level}"/></strong><h3><p>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <p><h4><strong><fmt:message key="Favorite categories"/></strong><h4><p>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <ul>
+                                        <c:forEach var="c" items="${categories}">
+                                            <c:if test="${favoriteIds.contains(c.id)}">
+                                                <li><c:out value="${c.name}"/></li>
+                                            </c:if>
+                                        </c:forEach>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
                 </div>
 
+                <jsp:include page="footer.jsp"/>
 
-            <div class="form-group">
-                <div class="row">
-                     <div class="col-sm-offset-2 col-sm-10">
-                         <h4><strong><a href="profilesettings.html">Profile settings</a></strong><h4>
-                     </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-4">
-                        <p><h5><em>name</em><h5><p>
-                        <p><h3><strong><c:out value = "${user.name}"/></strong><h3><p>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-4">
-                        <p><h5><em>level</em><h5><p>
-                        <p><h3><strong><c:out value = "${user.level}"/></strong><h3><p>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-4">
-                        <p><h4><strong>Favorite categories</strong><h4><p>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-4">
-                        <ul>
-                            <c:forEach var="c" items="${categories}">
-                                <c:if test="${favoriteIds.contains(c.id)}">
-                                    <li><c:out value="${c.name}"/></li>
-                                </c:if>
-                            </c:forEach>
-                        </ul>
-                    </div>
-                </div>
             </div>
-        </form>
-
-
-        <jsp:include page="footer.jsp"/>
+        </div>
+    </div>
 
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->

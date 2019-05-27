@@ -22,15 +22,15 @@ public class RegistrationPageService {
     public Integer createUser(String login, String pass, String confirmPass)
             throws ValidationException, PersistentException {
 
-        UserDao userDao = new UserDaoImpl();
-
         Integer userId;
-        try {
+
+        try (UserDao userDao = new UserDaoImpl()) {
+
             if (!pass.equals(confirmPass)) {
                 throw new ValidationException("Password and confirmPassword"
                         + " are not equal");
             }
-            userDao.setConnection(ConnectionPool.getInstance().getConnection());
+
             if (userDao.isUserExist(login)) {
                 throw new ValidationException("User already exists");
             }
@@ -39,7 +39,10 @@ public class RegistrationPageService {
             user.setPassword(pass);
             userId = userDao.create(user);
 
-        } catch (PersistentException e) {
+        } catch (ValidationException e) {
+            LOGGER.error("Creating user an exception occurred. ", e);
+            throw new ValidationException(e);
+        }catch (Exception e) {
             LOGGER.error("Creating user an exception occurred. ", e);
             throw new PersistentException(e);
         }

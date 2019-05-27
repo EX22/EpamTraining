@@ -14,10 +14,7 @@ import org.apache.logging.log4j.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.Part;
+import javax.servlet.http.*;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -31,10 +28,10 @@ import java.util.Map;
         name = "DispatcherServlet",
         urlPatterns = {"/adminpage.html", "/category.html", "/forgotpass.html",
                 "/home.html", "/login.html", "/myimages.html", "/profile.html",
-                "/registration.html", "/logout.html", "/profilesettings.html"})
+                "/registration.html", "/logout.html", "/profilesettings.html", "/welcomepage.html"})
 public class DispatcherServlet extends HttpServlet {
 
-    private static final String DB_DRIVER_CLASS = "com.mysql.jdbc.Driver";
+    private static final String DB_DRIVER_CLASS = "com.mysql.cj.jdbc.Driver";
     private static final String DB_URL = "jdbc:mysql://localhost:3306/crowdsource_db?useUnicode=true&characterEncoding=UTF-8";
     private static final String DB_USER = "crowdsource_user";
     private static final String DB_PASSWORD = "crowdsource_password";
@@ -60,6 +57,13 @@ public class DispatcherServlet extends HttpServlet {
 
         int length = request.getContextPath().length();
         String s = request.getRequestURI().substring(length);
+
+        String locale = request.getParameter("locale");
+
+        if (locale != null) {
+            HttpSession session = request.getSession();
+            session.setAttribute("localeType", locale);
+        }
 
         try {
 
@@ -143,7 +147,7 @@ public class DispatcherServlet extends HttpServlet {
                 case "/logout.html":
 
                     request.getSession().removeAttribute("userId");
-                    response.sendRedirect("index.jsp");
+                    response.sendRedirect("welcomepage.html");
 
                     break;
 
@@ -155,6 +159,11 @@ public class DispatcherServlet extends HttpServlet {
                             .forward(request, response);
 
                     break;
+
+                default:
+
+                    request.getRequestDispatcher("WEB-INF/jsp/welcomepage.jsp")
+                            .forward(request, response);
 
             }
 
@@ -188,7 +197,8 @@ public class DispatcherServlet extends HttpServlet {
                     } else if("saveSettings".equals(request.getParameter("formAction"))) {
                         String fs = request.getParameter("fileSize");
                         String fex = request.getParameter("fileExtensions");
-                        adminPageService.setSettings(fs, fex);
+                        String floc = request.getParameter("filesLocation");
+                        adminPageService.setSettings(fs, fex, floc);
                     }
 
                     Map<String, Object> loadedData = adminPageService.load();
@@ -218,7 +228,7 @@ public class DispatcherServlet extends HttpServlet {
                         }
                     }
 
-                    categoryPageService.saveRecognizedImages(recognizedImgList);
+                    categoryPageService.saveRecognizedImages(recognizedImgList, userId);
                     showCategory(request, response);
 
                     break;
@@ -254,37 +264,7 @@ public class DispatcherServlet extends HttpServlet {
 
                 case "/myimages.html":
 
-                    MyImagesPageService myImagesPageService = new MyImagesPageService();
-                    List<Image> addedImagesList = new ArrayList<>();
-                    for (Enumeration<String> e = request.getParameterNames(); e.hasMoreElements(); ) {
-
-                        String id = e.nextElement();
-                        if (id.startsWith(CATEGORY)) {
-                            Image image = new Image();
-                            String category = request.getParameter(id);
-                            image.setId(Integer.parseInt(id.substring(CATEGORY.length())));
-                            image.setCategoryId(Integer.parseInt(category));
-                            addedImagesList.add(image);
-                        }
-                    }
-
-                    Part fp = request.getPart("imageToUpload");
-                    InputStream fc = fp.getInputStream();
-                    String fileName = Paths.get(fp.getSubmittedFileName())
-                            .getFileName().toString();
-                    if(!("").equals(fileName)) {
-                        Files.copy(fc, Paths.get("C:\\Users"
-                                        + "\\Georgy\\IdeaProjects\\EpamTraining"
-                                        + "\\FinalTask05\\target\\crowdsourcing"
-                                        + "\\imagesdir\\",
-                                fileName));
-
-                        Image addedImage = new Image();
-                        addedImage.setPath("imagesdir/" + fileName);
-                        addedImage.setUserId(getCurrentUserId(request));
-                        myImagesPageService.addImage(addedImage);
-                        myImagesPageService.updateImgCategories(addedImagesList);
-                    }
+                    updateMyImages(request);
                     showMyImages(request, response);
 
                     break;
@@ -308,7 +288,10 @@ public class DispatcherServlet extends HttpServlet {
                         request.getSession().setAttribute("userId", rUserId);
                         response.sendRedirect("profile.html");
                     } catch (ValidationException e) {
-                        request.getSession().setAttribute("regLogin", rps);
+                        //TODO Add error message
+                        request.setAttribute("errorMessage", "Error message ");
+
+                        request.setAttribute("regLogin", rps);
                         request.getRequestDispatcher("WEB-INF/jsp/registration.jsp")
                                 .forward(request, response);
                     }
@@ -322,6 +305,10 @@ public class DispatcherServlet extends HttpServlet {
                     showProfileInfo(request, response);
 
                     break;
+
+                default:
+
+                    response.sendRedirect("welcomepage.html");
 
             }
         } catch (PersistentException | IOException e) {
@@ -367,9 +354,14 @@ public class DispatcherServlet extends HttpServlet {
             throws ServletException, IOException, PersistentException {
 
         Integer uid = getCurrentUserId(request);
+        Integer pageNumber = 1;
+        String pageString = request.getParameter("page");
+        if(pageString != null){
+            pageNumber = Integer.parseInt(pageString);
 
+        }
         MyImagesPageService myImagesPageService = new MyImagesPageService();
-        Map<String, Object> mpd = myImagesPageService.load(uid);
+        Map<String, Object> mpd = myImagesPageService.load(uid, pageNumber);
         for (String key : mpd.keySet()) {
             request.setAttribute(key, mpd.get(key));
         }
@@ -428,6 +420,65 @@ public class DispatcherServlet extends HttpServlet {
         }
         profilePageService.saveFavorites(favorites, userId);
         response.sendRedirect("profile.html");
+    }
+
+    private void updateMyImages(HttpServletRequest request)
+            throws PersistentException, IOException, ServletException {
+
+        MyImagesPageService myImagesPageService = new MyImagesPageService();
+        List<Image> addedImagesList = new ArrayList<>();
+        for (Enumeration<String> e = request.getParameterNames(); e.hasMoreElements(); ) {
+
+            String id = e.nextElement();
+            if (id.startsWith(CATEGORY)) {
+                Image image = new Image();
+                String category = request.getParameter(id);
+                image.setId(Integer.parseInt(id.substring(CATEGORY.length())));
+                image.setCategoryId(Integer.parseInt(category));
+                addedImagesList.add(image);
+            }
+        }
+
+        myImagesPageService.updateImgCategories(addedImagesList);
+        Part fp = request.getPart("imageToUpload");
+        SystemSettingsService systemSettingsService = new SystemSettingsService();
+        Integer fileSizeInt = Integer.parseInt(systemSettingsService.getSetting("fileSize"));
+        if (fp.getSize()/(1024*1024) > fileSizeInt){
+            request.setAttribute("errorMessage", "Max file size is " + fileSizeInt + " Mb.");
+
+        } else {
+            InputStream fc = fp.getInputStream();
+            String fileName = Paths.get(fp.getSubmittedFileName())
+                    .getFileName().toString();
+
+
+            if (!("").equals(fileName)) {
+                String stringExtensions = systemSettingsService
+                        .getSetting("fileExtensions");
+                String[] allowedExtensions = stringExtensions.split(",");
+                boolean valid = false;
+                for (String str : allowedExtensions) {
+                    if (fileName.endsWith(str)) {
+                        valid = true;
+                        break;
+                    }
+                }
+                if (valid) {
+                    Files.copy(fc, Paths.get(systemSettingsService.getSetting("filesLocation"),
+                            fileName));
+                    Image addedImage = new Image();
+                    addedImage.setPath("imagesdir/" + fileName);
+                    addedImage.setUserId(getCurrentUserId(request));
+                    myImagesPageService.addImage(addedImage);
+                } else {
+                    request.setAttribute("errorMessage",
+                            "File's extension is not valid. Valid extensions are : " + stringExtensions);
+
+                }
+
+            }
+        }
+
     }
 
 

@@ -4,7 +4,6 @@ import java.util.Objects;
 
 public class BlackList extends Entity {
 
-    //TODO Remove login.
     private Integer userId;
     private String userLogin;
 

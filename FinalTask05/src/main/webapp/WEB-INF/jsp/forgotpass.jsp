@@ -1,5 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
+<%@ page import = "java.io.*,java.util.Locale" %>
+<%@ page import = "javax.servlet.*,javax.servlet.http.* "%>
+
+<fmt:setLocale value="${localeType}" scope="session" />
+<fmt:setBundle basename="crowdsource-bundle" />
 
 <!doctype html>
 <html lang="en">
@@ -28,30 +34,39 @@
           <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
   </head>
-  <body>
+  <body class="background-cover-image">
+    <div class="site-wrapper">
+        <div class="site-wrapper-inner">
+            <div class="cover-container">
 
-    <jsp:include page="headmenu.jsp"/>
+                <jsp:include page="headmenu.jsp"/>
 
-    <form method="post" action="Log in" class="form-horizontal">
-      <div class="container">
-        <div class="row">
-          <div class="form-group">
-              <label for="inputEmail3" class="col-sm-2 control-label">Enter your Email address</label>
-              <div class="col-sm-10">
-                <input type="email" class="form-control" id="inputEmail3" placeholder="Email">
-              </div>
-          </div>
-           <p><h4>We will send you a new password on this email.</h4><p>
-          <div class="form-group">
-              <div class="col-sm-offset-2 col-sm-10">
-                <button type="submit" class="btn btn-default">Send</button>
-              </div>
-          </div>
+                <div class="inner cover">
+                    <form method="post" action="Log in" class="form-horizontal">
+                      <div class="container">
+                        <div class="row">
+                          <div class="form-group">
+                              <label for="inputEmail3" class="col-sm-2 control-label">Enter your Email address</label>
+                              <div class="col-sm-9">
+                                <input type="email" class="form-control" id="inputEmail3" placeholder="Email">
+                              </div>
+                          </div>
+                           <p><h4>We will send you a new password on this email.</h4><p>
+                          <div class="form-group">
+                              <div class="col-sm-offset-2 col-sm-10">
+                                <button type="submit" class="btn btn-default">Send</button>
+                              </div>
+                          </div>
+                        </div>
+                      </div>
+                    </form>
+                </div>
+
+                <jsp:include page="footer.jsp"/>
+
+            </div>
         </div>
-      </div>
-    </form>
-
-    <jsp:include page="footer.jsp"/>
+    </div>
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ" crossorigin="anonymous"></script>

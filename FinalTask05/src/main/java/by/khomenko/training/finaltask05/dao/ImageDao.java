@@ -13,5 +13,7 @@ public interface ImageDao extends Dao<Image> {
 
     void updateImageCategories(List<Image> imageList) throws PersistentException;
 
-    List<Image> readUserImages(Integer userId) throws PersistentException;
+    List<Image> readUserImages(Integer userId, Integer pageNumber, Integer imagesPerPage) throws PersistentException;
+
+    int countUserImages(Integer userId) throws PersistentException;
 }

@@ -24,28 +24,28 @@ public class MyImagesPageService {
     private static final Logger LOGGER
             = LogManager.getLogger(MyImagesPageService.class);
 
-    public Map<String, Object> load(Integer userId) throws PersistentException {
+    private static final Integer IMAGESPERPAGE = 3;
+
+    public Map<String, Object> load(Integer userId, Integer pageNumber) throws PersistentException {
+
         Map<String, Object> map = new HashMap<>();
-        List<Image> images;
-        ImageDao imageDao = new ImageDaoImpl();
-        CategoryDao categoryDao = new CategoryDaoImpl();
-        List<Category> categories;
 
-        try {
-            imageDao.setConnection(ConnectionPool.getInstance()
-                    .getConnection());
-            images = imageDao.readUserImages(userId);
-            categoryDao.setConnection(ConnectionPool.getInstance()
-                    .getConnection());
-            categories = categoryDao.readAll();
+        try (ImageDao imageDao = new ImageDaoImpl();
+             CategoryDao categoryDao = new CategoryDaoImpl()) {
 
-        } catch (PersistentException e) {
+            List<Image> images = imageDao.readUserImages(userId, pageNumber, IMAGESPERPAGE);
+            List<Category> categories = categoryDao.readAll();
+            Integer pageCount = imageDao.countUserImages(userId)/IMAGESPERPAGE;
+
+            map.put("images", images);
+            map.put("categories", categories);
+            map.put("pageCount", pageCount);
+            map.put("page", pageNumber);
+
+        } catch (Exception e) {
             LOGGER.error("Loading my images an exception occurred. ", e);
             throw new PersistentException(e);
         }
-
-        map.put("images", images);
-        map.put("categories", categories);
 
         return map;
     }
@@ -53,27 +53,26 @@ public class MyImagesPageService {
     public void updateImgCategories(List<Image> addedImageList)
             throws PersistentException {
 
-        ImageDao imageDao = new ImageDaoImpl();
-        try {
-            imageDao.setConnection(ConnectionPool.getInstance()
-                    .getConnection());
+
+        try(ImageDao imageDao = new ImageDaoImpl()){
+
             imageDao.updateImageCategories(addedImageList);
-        } catch (PersistentException e) {
+
+        } catch (Exception e) {
             LOGGER.error("Updating image categories an "
                     + "exception occurred. ", e);
             throw new PersistentException(e);
         }
     }
 
-    public void addImage(Image image) throws PersistentException{
+    public void addImage(Image image) throws PersistentException {
 
-        ImageDao imageDao = new ImageDaoImpl();
-        try {
-            imageDao.setConnection(ConnectionPool.getInstance()
-                    .getConnection());
+
+        try(ImageDao imageDao = new ImageDaoImpl()) {
+
             LOGGER.error(image.getCategoryId());
             imageDao.create(image);
-        } catch (PersistentException e) {
+        } catch (Exception e) {
             LOGGER.error("Adding image categories an "
                     + "exception occurred. ", e);
             throw new PersistentException(e);

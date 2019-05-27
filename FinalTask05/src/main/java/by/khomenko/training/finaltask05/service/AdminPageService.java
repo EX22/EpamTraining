@@ -20,8 +20,6 @@ import java.util.Map;
 
 public class AdminPageService {
 
-    public static final int BLACKLIST_PAGE_SIZE = 10;
-
     /**
      * Instance of logger that provides logging capability for this class'
      * performance.
@@ -32,50 +30,42 @@ public class AdminPageService {
     public Map<String, Object> load() throws PersistentException {
 
         Map<String, Object> map = new HashMap<>();
-        List<User> blacklist;
-        SettingDao settingDao = new SettingDaoImpl();
-        Map<String, String> settings = new HashMap<>();
-        List<User> usersNotInBlacklist;
-        UserDao userDao = new UserDaoImpl();
 
-        try {
-            userDao.setConnection(ConnectionPool.getInstance()
-                    .getConnection());
+        try (SettingDao settingDao = new SettingDaoImpl();
+             UserDao userDao = new UserDaoImpl()) {
 
-            blacklist = userDao.readAllInBlacklist();
-            usersNotInBlacklist = userDao.readAllNotInBlacklist();
 
-            settingDao.setConnection(ConnectionPool.getInstance()
-                    .getConnection());
+            List<User> blacklist = userDao.readAllInBlacklist();
+            List<User> usersNotInBlacklist = userDao.readAllNotInBlacklist();
+
+            Map<String, String> settings = new HashMap<>();
             for (Setting s : settingDao.read()) {
                 settings.put(s.getName(), s.getValue());
             }
 
-        } catch (PersistentException e) {
+            map.put("settings", settings);
+            map.put("blacklist", blacklist);
+            map.put("usersNotInBlacklist", usersNotInBlacklist);
+
+        } catch (Exception e) {
             LOGGER.error("Loading blacklist and settings to admin page "
                     + "an exception occurred", e);
             throw new PersistentException(e);
         }
-
-        map.put("settings", settings);
-        map.put("blacklist", blacklist);
-        map.put("usersNotInBlacklist", usersNotInBlacklist);
 
         return map;
     }
 
     public void addUserToBlacklist(String userId) throws PersistentException {
 
-        BlackListDao blackListDao = new BlackListDaoImpl();
 
-        try {
+        try (BlackListDao blackListDao = new BlackListDaoImpl()) {
             if (userId != null) {
-                blackListDao.setConnection(ConnectionPool.getInstance()
-                        .getConnection());
+
                 blackListDao.create(new BlackList(Integer.parseInt(userId)));
             }
-        //TODO Free connections.
-        } catch (PersistentException|NumberFormatException e) {
+
+        } catch (Exception e) {
             LOGGER.error("During adding user into blacklist an "
                     + "exception occurred. ", e);
             throw new PersistentException(e);
@@ -85,35 +75,43 @@ public class AdminPageService {
     public void removeUserFromBlacklist(String userId)
             throws PersistentException {
 
+        try (BlackListDao blackListDao = new BlackListDaoImpl()) {
 
-        BlackListDao blackListDao = new BlackListDaoImpl();
-        try {
             if (userId != null) {
-            blackListDao.setConnection(ConnectionPool.getInstance()
-                    .getConnection());
-            blackListDao.delete(Integer.parseInt(userId));
-        }
 
-        } catch (PersistentException|NumberFormatException ex) {
+                blackListDao.delete(Integer.parseInt(userId));
+            }
+
+        } catch (Exception ex) {
             LOGGER.error("During removing user from blacklist an"
                     + " exception occurred. ", ex);
             throw new PersistentException(ex);
         }
     }
 
-    public void setSettings(String fileSize, String fileExtensions)
+    public void setSettings(String fileSize, String fileExtensions, String filesLocation)
             throws PersistentException {
 
-        SettingDao settingDao = new SettingDaoImpl();
 
-        try {
-            settingDao.setConnection(ConnectionPool.getInstance()
-                    .getConnection());
-            settingDao.create(new Setting("fileSize", fileSize));
-            settingDao.create(new Setting("fileExtensions",
-                    fileExtensions));
+        try (SettingDao settingDao = new SettingDaoImpl()) {
 
-        } catch (PersistentException ex) {
+            if(fileSize != null && (!"".equals(fileSize))) {
+
+                settingDao.update(new Setting("fileSize", fileSize));
+            }
+            if (fileExtensions != null && (!"".equals(fileExtensions))) {
+
+                settingDao.update(new Setting("fileExtensions",
+                        fileExtensions));
+            }
+
+            if (filesLocation != null && (!"".equals(filesLocation))) {
+
+                settingDao.update(new Setting("filesLocation",
+                        filesLocation));
+            }
+
+        } catch (Exception ex) {
             LOGGER.error("During update settings an "
                     + "exception occurred. ", ex);
             throw new PersistentException(ex);

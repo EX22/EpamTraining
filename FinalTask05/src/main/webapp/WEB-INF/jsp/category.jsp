@@ -1,5 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<%@ page import = "java.io.*,java.util.Locale" %>
+<%@ page import = "javax.servlet.*,javax.servlet.http.* "%>
+
+<fmt:setLocale value="${localeType}" scope="session" />
+<fmt:setBundle basename="crowdsource-bundle" />
 
 <!doctype html>
 <html lang="en">
@@ -28,40 +35,55 @@
           <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
   </head>
-  <body>
+  <body class="no-background-cover-image">
+    <div class="site-wrapper">
+        <div class="site-wrapper-inner">
+            <div class="cover-container">
 
-   <jsp:include page="headmenu.jsp"/>
+                <jsp:include page="headmenu.jsp"/>
 
-    <form method="post">
-        <div class="container">
-            <div class="row">
-                <h3><c:out value="${category.question}"/></h3>
-            </div>
-
-
-            <div class="row">
-                <c:forEach var="elem" items="${images}">
-                      <div class="col-md-4">
-                          <img src="${elem.path}" class="img-responsive"/>
-
-                              <div class="row">
-                                  <input type="radio" name="answer-${elem.id}" value="yes"> Yes
-                                  <input type="radio" name="answer-${elem.id}" value="no"> No
-                              </div>
-
-                      </div>
-                </c:forEach>
-            </div>
-
-
-                <div class="row">
-                    <input type="submit" name="submit">
+                <div class="inner cover">
+                    <form method="post">
+                        <div class="row">
+                             <div class="col-sm-offset-2 col-sm-10">
+                                 <h4><strong><a href="home.html"><fmt:message key="Change category"/></a></strong><h4>
+                             </div>
+                        </div>
+                        <div class="container">
+                            <div class="row">
+                                <h3><c:out value="${category.question}"/></h3>
+                            </div>
+                            <div class="row">
+                                <c:forEach var="elem" items="${images}" varStatus="loop">
+                                    <c:if test="${loop.index%3==0 && loop.index!=0}">
+                                        </div>
+                                    </c:if>
+                                    <c:if test="${loop.index%3==0}">
+                                        <div class="row">
+                                    </c:if>
+                                      <div class="col-md-4">
+                                          <img src="${elem.path}" class="img-responsive"/>
+                                          <div class="row">
+                                              <input type="radio" name="answer-${elem.id}" value="yes"> <fmt:message key="Yes"/>
+                                              <input type="radio" name="answer-${elem.id}" value="no"> <fmt:message key="No"/>
+                                          </div>
+                                      </div>
+                                </c:forEach>
+                            </div>
+                        </div>
+                            <div class="row">
+                                <fmt:message key="Submit" var="buttonValue" />
+                                <input type="submit" value="${buttonValue}"/>
+                            </div>
+                        </div>
+                    </form>
                 </div>
+
+                <jsp:include page="footer.jsp"/>
+
+            </div>
         </div>
-
-    </form>
-
-    <jsp:include page="footer.jsp"/>
+    </div>
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ" crossorigin="anonymous"></script>

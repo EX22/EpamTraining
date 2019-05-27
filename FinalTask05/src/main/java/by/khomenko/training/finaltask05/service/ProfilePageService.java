@@ -30,37 +30,28 @@ public class ProfilePageService {
             throws PersistentException {
 
         Map<String, Object> map = new HashMap<>();
-        User user;
-        List<Favorite> favorites;
-        UserDao userDao = new UserDaoImpl();
-        FavoriteDaoImpl favoriteDao = new FavoriteDaoImpl();
-        CategoryDao categoryDao = new CategoryDaoImpl();
-        List<Category> categories;
-        Set<Integer> favoriteIds = new HashSet<>();
 
-        try {
-            userDao.setConnection(ConnectionPool.getInstance()
-                    .getConnection());
-            user = userDao.read(id);
-            favoriteDao.setConnection(ConnectionPool.getInstance()
-                    .getConnection());
-            favorites = favoriteDao.read(user);
-            categoryDao.setConnection(ConnectionPool.getInstance()
-                    .getConnection());
-            categories = categoryDao.readAll();
+        try (UserDao userDao = new UserDaoImpl();
+             FavoriteDaoImpl favoriteDao = new FavoriteDaoImpl();
+             CategoryDao categoryDao = new CategoryDaoImpl()) {
+
+            User user = userDao.read(id);
+            List<Favorite> favorites = favoriteDao.read(user);
+            List<Category> categories = categoryDao.readAll();
+            Set<Integer> favoriteIds = new HashSet<>();
             for (Favorite f : favorites) {
                 favoriteIds.add(f.getCategoryId());
             }
 
-        } catch (PersistentException e) {
+            map.put("user", user);
+            map.put("favorites", favorites);
+            map.put("categories", categories);
+            map.put("favoriteIds", favoriteIds);
+
+        } catch (Exception e) {
             LOGGER.error("Loading user's profile an exception occurred.", e);
             throw new PersistentException(e);
         }
-
-        map.put("user", user);
-        map.put("favorites", favorites);
-        map.put("categories", categories);
-        map.put("favoriteIds", favoriteIds);
 
         return map;
     }
@@ -70,29 +61,26 @@ public class ProfilePageService {
                               String newPass, String confirmPass)
             throws PersistentException, ValidationException {
 
-        UserDao userDao = new UserDaoImpl();
         User loggedUser;
-        try {
 
-            if ((avatarFileName != null)){
-                userDao.setConnection(ConnectionPool.getInstance()
-                        .getConnection());
+        try (UserDao userDao = new UserDaoImpl()) {
+
+            if ((avatarFileName != null)) {
+
                 userDao.updateUserAvatar(curUserId,
                         ("avatars/" + avatarFileName));
             }
 
 
             if ((userName != null) && (!"".equals(userName))) {
-                userDao.setConnection(ConnectionPool.getInstance()
-                        .getConnection());
+
                 userDao.updateUserName(userName, curUserId);
             }
 
             if ((newPass != null) && (!"".equals(newPass))) {
                 if (newPass.equals(confirmPass)) {
 
-                    userDao.setConnection(ConnectionPool.getInstance()
-                            .getConnection());
+
                     loggedUser = userDao.read(userDao.read(curUserId)
                             .getLogin(), curUserPass);
 
@@ -110,7 +98,11 @@ public class ProfilePageService {
                 }
             }
 
-        } catch (PersistentException e) {
+        } catch (ValidationException e) {
+            LOGGER.error("Updating user's profile an "
+                    + "exception occurred.", e);
+            throw new ValidationException(e);
+        } catch (Exception e) {
             LOGGER.error("Updating user's profile an "
                     + "exception occurred.", e);
             throw new PersistentException(e);
@@ -121,15 +113,14 @@ public class ProfilePageService {
     public void saveFavorites(List<Favorite> favorites, Integer userId)
             throws PersistentException {
 
-        FavoriteDao favoriteDao = new FavoriteDaoImpl();
-        try {
-            favoriteDao.setConnection(ConnectionPool.getInstance()
-                    .getConnection());
+
+        try (FavoriteDao favoriteDao = new FavoriteDaoImpl()) {
+
             favoriteDao.deleteAll(userId);
             for (Favorite favorite : favorites) {
                 favoriteDao.create(favorite);
             }
-        } catch (PersistentException e) {
+        } catch (Exception e) {
             LOGGER.error("Saving favorite categories "
                     + "an exception occurred.", e);
             throw new PersistentException(e);

@@ -10,7 +10,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ImageDaoImpl extends BaseDaoImpl implements ImageDao {
+public class ImageDaoImpl extends BaseDaoImpl<Image> implements ImageDao {
 
     /**
      * Instance of logger that provides logging capability for this class'
@@ -18,6 +18,11 @@ public class ImageDaoImpl extends BaseDaoImpl implements ImageDao {
      */
     private static final Logger LOGGER
             = LogManager.getLogger(ImageDaoImpl.class);
+
+
+
+    public ImageDaoImpl() throws PersistentException {
+    }
 
     @Override
     public Integer create(Image image) throws PersistentException {
@@ -160,16 +165,18 @@ public class ImageDaoImpl extends BaseDaoImpl implements ImageDao {
         }
     }
 
-    public List<Image> readUserImages(Integer userId)
+    public List<Image> readUserImages(Integer userId, Integer pageNumber, Integer imagesPerPage)
             throws PersistentException {
 
         String sql = "SELECT path, category_id, id FROM images"
-                + " WHERE user_id = ?";
-
+                + " WHERE user_id = ? ORDER BY id LIMIT ? OFFSET ?";
 
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
 
+
             statement.setInt(1, userId);
+            statement.setInt(2, imagesPerPage);
+            statement.setInt(3, (pageNumber - 1)*imagesPerPage);
             List<Image> images = new ArrayList<>();
 
             try (ResultSet resultSet = statement.executeQuery()) {
@@ -202,6 +209,27 @@ public class ImageDaoImpl extends BaseDaoImpl implements ImageDao {
             if (resultSet.next()) {
                 c = resultSet.getInt(1);
             }
+            return c;
+        } catch (SQLException e) {
+            LOGGER.error("Counting images an exception occurred", e);
+            throw new PersistentException(e);
+        }
+    }
+
+    public int countUserImages(Integer userId) throws PersistentException {
+
+        String sql = "SELECT COUNT(id) FROM images WHERE user_id = ?";
+
+        try (PreparedStatement statement = connection.prepareStatement(sql)){
+
+            statement.setInt(1, userId);
+             int c = 0;
+            try (ResultSet resultSet = statement.executeQuery()) {
+
+            if (resultSet.next()) {
+                c = resultSet.getInt(1);
+            }
+        }
             return c;
         } catch (SQLException e) {
             LOGGER.error("Counting images an exception occurred", e);

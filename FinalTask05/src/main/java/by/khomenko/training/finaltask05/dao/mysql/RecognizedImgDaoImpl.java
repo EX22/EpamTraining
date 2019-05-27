@@ -11,7 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class RecognizedImgDaoImpl extends BaseDaoImpl
+public class RecognizedImgDaoImpl extends BaseDaoImpl<RecognizedImg>
         implements RecognizedImgDao {
 
     /**
@@ -20,6 +20,9 @@ public class RecognizedImgDaoImpl extends BaseDaoImpl
      */
     private static final Logger LOGGER
             = LogManager.getLogger(RecognizedImgDaoImpl.class);
+
+    public RecognizedImgDaoImpl() throws PersistentException {
+    }
 
     @Override
     public Integer create(RecognizedImg recognizedImg)

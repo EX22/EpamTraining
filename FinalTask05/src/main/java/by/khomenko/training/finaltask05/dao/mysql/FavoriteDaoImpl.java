@@ -14,7 +14,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FavoriteDaoImpl extends BaseDaoImpl implements FavoriteDao {
+public class FavoriteDaoImpl extends BaseDaoImpl<Favorite> implements FavoriteDao {
 
     /**
      * Instance of logger that provides logging capability for this class'
@@ -22,6 +22,9 @@ public class FavoriteDaoImpl extends BaseDaoImpl implements FavoriteDao {
      */
     private static final Logger LOGGER
             = LogManager.getLogger(FavoriteDaoImpl.class);
+
+    public FavoriteDaoImpl() throws PersistentException {
+    }
 
     @Override
     public Integer create(Favorite favorite) throws PersistentException {

@@ -25,20 +25,17 @@ public class HomePageService {
     public Map<String, Object> load() throws PersistentException {
 
         Map<String, Object> map = new HashMap<>();
-        List<Category> categories;
-        CategoryDao categoryDao = new CategoryDaoImpl();
 
-        try {
-            categoryDao.setConnection(ConnectionPool.getInstance()
-                    .getConnection());
-            categories = categoryDao.readAll();
+        try (CategoryDao categoryDao = new CategoryDaoImpl()) {
 
-        } catch (PersistentException e) {
+            List<Category> categories = categoryDao.readAll();
+
+            map.put("categories", categories);
+
+        } catch (Exception e) {
             LOGGER.error("Loading home page an exception occurred.", e);
             throw new PersistentException(e);
         }
-
-        map.put("categories", categories);
 
         return map;
     }

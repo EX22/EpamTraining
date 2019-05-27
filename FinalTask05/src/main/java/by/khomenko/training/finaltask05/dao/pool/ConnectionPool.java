@@ -83,7 +83,7 @@ public class ConnectionPool {
         return connection;
     }
 
-    void freeConnection(PooledConnection connection) {
+    public void freeConnection(PooledConnection connection) {
         lock.lock();
         try {
             if (connection.isValid(checkConnectionTimeout)) {

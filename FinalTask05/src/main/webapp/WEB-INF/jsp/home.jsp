@@ -1,5 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<%@ page import = "java.io.*,java.util.Locale" %>
+<%@ page import = "javax.servlet.*,javax.servlet.http.* "%>
+
+<fmt:setLocale value="${localeType}" scope="session" />
+<fmt:setBundle basename="crowdsource-bundle" />
+
 
 <!doctype html>
 <html lang="en">
@@ -27,33 +35,48 @@
           <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
           <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
+
   </head>
-  <body>
+  <body class="no-background-cover-image">
+    <div class="site-wrapper">
+        <div class="site-wrapper-inner">
+            <div class="cover-container">
 
-      <jsp:include page="headmenu.jsp"/>
+                <jsp:include page="headmenu.jsp"/>
 
-      <h3> Select a category </h3>
-
-        <div class="container">
-            <div class="row">
-                <c:forEach var="elem" items="${categories}">
-                    <div class="col-md-4">
-                        <p><strong><c:out value="${elem.name}"/></strong><br/>
-                        <a href="category.html?id=${elem.id}">
-                        <img src="${elem.imagePath}" alt="Responsive image" class="img-responsive" /></a>
+                <div class="inner cover">
+                    <h3><fmt:message key="Select a category"/></h3>
+                    <div class="container">
+                        <div class="row">
+                            <c:forEach var="elem" items="${categories}" varStatus="loop">
+                                <c:if test="${loop.index%3==0 && loop.index!=0}">
+                                    </div>
+                                </c:if>
+                                <c:if test="${loop.index%3==0}">
+                                    <div class="row">
+                                </c:if>
+                                <div class="col-md-4">
+                                    <strong><c:out value="${elem.name}"/></strong><br/>
+                                    <a href="category.html?id=${elem.id}">
+                                    <img src="${elem.imagePath}" alt="Responsive image" class="img-responsive" /></a>
+                                </div>
+                            </c:forEach>
+                        </div>
                     </div>
-                </c:forEach>
-            </div>
-        </div>
-        <div class="container">
-            <div class="row">
-                <c:forEach var="elem" begin="1" end="${pageCount}" step="1">
-                    <h3><a href="?page=${elem}"><c:out value="${elem}"/></a></h3>
-                </c:forEach>
-            </div>
-        </div>
 
-        <jsp:include page="footer.jsp"/>
+                        <div class="row">
+                            <c:forEach var="elem" begin="1" end="${pageCount}" step="1">
+                                <h3><a href="?page=${elem}"><c:out value="${elem}"/></a></h3>
+                            </c:forEach>
+                        </div>
+                    </div>
+                </div>
+
+                <jsp:include page="footer.jsp"/>
+
+            </div>
+        </div>
+    </div>
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ" crossorigin="anonymous"></script>

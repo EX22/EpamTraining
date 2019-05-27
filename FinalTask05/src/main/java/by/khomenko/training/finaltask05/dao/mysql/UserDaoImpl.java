@@ -14,7 +14,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserDaoImpl extends BaseDaoImpl implements UserDao {
+public class UserDaoImpl extends BaseDaoImpl<User> implements UserDao {
 
     /**
      * Instance of logger that provides logging capability for this class'
@@ -22,6 +22,9 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
      */
     private static final Logger LOGGER
             = LogManager.getLogger(UserDaoImpl.class);
+
+    public UserDaoImpl() throws PersistentException {
+    }
 
 
     @Override
@@ -272,6 +275,23 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
             }
         } catch (SQLException e) {
             LOGGER.error("Checking if user exists"
+                    + " an exception occurred. ", e);
+            throw new PersistentException(e);
+        }
+    }
+
+    public void increaseUserLevel(Integer identity, Integer level) throws PersistentException {
+
+        String sql = "UPDATE users SET level = level + ? WHERE id = ?";
+
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setInt(1, level);
+            statement.setInt(2, identity);
+            statement.executeUpdate();
+
+        } catch (SQLException e) {
+            LOGGER.error("Increasing user's level"
                     + " an exception occurred. ", e);
             throw new PersistentException(e);
         }

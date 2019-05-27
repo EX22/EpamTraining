@@ -13,7 +13,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CategoryDaoImpl extends BaseDaoImpl implements CategoryDao {
+public class CategoryDaoImpl extends BaseDaoImpl<Category> implements CategoryDao {
 
     /**
      * Instance of logger that provides logging capability for this class'
@@ -21,6 +21,9 @@ public class CategoryDaoImpl extends BaseDaoImpl implements CategoryDao {
      */
     private static final Logger LOGGER
             = LogManager.getLogger(CategoryDaoImpl.class);
+
+    public CategoryDaoImpl() throws PersistentException {
+    }
 
     @Override
     public Integer create(Category category) throws PersistentException {

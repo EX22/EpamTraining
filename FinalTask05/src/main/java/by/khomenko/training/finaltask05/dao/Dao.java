@@ -5,7 +5,7 @@ import by.khomenko.training.finaltask05.exception.PersistentException;
 
 import java.sql.Connection;
 
-public interface Dao<T extends Entity> {
+public interface Dao<T extends Entity> extends AutoCloseable {
 
     Integer create(T entity) throws PersistentException;
 

@@ -12,7 +12,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BlackListDaoImpl extends BaseDaoImpl implements BlackListDao {
+public class BlackListDaoImpl extends BaseDaoImpl<BlackList> implements BlackListDao {
 
     /**
      * Instance of logger that provides logging capability for this class'
@@ -20,6 +20,9 @@ public class BlackListDaoImpl extends BaseDaoImpl implements BlackListDao {
      */
     private static final Logger LOGGER
             = LogManager.getLogger(BlackListDaoImpl.class);
+
+    public BlackListDaoImpl() throws PersistentException {
+    }
 
 
     @Override

@@ -1,4 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<%@ page import = "java.io.*,java.util.Locale" %>
+<%@ page import = "javax.servlet.*,javax.servlet.http.* "%>
+
+<fmt:setLocale value="${localeType}" scope="session" />
+<fmt:setBundle basename="crowdsource-bundle" />
 
 <!doctype html>
 <html lang="en">
@@ -27,48 +34,24 @@
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
   </head>
-  <body>
+  <body class="background-cover-image">
     <div class="site-wrapper">
 
           <div class="site-wrapper-inner">
 
             <div class="cover-container">
 
-              <div class="masthead clearfix">
-                <div class="inner">
-                  <h3 class="masthead-brand">Crowdsource</h3>
-                  <nav>
-                    <ul class="nav masthead-nav">
-                      <li><a href="home.html">Home</a></li>
-                      <li><a href="profile.html">Profile</a></li>
-                      <li><a href="registration.html">Register</a></li>
-                      <li><a href="login.html">LogIn</a></li>
-                      <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Language <span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                          <li><a href="#">English</a></li>
-                          <li><a href="#">Belarusian</a></li>
-                          <li><a href="#">German</a></li>
-                        </ul>
-                      </li>
-                    </ul>
-                  </nav>
-                </div>
-              </div>
+              <jsp:include page="headmenu.jsp"/>
 
               <div class="inner cover">
-                <h1 class="cover-heading">Crowdsource image recognition app</h1>
-                <p class="lead">Crowdsourcing, cooperative  intelligence as an element of development.</p>
+                <h1 class="cover-heading"><fmt:message key="Crowdsource image recognition app"/></h1>
+                <p class="lead"><fmt:message key="Crowdsourcing, cooperative  intelligence as an element of development."/></p>
                 <p class="lead">
-                  <a href="home.html" class="btn btn-lg btn-default">Learn more</a>
+                  <a href="home.html" class="btn btn-lg btn-default"><fmt:message key="Learn more"/></a>
                 </p>
               </div>
 
-              <div class="mastfoot">
-                <div class="inner">
-                  <p>All rights reserved <a href="">Crowdsource</a>, by <a href="">@csa</a>.</p>
-                </div>
-              </div>
+              <jsp:include page="footer.jsp"/>
 
             </div>
 

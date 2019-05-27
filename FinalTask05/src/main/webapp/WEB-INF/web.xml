@@ -9,6 +9,9 @@
     <description>
         Crowdsource application for recognizing images.
     </description>
+    <welcome-file-list>
+        <welcome-file>welcomepage.html</welcome-file>
+    </welcome-file-list>
 
     <!--<servlet>
         <servlet-name>DispatcherServlet</servlet-name>

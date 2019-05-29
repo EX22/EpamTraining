@@ -1,6 +1,7 @@
 package by.khomenko.training.finaltask05.service;
 
 import by.khomenko.training.finaltask05.dao.CategoryDao;
+import by.khomenko.training.finaltask05.dao.DaoFactory;
 import by.khomenko.training.finaltask05.dao.mysql.CategoryDaoImpl;
 import by.khomenko.training.finaltask05.dao.pool.ConnectionPool;
 import by.khomenko.training.finaltask05.entity.Category;
@@ -26,7 +27,7 @@ public class HomePageService {
 
         Map<String, Object> map = new HashMap<>();
 
-        try (CategoryDao categoryDao = new CategoryDaoImpl()) {
+        try (CategoryDao categoryDao = DaoFactory.getInstance().createDao(CategoryDao.class)) {
 
             List<Category> categories = categoryDao.readAll();
 

@@ -1,6 +1,7 @@
 package by.khomenko.training.finaltask05.service;
 
 import by.khomenko.training.finaltask05.dao.CategoryDao;
+import by.khomenko.training.finaltask05.dao.DaoFactory;
 import by.khomenko.training.finaltask05.dao.ImageDao;
 import by.khomenko.training.finaltask05.dao.mysql.CategoryDaoImpl;
 import by.khomenko.training.finaltask05.dao.mysql.ImageDaoImpl;
@@ -30,12 +31,14 @@ public class MyImagesPageService {
 
         Map<String, Object> map = new HashMap<>();
 
-        try (ImageDao imageDao = new ImageDaoImpl();
-             CategoryDao categoryDao = new CategoryDaoImpl()) {
+        try (ImageDao imageDao = DaoFactory.getInstance().createDao(ImageDao.class);
+             CategoryDao categoryDao = DaoFactory.getInstance().createDao(CategoryDao.class)) {
 
             List<Image> images = imageDao.readUserImages(userId, pageNumber, IMAGESPERPAGE);
             List<Category> categories = categoryDao.readAll();
-            Integer pageCount = imageDao.countUserImages(userId)/IMAGESPERPAGE;
+            Integer imgCount = imageDao.countUserImages(userId);
+            Integer pageCount = imgCount/IMAGESPERPAGE
+                    + ((imgCount%IMAGESPERPAGE > 0) ? 1 : 0);
 
             map.put("images", images);
             map.put("categories", categories);
@@ -54,7 +57,7 @@ public class MyImagesPageService {
             throws PersistentException {
 
 
-        try(ImageDao imageDao = new ImageDaoImpl()){
+        try(ImageDao imageDao = DaoFactory.getInstance().createDao(ImageDao.class)){
 
             imageDao.updateImageCategories(addedImageList);
 
@@ -68,10 +71,10 @@ public class MyImagesPageService {
     public void addImage(Image image) throws PersistentException {
 
 
-        try(ImageDao imageDao = new ImageDaoImpl()) {
+        try(ImageDao imageDao = DaoFactory.getInstance().createDao(ImageDao.class)) {
 
-            LOGGER.error(image.getCategoryId());
             imageDao.create(image);
+
         } catch (Exception e) {
             LOGGER.error("Adding image categories an "
                     + "exception occurred. ", e);

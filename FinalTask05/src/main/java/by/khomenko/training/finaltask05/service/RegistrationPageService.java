@@ -1,5 +1,6 @@
 package by.khomenko.training.finaltask05.service;
 
+import by.khomenko.training.finaltask05.dao.DaoFactory;
 import by.khomenko.training.finaltask05.dao.UserDao;
 import by.khomenko.training.finaltask05.dao.mysql.UserDaoImpl;
 import by.khomenko.training.finaltask05.dao.pool.ConnectionPool;
@@ -24,7 +25,7 @@ public class RegistrationPageService {
 
         Integer userId;
 
-        try (UserDao userDao = new UserDaoImpl()) {
+        try (UserDao userDao = DaoFactory.getInstance().createDao(UserDao.class)) {
 
             if (!pass.equals(confirmPass)) {
                 throw new ValidationException("Password and confirmPassword"

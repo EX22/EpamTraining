@@ -1,6 +1,7 @@
 package by.khomenko.training.finaltask05.service;
 
 import by.khomenko.training.finaltask05.dao.BlackListDao;
+import by.khomenko.training.finaltask05.dao.DaoFactory;
 import by.khomenko.training.finaltask05.dao.SettingDao;
 import by.khomenko.training.finaltask05.dao.UserDao;
 import by.khomenko.training.finaltask05.dao.mysql.BlackListDaoImpl;
@@ -31,8 +32,8 @@ public class AdminPageService {
 
         Map<String, Object> map = new HashMap<>();
 
-        try (SettingDao settingDao = new SettingDaoImpl();
-             UserDao userDao = new UserDaoImpl()) {
+        try (SettingDao settingDao = DaoFactory.getInstance().createDao(SettingDao.class);
+             UserDao userDao = DaoFactory.getInstance().createDao(UserDao.class)) {
 
 
             List<User> blacklist = userDao.readAllInBlacklist();
@@ -59,7 +60,7 @@ public class AdminPageService {
     public void addUserToBlacklist(String userId) throws PersistentException {
 
 
-        try (BlackListDao blackListDao = new BlackListDaoImpl()) {
+        try (BlackListDao blackListDao = DaoFactory.getInstance().createDao(BlackListDao.class)) {
             if (userId != null) {
 
                 blackListDao.create(new BlackList(Integer.parseInt(userId)));
@@ -75,7 +76,7 @@ public class AdminPageService {
     public void removeUserFromBlacklist(String userId)
             throws PersistentException {
 
-        try (BlackListDao blackListDao = new BlackListDaoImpl()) {
+        try (BlackListDao blackListDao = DaoFactory.getInstance().createDao(BlackListDao.class)) {
 
             if (userId != null) {
 
@@ -93,7 +94,7 @@ public class AdminPageService {
             throws PersistentException {
 
 
-        try (SettingDao settingDao = new SettingDaoImpl()) {
+        try (SettingDao settingDao = DaoFactory.getInstance().createDao(SettingDao.class)) {
 
             if(fileSize != null && (!"".equals(fileSize))) {
 

@@ -1,5 +1,6 @@
 package by.khomenko.training.finaltask05.servlet;
 
+import by.khomenko.training.finaltask05.dao.DaoFactory;
 import by.khomenko.training.finaltask05.dao.pool.ConnectionPool;
 import by.khomenko.training.finaltask05.entity.Favorite;
 import by.khomenko.training.finaltask05.entity.Image;
@@ -18,15 +19,13 @@ import javax.servlet.http.*;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @MultipartConfig
 @WebServlet(
         name = "DispatcherServlet",
-        urlPatterns = {"/adminpage.html", "/category.html", "/forgotpass.html",
+        urlPatterns = {"/adminpage.html", "/category.html",
                 "/home.html", "/login.html", "/myimages.html", "/profile.html",
                 "/registration.html", "/logout.html", "/profilesettings.html", "/welcomepage.html"})
 public class DispatcherServlet extends HttpServlet {
@@ -87,14 +86,9 @@ public class DispatcherServlet extends HttpServlet {
 
                     break;
 
-                case "/forgotpass.html":
-
-                    request.getRequestDispatcher("WEB-INF/jsp/forgotpass.jsp")
-                            .forward(request, response);
-
-                    break;
-
                 case "/home.html":
+
+
 
                     HomePageService homePageService = new HomePageService();
                     Map<String, Object> hpd = homePageService.load();
@@ -169,7 +163,7 @@ public class DispatcherServlet extends HttpServlet {
 
         } catch (PersistentException e) {
             LOGGER.error("An exception in doGet method occurred.", e);
-
+            response.sendRedirect("error.html");
         }
 
 
@@ -178,7 +172,7 @@ public class DispatcherServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request,
                           HttpServletResponse response)
-            throws ServletException {
+            throws ServletException, IOException {
 
         int length = request.getContextPath().length();
         String s = request.getRequestURI().substring(length);
@@ -233,12 +227,6 @@ public class DispatcherServlet extends HttpServlet {
 
                     break;
 
-                case "/forgotpass.html":
-
-                    request.getRequestDispatcher("WEB-INF/jsp/forgotpass.jsp")
-                            .forward(request, response);
-                    break;
-
                 case "/home.html":
 
                     request.getRequestDispatcher("WEB-INF/jsp/home.jsp")
@@ -287,10 +275,10 @@ public class DispatcherServlet extends HttpServlet {
                         rUserId = registrationPageService.createUser(rps, rpps, rpcps);
                         request.getSession().setAttribute("userId", rUserId);
                         response.sendRedirect("profile.html");
-                    } catch (ValidationException e) {
-                        //TODO Add error message
-                        request.setAttribute("errorMessage", "Error message ");
 
+                    } catch (ValidationException e) {
+
+                        request.setAttribute("errorMessage", e.getMessage());
                         request.setAttribute("regLogin", rps);
                         request.getRequestDispatcher("WEB-INF/jsp/registration.jsp")
                                 .forward(request, response);
@@ -299,7 +287,6 @@ public class DispatcherServlet extends HttpServlet {
                     break;
 
                 case "/profilesettings.html":
-
 
                     updateProfileSettings(request, response);
                     showProfileInfo(request, response);
@@ -313,9 +300,10 @@ public class DispatcherServlet extends HttpServlet {
             }
         } catch (PersistentException | IOException e) {
             LOGGER.error("An exception in doPost method occurred.", e);
-            //TODO Put an appropriate message in log and throw some exception here.
+            response.sendRedirect("error.html");
         } catch (ValidationException e) {
             LOGGER.error("Validation exception in doPost method occurred.", e);
+            response.sendRedirect("error.html");
         }
     }
 
@@ -326,6 +314,7 @@ public class DispatcherServlet extends HttpServlet {
             ConnectionPool.getInstance().init(DB_DRIVER_CLASS, DB_URL, DB_USER,
                     DB_PASSWORD, DB_POOL_START_SIZE, DB_POOL_MAX_SIZE,
                     DB_POOL_CHECK_CONNECTION_TIMEOUT);
+            DaoFactory.getInstance().init("mysql");
         } catch (PersistentException e) {
             LOGGER.error("It is impossible to initialize application", e);
             destroy();
@@ -444,7 +433,8 @@ public class DispatcherServlet extends HttpServlet {
         SystemSettingsService systemSettingsService = new SystemSettingsService();
         Integer fileSizeInt = Integer.parseInt(systemSettingsService.getSetting("fileSize"));
         if (fp.getSize()/(1024*1024) > fileSizeInt){
-            request.setAttribute("errorMessage", "Max file size is " + fileSizeInt + " Mb.");
+            request.setAttribute("errorMessage", "File's size is not valid."
+                    + " Max allowed file size is " + fileSizeInt + " Mb.");
 
         } else {
             InputStream fc = fp.getInputStream();
@@ -464,6 +454,7 @@ public class DispatcherServlet extends HttpServlet {
                     }
                 }
                 if (valid) {
+                    fileName = generateUniqueFileName() + "_" + fileName;
                     Files.copy(fc, Paths.get(systemSettingsService.getSetting("filesLocation"),
                             fileName));
                     Image addedImage = new Image();
@@ -485,5 +476,16 @@ public class DispatcherServlet extends HttpServlet {
     private Integer getCurrentUserId(HttpServletRequest request) {
 
         return (Integer) request.getSession().getAttribute("userId");
+    }
+
+    private String generateUniqueFileName() {
+        String filename = "";
+        long millis = System.currentTimeMillis();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("ddMMyyhhmmssSSS");
+        String datetime = simpleDateFormat.format( new Date() ) ;
+        datetime = datetime.replace(" ", "");
+        datetime = datetime.replace(":", "");
+        filename = datetime + "_" + millis;
+        return filename;
     }
 }

@@ -2,6 +2,7 @@ package by.khomenko.training.finaltask05.dao.mysql;
 
 import by.khomenko.training.finaltask05.dao.BlackListDao;
 import by.khomenko.training.finaltask05.entity.BlackList;
+import by.khomenko.training.finaltask05.entity.User;
 import by.khomenko.training.finaltask05.exception.PersistentException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -121,5 +122,28 @@ public class BlackListDaoImpl extends BaseDaoImpl<BlackList> implements BlackLis
         }
 
 
+    }
+
+    public boolean isUserInBlacklist(User user)
+            throws PersistentException {
+
+        String sql = "SELECT user_id FROM blacklist WHERE user_id = ?";
+
+
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setInt(1, user.getId());
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+
+                if (resultSet.next()) {
+                    return true;
+                }
+            }
+            return false;
+        } catch (SQLException e) {
+            LOGGER.error("Reading blacklist an exception occurred. ", e);
+            throw new PersistentException(e);
+        }
     }
 }

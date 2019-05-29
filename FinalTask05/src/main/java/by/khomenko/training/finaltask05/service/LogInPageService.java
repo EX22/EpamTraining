@@ -1,5 +1,7 @@
 package by.khomenko.training.finaltask05.service;
 
+import by.khomenko.training.finaltask05.dao.BlackListDao;
+import by.khomenko.training.finaltask05.dao.DaoFactory;
 import by.khomenko.training.finaltask05.dao.UserDao;
 import by.khomenko.training.finaltask05.dao.mysql.UserDaoImpl;
 import by.khomenko.training.finaltask05.dao.pool.ConnectionPool;
@@ -22,9 +24,13 @@ public class LogInPageService {
 
         User loggedUser;
 
-        try (UserDao userDao = new UserDaoImpl()) {
+        try (UserDao userDao = DaoFactory.getInstance().createDao(UserDao.class);
+             BlackListDao blackListDao = DaoFactory.getInstance().createDao(BlackListDao.class)) {
 
             loggedUser = userDao.read(login, password);
+            if (blackListDao.isUserInBlacklist(loggedUser)){
+                return null;
+            }
 
         } catch (Exception e) {
             LOGGER.error("Checking user in `users` table "

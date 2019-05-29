@@ -23,16 +23,13 @@
         <!-- Bootstrap core CSS -->
         <link href="css/bootstrap.min.css" rel="stylesheet">
 
-        <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-        <link href="../../assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
-
         <!-- Custom styles for this template -->
         <link href="css/cover.css" rel="stylesheet">
 
         <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
         <!--[if lt IE 9]>
-          <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-          <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+          <script src="js/html5shiv.min.js"></script>
+          <script src="js/respond.min.js"></script>
         <![endif]-->
   </head>
   <body class="no-background-cover-image">
@@ -79,7 +76,15 @@
                                         <img src="${im.path}" class="img-responsive"/>
                                         <p class="text-left"><fmt:message key="Category"/> :
                                         <p><select name="category-${im.id}" class="category-select">
-                                            <option value="" disabled><fmt:message key="Choose the category"/></option>
+                                           <c:choose>
+                                               <c:when test="${im.categoryId==0}">
+                                                   <option value="" disabled selected><fmt:message key="Choose the category"/></option>
+                                               </c:when>
+                                               <c:otherwise>
+                                                   <option value="" disabled><fmt:message key="Choose the category"/></option>
+                                               </c:otherwise>
+                                           </c:choose>
+
                                             <c:forEach var="cat" items="${categories}">
                                                 <c:choose>
                                                     <c:when test="${im.categoryId==cat.id}">
@@ -130,8 +135,8 @@
     </div>
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ" crossorigin="anonymous"></script>
+    <script src="js/jquery-1.12.4.min.js" integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ" crossorigin="anonymous"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
+    <script src="js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
   </body>
 </html>

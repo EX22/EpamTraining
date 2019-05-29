@@ -15,3 +15,7 @@
                 <c:out value="${errorMessage}"/>
         </div>
     </c:if>
+
+    <div class="alert alert-danger invisible" id="errorMessage" >
+      <span id="errorMessageText">Error message text</span>
+    </div>

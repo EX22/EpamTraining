@@ -1,6 +1,7 @@
 package by.khomenko.training.finaltask05.service;
 
 import by.khomenko.training.finaltask05.dao.CategoryDao;
+import by.khomenko.training.finaltask05.dao.DaoFactory;
 import by.khomenko.training.finaltask05.dao.FavoriteDao;
 import by.khomenko.training.finaltask05.dao.UserDao;
 import by.khomenko.training.finaltask05.dao.mysql.CategoryDaoImpl;
@@ -31,9 +32,9 @@ public class ProfilePageService {
 
         Map<String, Object> map = new HashMap<>();
 
-        try (UserDao userDao = new UserDaoImpl();
-             FavoriteDaoImpl favoriteDao = new FavoriteDaoImpl();
-             CategoryDao categoryDao = new CategoryDaoImpl()) {
+        try (UserDao userDao = DaoFactory.getInstance().createDao(UserDao.class);
+             FavoriteDao favoriteDao = DaoFactory.getInstance().createDao(FavoriteDao.class);
+             CategoryDao categoryDao = DaoFactory.getInstance().createDao(CategoryDao.class)) {
 
             User user = userDao.read(id);
             List<Favorite> favorites = favoriteDao.read(user);
@@ -63,7 +64,7 @@ public class ProfilePageService {
 
         User loggedUser;
 
-        try (UserDao userDao = new UserDaoImpl()) {
+        try (UserDao userDao = DaoFactory.getInstance().createDao(UserDao.class)) {
 
             if ((avatarFileName != null)) {
 
@@ -114,7 +115,7 @@ public class ProfilePageService {
             throws PersistentException {
 
 
-        try (FavoriteDao favoriteDao = new FavoriteDaoImpl()) {
+        try (FavoriteDao favoriteDao = DaoFactory.getInstance().createDao(FavoriteDao.class)) {
 
             favoriteDao.deleteAll(userId);
             for (Favorite favorite : favorites) {

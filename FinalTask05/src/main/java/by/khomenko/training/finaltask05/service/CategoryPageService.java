@@ -1,9 +1,6 @@
 package by.khomenko.training.finaltask05.service;
 
-import by.khomenko.training.finaltask05.dao.CategoryDao;
-import by.khomenko.training.finaltask05.dao.ImageDao;
-import by.khomenko.training.finaltask05.dao.RecognizedImgDao;
-import by.khomenko.training.finaltask05.dao.UserDao;
+import by.khomenko.training.finaltask05.dao.*;
 import by.khomenko.training.finaltask05.dao.mysql.CategoryDaoImpl;
 import by.khomenko.training.finaltask05.dao.mysql.ImageDaoImpl;
 import by.khomenko.training.finaltask05.dao.mysql.RecognizedImgDaoImpl;
@@ -34,7 +31,7 @@ public class CategoryPageService {
 
         Map<String, Object> map = new HashMap<>();
 
-        try (ImageDao imageDao = new ImageDaoImpl();
+        try (ImageDao imageDao = DaoFactory.getInstance().createDao(ImageDao.class);
              CategoryDao categoryDao = new CategoryDaoImpl()) {
 
             List<Image> images = imageDao.readAll(userId, categoryId, 1, 3);
@@ -56,8 +53,8 @@ public class CategoryPageService {
             throws PersistentException {
 
 
-        try (RecognizedImgDao recognizedImgDao = new RecognizedImgDaoImpl();
-             UserDao userDao = new UserDaoImpl()) {
+        try (RecognizedImgDao recognizedImgDao = DaoFactory.getInstance().createDao(RecognizedImgDao.class);
+             UserDao userDao = DaoFactory.getInstance().createDao(UserDao.class)) {
 
             userDao.increaseUserLevel(userId, recognizedImgList.size());
             for (RecognizedImg recognizedImg : recognizedImgList) {

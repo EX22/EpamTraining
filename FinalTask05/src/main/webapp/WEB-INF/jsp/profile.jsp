@@ -18,7 +18,7 @@
         <meta name="description" content="">
         <meta name="author" content="">
         <link rel="icon" href="css/pictures/crowdlogo.jpg">
-        <title>  </title>
+        <title><fmt:message key="Profile"/></title>
 
         <!-- Bootstrap core CSS -->
         <link href="css/bootstrap.min.css" rel="stylesheet">

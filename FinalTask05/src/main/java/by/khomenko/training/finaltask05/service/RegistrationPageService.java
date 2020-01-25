@@ -42,7 +42,7 @@ public class RegistrationPageService {
 
         } catch (ValidationException e) {
             LOGGER.error("Creating user an exception occurred. ", e);
-            throw new ValidationException(e);
+            throw new ValidationException(e.getMessage());
         }catch (Exception e) {
             LOGGER.error("Creating user an exception occurred. ", e);
             throw new PersistentException(e);

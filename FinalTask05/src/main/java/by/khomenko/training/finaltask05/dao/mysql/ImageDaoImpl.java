@@ -86,7 +86,6 @@ public class ImageDaoImpl extends BaseDaoImpl<Image> implements ImageDao {
         }
     }
 
-    //TODO Find out whether this method is needed to be implemented.
     @Override
     public void update(Image image) throws PersistentException {
 

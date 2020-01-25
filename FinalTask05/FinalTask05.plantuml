@@ -1,0 +1,302 @@
+@startuml
+
+title __TASK05's Class Diagram__\n
+
+  package by.khomenko.training.finaltask05.service {
+    class AdminPageService {
+    }
+  }
+  
+
+  package by.khomenko.training.finaltask05.servlet {
+    class AuthenticationFilter {
+    }
+  }
+  
+
+  package by.khomenko.training.finaltask05.dao {
+    package by.khomenko.training.finaltask05.dao.mysql {
+      abstract class BaseDaoImpl {
+      }
+    }
+  }
+  
+
+  package by.khomenko.training.finaltask05.entity {
+    class BlackList {
+    }
+  }
+  
+
+  package by.khomenko.training.finaltask05.dao {
+    interface BlackListDao {
+    }
+  }
+  
+
+  package by.khomenko.training.finaltask05.dao {
+    package by.khomenko.training.finaltask05.dao.mysql {
+      class BlackListDaoImpl {
+      }
+    }
+  }
+  
+
+  package by.khomenko.training.finaltask05.entity {
+    class Category {
+    }
+  }
+  
+
+  package by.khomenko.training.finaltask05.dao {
+    interface CategoryDao {
+    }
+  }
+  
+
+  package by.khomenko.training.finaltask05.dao {
+    package by.khomenko.training.finaltask05.dao.mysql {
+      class CategoryDaoImpl {
+      }
+    }
+  }
+  
+
+  package by.khomenko.training.finaltask05.service {
+    class CategoryPageService {
+    }
+  }
+  
+
+  package by.khomenko.training.finaltask05.dao {
+    package by.khomenko.training.finaltask05.dao.pool {
+      class ConnectionPool {
+      }
+    }
+  }
+  
+
+  package by.khomenko.training.finaltask05.dao {
+    interface Dao {
+    }
+  }
+  
+
+  package by.khomenko.training.finaltask05.dao {
+    class DaoFactory {
+    }
+  }
+  
+
+  package by.khomenko.training.finaltask05.servlet {
+    class DispatcherServlet {
+    }
+  }
+  
+
+  package by.khomenko.training.finaltask05.entity {
+    abstract class Entity {
+    }
+  }
+  
+
+  package by.khomenko.training.finaltask05.entity {
+    class Favorite {
+    }
+  }
+  
+
+  package by.khomenko.training.finaltask05.dao {
+    interface FavoriteDao {
+    }
+  }
+  
+
+  package by.khomenko.training.finaltask05.dao {
+    package by.khomenko.training.finaltask05.dao.mysql {
+      class FavoriteDaoImpl {
+      }
+    }
+  }
+  
+
+  package by.khomenko.training.finaltask05.service {
+    class HomePageService {
+    }
+  }
+  
+
+  package by.khomenko.training.finaltask05.entity {
+    class Image {
+    }
+  }
+  
+
+  package by.khomenko.training.finaltask05.dao {
+    interface ImageDao {
+    }
+  }
+  
+
+  package by.khomenko.training.finaltask05.dao {
+    package by.khomenko.training.finaltask05.dao.mysql {
+      class ImageDaoImpl {
+      }
+    }
+  }
+  
+
+  package by.khomenko.training.finaltask05.service {
+    class LogInPageService {
+    }
+  }
+  
+
+  package by.khomenko.training.finaltask05.service {
+    class MyImagesPageService {
+    }
+  }
+  
+
+  package by.khomenko.training.finaltask05.exception {
+    class PersistentException {
+    }
+  }
+  
+
+  package by.khomenko.training.finaltask05.dao {
+    package by.khomenko.training.finaltask05.dao.pool {
+      class PooledConnection {
+      }
+    }
+  }
+  
+
+  package by.khomenko.training.finaltask05.service {
+    class ProfilePageService {
+    }
+  }
+  
+
+  package by.khomenko.training.finaltask05.entity {
+    class RecognizedImg {
+    }
+  }
+  
+
+  package by.khomenko.training.finaltask05.dao {
+    interface RecognizedImgDao {
+    }
+  }
+  
+
+  package by.khomenko.training.finaltask05.dao {
+    package by.khomenko.training.finaltask05.dao.mysql {
+      class RecognizedImgDaoImpl {
+      }
+    }
+  }
+  
+
+  package by.khomenko.training.finaltask05.service {
+    class RegistrationPageService {
+    }
+  }
+  
+
+  package by.khomenko.training.finaltask05.entity {
+    enum Role {
+    }
+  }
+  
+
+  package by.khomenko.training.finaltask05.entity {
+    class Setting {
+    }
+  }
+  
+
+  package by.khomenko.training.finaltask05.dao {
+    interface SettingDao {
+    }
+  }
+  
+
+  package by.khomenko.training.finaltask05.dao {
+    package by.khomenko.training.finaltask05.dao.mysql {
+      class SettingDaoImpl {
+      }
+    }
+  }
+  
+
+  package by.khomenko.training.finaltask05.service {
+    class SystemSettingsService {
+    }
+  }
+  
+
+  package by.khomenko.training.finaltask05.entity {
+    class User {
+    }
+  }
+  
+
+  package by.khomenko.training.finaltask05.dao {
+    interface UserDao {
+    }
+  }
+  
+
+  package by.khomenko.training.finaltask05.dao {
+    package by.khomenko.training.finaltask05.dao.mysql {
+      class UserDaoImpl {
+      }
+    }
+  }
+  
+
+  package by.khomenko.training.finaltask05.exception {
+    class ValidationException {
+    }
+  }
+  
+
+  AuthenticationFilter -up-|> HttpFilter
+  BaseDaoImpl -up-|> Dao
+  BlackList -up-|> Entity
+  BlackListDaoImpl -up-|> BlackListDao
+  BlackListDaoImpl -up-|> BaseDaoImpl
+  Category -up-|> Entity
+  CategoryDaoImpl -up-|> CategoryDao
+  CategoryDaoImpl -up-|> BaseDaoImpl
+  DispatcherServlet -up-|> HttpServlet
+  Entity -up-|> Serializable
+  Favorite -up-|> Entity
+  FavoriteDaoImpl -up-|> FavoriteDao
+  FavoriteDaoImpl -up-|> BaseDaoImpl
+  Image -up-|> Entity
+  ImageDaoImpl -up-|> ImageDao
+  ImageDaoImpl -up-|> BaseDaoImpl
+  PooledConnection -up-|> Connection
+  PooledConnection -up-|> Comparable
+  RecognizedImg -up-|> Entity
+  RecognizedImgDaoImpl -up-|> RecognizedImgDao
+  RecognizedImgDaoImpl -up-|> BaseDaoImpl
+  Setting -up-|> Entity
+  SettingDaoImpl -up-|> SettingDao
+  SettingDaoImpl -up-|> BaseDaoImpl
+  User -up-|> Entity
+  User o-- Role : role
+  UserDaoImpl -up-|> UserDao
+  UserDaoImpl -up-|> BaseDaoImpl
+
+
+right footer
+
+
+PlantUML diagram generated by SketchIt! (https://bitbucket.org/pmesmeur/sketch.it)
+For more information about this tool, please contact philippe.mesmeur@gmail.com
+endfooter
+
+@enduml

@@ -201,7 +201,8 @@ public class UserDaoImpl extends BaseDaoImpl<User> implements UserDao {
 
     public List<User> readAllNotInBlacklist() throws PersistentException {
 
-        String sql = "SELECT * FROM users WHERE role <> 0 AND id NOT IN (SELECT user_id FROM blacklist)";
+        String sql = "SELECT * FROM users WHERE role <> 0 AND id NOT IN"
+                + " (SELECT user_id FROM blacklist)";
 
         List<User> users = new ArrayList<>();
 
@@ -232,7 +233,8 @@ public class UserDaoImpl extends BaseDaoImpl<User> implements UserDao {
 
     public List<User> readAllInBlacklist() throws PersistentException {
 
-        String sql = "SELECT * FROM users WHERE role <> 0 AND id IN (SELECT user_id FROM blacklist)";
+        String sql = "SELECT * FROM users WHERE role <> 0 AND id IN "
+                + "(SELECT user_id FROM blacklist)";
 
         List<User> users = new ArrayList<>();
 

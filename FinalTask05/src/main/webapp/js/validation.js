@@ -4,9 +4,9 @@ function validateRegistrationForm() {
   var x = document.forms["registrationForm"]["password3"].value;
   var y = document.forms["registrationForm"]["confirmPassword3"].value;
   if (x != y) {
-   document.getElementById('errorMessageText').innerHTML='Passwords are not equal';
-   document.getElementById("errorMessage").classList.remove('invisible');
-   document.getElementById("errorMessage").classList.add('visible');
+   document.getElementById("errorMessageText").innerHTML="Passwords are not equal";
+   document.getElementById("errorMessage").classList.remove("invisible");
+   document.getElementById("errorMessage").classList.add("visible");
     return false;
   }
 }
@@ -16,9 +16,9 @@ function validateProfileSettingsForm() {
   var y = document.forms["profileSettingsForm"]["confirmNewPassword3"].value;
   if (x != y) {
 
-  document.getElementById('errorMessageText').innerHTML='Passwords are not equal';
-  document.getElementById("errorMessage").classList.remove('invisible');
-  document.getElementById("errorMessage").classList.add('visible');
+  document.getElementById("errorMessageText").innerHTML="Passwords are not equal";
+  document.getElementById("errorMessage").classList.remove("invisible");
+  document.getElementById("errorMessage").classList.add("visible");
 
     return false;
   }

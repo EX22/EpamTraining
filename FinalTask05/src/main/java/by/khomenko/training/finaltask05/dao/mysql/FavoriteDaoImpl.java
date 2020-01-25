@@ -49,8 +49,6 @@ public class FavoriteDaoImpl extends BaseDaoImpl<Favorite> implements FavoriteDa
 
     @Override
     public Favorite read(Integer identity) {
-        //TODO Find out what can be returned here instead of null, if possible
-        // and necessary.
         return null;
     }
 

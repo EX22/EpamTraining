@@ -45,7 +45,7 @@ public class SettingDaoImpl extends BaseDaoImpl<Setting> implements SettingDao {
 
     @Override
     public Setting read(Integer identity) {
-        //TODO There's no need in this method implementation as far as there's no id in settings table.
+
         return null;
     }
 

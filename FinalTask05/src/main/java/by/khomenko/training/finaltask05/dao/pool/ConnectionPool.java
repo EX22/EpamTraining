@@ -103,7 +103,7 @@ public class ConnectionPool {
             try {
                 connection.getConnection().close();
             } catch (SQLException e2) {
-                //TODO Add logger.
+                LOGGER.error("Closing connection an exception occurred. ",e2);
             }
         } catch (InterruptedException ex) {
             LOGGER.fatal("Thread interrupted ", ex);
@@ -161,7 +161,7 @@ public class ConnectionPool {
             try {
                 connection.getConnection().close();
             } catch (SQLException e) {
-                //TODO Add logger.
+                LOGGER.error("Closing connection an exception occurred. ",e);
             }
         }
         usedConnections.clear();

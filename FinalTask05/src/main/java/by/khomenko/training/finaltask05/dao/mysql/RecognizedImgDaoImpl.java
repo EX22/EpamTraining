@@ -47,8 +47,7 @@ public class RecognizedImgDaoImpl extends BaseDaoImpl<RecognizedImg>
 
     @Override
     public RecognizedImg read(Integer identity) throws PersistentException {
-        //TODO Find out whether there's should be `user_id` or `image_id` passed
-        // in the method and put in an sql accordingly.
+
         String sql = "SELECT user_id, answer FROM recognizedimgs WHERE id = ?";
 
         try (PreparedStatement statement = connection.prepareStatement(sql)) {

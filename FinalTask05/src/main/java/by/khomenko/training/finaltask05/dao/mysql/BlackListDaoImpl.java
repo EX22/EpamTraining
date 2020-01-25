@@ -124,6 +124,7 @@ public class BlackListDaoImpl extends BaseDaoImpl<BlackList> implements BlackLis
 
     }
 
+    @Override
     public boolean isUserInBlacklist(User user)
             throws PersistentException {
 

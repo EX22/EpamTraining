@@ -10,8 +10,7 @@ public interface BlackListDao extends Dao<BlackList> {
 
 
     List<BlackList> readAll(int page, int pageSize) throws PersistentException;
-
     int count() throws PersistentException;
-    boolean isUserInBlacklist(User user)
-            throws PersistentException;
+    boolean isUserInBlacklist(User user) throws PersistentException;
+
 }

@@ -18,7 +18,7 @@
         <meta name="description" content="">
         <meta name="author" content="">
         <link rel="icon" href="css/pictures/crowdlogo.jpg">
-        <title>  </title>
+        <title><fmt:message key="My images"/></title>
 
         <!-- Bootstrap core CSS -->
         <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -52,13 +52,11 @@
                                  <li><a href="?page=${elem}"><c:out value="${elem}"/></a></li>
                              </c:otherwise>
                          </c:choose>
-
                         </c:forEach>
                       </ul>
                     </nav>
 
                   <form method="post" enctype="multipart/form-data" class="form-horizontal">
-
 
                         <div class="container">
 

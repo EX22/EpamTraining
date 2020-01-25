@@ -31,7 +31,7 @@ import java.util.*;
 public class DispatcherServlet extends HttpServlet {
 
     private static final String DB_DRIVER_CLASS = "com.mysql.cj.jdbc.Driver";
-    private static final String DB_URL = "jdbc:mysql://localhost:3306/crowdsource_db?useUnicode=true&characterEncoding=UTF-8";
+    private static final String DB_URL = "jdbc:mysql://localhost:3306/crowdsource_db?useUnicode=true&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
     private static final String DB_USER = "crowdsource_user";
     private static final String DB_PASSWORD = "crowdsource_password";
     private static final int DB_POOL_START_SIZE = 10;
@@ -87,8 +87,6 @@ public class DispatcherServlet extends HttpServlet {
                     break;
 
                 case "/home.html":
-
-
 
                     HomePageService homePageService = new HomePageService();
                     Map<String, Object> hpd = homePageService.load();
@@ -186,9 +184,9 @@ public class DispatcherServlet extends HttpServlet {
                     AdminPageService adminPageService = new AdminPageService();
                     if ("addUserToBlacklist".equals(request.getParameter("formAction"))) {
                         adminPageService.addUserToBlacklist(request.getParameter("userToAdd"));
-                    } else if("removeUserFromBlacklist".equals(request.getParameter("formAction"))) {
+                    } else if ("removeUserFromBlacklist".equals(request.getParameter("formAction"))) {
                         adminPageService.removeUserFromBlacklist(request.getParameter("userRemoveFrom"));
-                    } else if("saveSettings".equals(request.getParameter("formAction"))) {
+                    } else if ("saveSettings".equals(request.getParameter("formAction"))) {
                         String fs = request.getParameter("fileSize");
                         String fex = request.getParameter("fileExtensions");
                         String floc = request.getParameter("filesLocation");
@@ -241,6 +239,7 @@ public class DispatcherServlet extends HttpServlet {
                     User loggedUser = logInPageService.logInUser(lpl, lpp);
                     if (loggedUser != null) {
                         request.getSession().setAttribute("userId", loggedUser.getId());
+                        request.getSession().setAttribute("userRole", loggedUser.getRole());
                         response.sendRedirect("profile.html");
                     } else {
                         request.setAttribute("errorMessage", "Incorrect login or password.");
@@ -345,7 +344,7 @@ public class DispatcherServlet extends HttpServlet {
         Integer uid = getCurrentUserId(request);
         Integer pageNumber = 1;
         String pageString = request.getParameter("page");
-        if(pageString != null){
+        if (pageString != null) {
             pageNumber = Integer.parseInt(pageString);
 
         }
@@ -376,7 +375,7 @@ public class DispatcherServlet extends HttpServlet {
         Integer userId = getCurrentUserId(request);
         String avatarFileName = null;
         Part filePart = request.getPart("photoToUpload");
-        if ((filePart!=null)&&(!filePart.getSubmittedFileName().isEmpty())) {
+        if ((filePart != null) && (!filePart.getSubmittedFileName().isEmpty())) {
             InputStream fileContent = filePart.getInputStream();
             avatarFileName = Paths.get(filePart.getSubmittedFileName())
                     .getFileName().toString();
@@ -432,7 +431,7 @@ public class DispatcherServlet extends HttpServlet {
         Part fp = request.getPart("imageToUpload");
         SystemSettingsService systemSettingsService = new SystemSettingsService();
         Integer fileSizeInt = Integer.parseInt(systemSettingsService.getSetting("fileSize"));
-        if (fp.getSize()/(1024*1024) > fileSizeInt){
+        if (fp.getSize() / (1024 * 1024) > fileSizeInt) {
             request.setAttribute("errorMessage", "File's size is not valid."
                     + " Max allowed file size is " + fileSizeInt + " Mb.");
 
@@ -472,7 +471,6 @@ public class DispatcherServlet extends HttpServlet {
 
     }
 
-
     private Integer getCurrentUserId(HttpServletRequest request) {
 
         return (Integer) request.getSession().getAttribute("userId");
@@ -482,7 +480,7 @@ public class DispatcherServlet extends HttpServlet {
         String filename = "";
         long millis = System.currentTimeMillis();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("ddMMyyhhmmssSSS");
-        String datetime = simpleDateFormat.format( new Date() ) ;
+        String datetime = simpleDateFormat.format(new Date());
         datetime = datetime.replace(" ", "");
         datetime = datetime.replace(":", "");
         filename = datetime + "_" + millis;
